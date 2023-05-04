@@ -6,8 +6,8 @@
 class DigiBattle {
 private:
     FILE* tableroArchivo;   //Archivo txt del tablero
-    int tablero[20][20];    //convertir a array dinamico
-    
+    int tablero[20][20][20];    //convertir a array dinamico
+
 public:
     DigiBattle();   
     ~DigiBattle();
