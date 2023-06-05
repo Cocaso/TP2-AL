@@ -2,16 +2,7 @@
 #define DIGIBATTLE_H_
 
 #include <iostream>
-
-enum Casillero {
-    tierra,
-    augua,
-    aire,
-    avion,
-    barco,
-    soldado
-};
-
+#include <>
 
 class DigiBattle {
 private:

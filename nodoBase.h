@@ -1,6 +1,6 @@
 
-#ifndef NODO_BASE_H_
-#define NODO_BASE_H_
+#ifndef NODOBASE_H_
+#define NODOBASE_H_
 
 #ifndef NULL
 #define NULL 0
