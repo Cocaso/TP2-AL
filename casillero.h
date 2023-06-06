@@ -1,34 +1,45 @@
 #ifndef CASILLERO
 #define CASILLERO
+#include <iostream>
 
-enum contenido {
-    tierra,
-    augua,
-    aire,
-    avion,
-    barco,
-    soldado
-};
 
 class Casillero {
 private:
-    contenido casilla;
-    bool casillaActiva;
+    enum terreno {
+        TIERRA,
+        AGUA,
+        AIRE
+    };
+
+    enum artilleria {
+        BARCO,
+        AVION,
+        MINA
+    };
+
+    struct contenido {
+        int jugador;
+        int numSoldado;
+        artilleria artillerias;
+        int turnosInactivo = 0;
+    };
+
+    terreno casilla;
+    contenido* contenido;
+
 public:
-    Casillero(/* args */);
+    Casillero();
     ~Casillero();
+
+
+    /*Pre:
+    Pos:
+    */
+    void desactivarCasilla();
+
+
+
 };
-
-Casillero::Casillero(/* args */) {
-    this->casilla = aire;
-    this->casillaActiva = true;
-}
-
-Casillero::~Casillero() {
-}
-
-
-
 
 
 

@@ -1,37 +1,31 @@
-#ifndef TABLERO_H
-#define TABLERO_H
+#ifndef TABLERO
+#define TABLERO
 
 #include "listaBase.h"
 #include "casillero.h"
+#include "EasyBMP.h"
 
 class Tablero {
 private:
-    Lista <Lista<Casillero*>*>* tablero;
+    Lista<Lista<Casillero*>*>* tablero;
     int maxX;
     int maxY;
     int maxZ;
 public:
-    Tablero(/* args */);
+    /*Pre:
+    Pos:
+    */
+    Tablero();
+    /*Pre:
+    Pos:
+    */
+    Tablero(int x, int y, int z);
+    /*Pre:
+    Pos:
+    */
     ~Tablero();
+
 };
-Tablero::Tablero(){
-    this->tablero = NULL;   
-    this->maxX = 0;
-    this->maxY = 0;
-    this->maxZ = 0;    
-}
-
-Tablero::~Tablero() {
-}
-
-void Tablero::setSize(int x, int y, int z) {
-    this->maxX = x;
-    this->maxY = y;
-    this->maxZ = z;
-}
-
-
-
 
 
 
