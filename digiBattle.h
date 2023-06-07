@@ -47,11 +47,6 @@ public:
     void moverTropa();
 
     /*Pre:
-    Pos:
-    */
-    void obtenerCarta();
-
-    /*Pre:
     Pos: Pide la posicion XYZ en la que se va a poner la mina
     */
     void ponerMina();
@@ -74,7 +69,7 @@ public:
     /*Pre: -
     Pos: Revisa si se cumplen las condiciones de victoria
     */
-    void condicionDeVictoria();
+    void comprobarVictoria();
 
 
 

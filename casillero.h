@@ -14,7 +14,8 @@ private:
     enum Artilleria {
         BARCO,
         AVION,
-        MINA
+        MINA,
+        SOLDADO
     };
 
     struct Contenido {
@@ -31,6 +32,10 @@ public:
     Casillero();
     ~Casillero();
 
+    /*Pre: -
+    Pos: cambia el terreno de la casilla
+    */
+    void cambiarTerreno(int binario);
 
     /*Pre:
     Pos:

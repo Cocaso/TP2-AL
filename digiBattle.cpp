@@ -7,3 +7,44 @@ DigiBattle::DigiBattle(){
     this->jugadores = NULL;
     this->casillerosInactivos = NULL;
 }
+
+DigiBattle::~DigiBattle(){
+
+}
+
+void DigiBattle::iniciarJuego(){
+
+}
+
+void DigiBattle::turno(){
+
+}
+
+void DigiBattle::moverTropa(){
+
+}
+
+void DigiBattle::ponerMina(){
+
+}
+
+void DigiBattle::obtenerCarta(){
+
+}
+
+void DigiBattle::usarCarta(){
+
+}
+
+void DigiBattle::comprobarColision(){
+
+}
+
+void DigiBattle::comprobarVictoria(){
+
+}
+
+
+
+
+
