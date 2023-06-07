@@ -5,27 +5,27 @@
 
 class Casillero {
 private:
-    enum terreno {
+    enum Terreno {
         TIERRA,
         AGUA,
         AIRE
     };
 
-    enum artilleria {
+    enum Artilleria {
         BARCO,
         AVION,
         MINA
     };
 
-    struct contenido {
+    struct Contenido {
         int jugador;
         int numSoldado;
-        artilleria artillerias;
+        Artilleria artillerias;
         int turnosInactivo = 0;
     };
 
-    terreno casilla;
-    contenido* contenido;
+    Terreno casilla;
+    Contenido* contenidos;
 
 public:
     Casillero();

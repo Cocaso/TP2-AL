@@ -3,8 +3,9 @@
 
 Casillero::Casillero() {
     this->casilla = AIRE;
-    this->contenido = NULL;
+    this->contenidos = new Contenido;
 }
 
 Casillero::~Casillero() {
+    delete this->contenidos;
 }
