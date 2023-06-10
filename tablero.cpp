@@ -14,8 +14,6 @@ Tablero::Tablero(int x, int y, int z) {
     this->maxY = y;
     this->maxZ = z;
 
-    
-
 }
 
 void Tablero::crearTerreno(){
@@ -25,6 +23,8 @@ void Tablero::crearTerreno(){
     Lista<Lista<Casillero*>*>* listaY = new(Lista<Lista<Casillero*>*>);
     Lista<Casillero*>* listaZ = new(Lista<Casillero*>);
     
+
+    //falta hacer que no dibje el terreno donde va el aire
     for (x = 0; x < this->maxX ; x++){
         for (y = 0; y < this->maxY ; y++){
             indiceDos = y%20;       // da el resto (0-19) uwu
@@ -34,8 +34,10 @@ void Tablero::crearTerreno(){
                 listaZ->add(casillero);
             } 
             listaY->add(listaZ);
+            //falta llamar al destructor de la listaZ para vaciarla
         }
         this->tablero->add(listaY);
+        //tambien el destructor de la listaY acá
     }
     
     delete casillero;
