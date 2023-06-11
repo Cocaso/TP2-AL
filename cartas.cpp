@@ -47,15 +47,39 @@ void Carta::usarCarta(Tablero *tablero, Carta::tipos numDeCarta, unsigned int x,
 }
 
 void Carta::cartaAtaqueQuimico(Tablero *tablero, unsigned int x, unsigned int y, unsigned int z){
+    const int RANGOATAQUEQUIMICO = 5;
+    int radioCubo = RANGOATAQUEQUIMICO / 2;
     int efectoAtaqueQuimico = 10;
+    for(int i = 0; i <= radioCubo; i++){
+        for (int j = 0; j <= radioCubo; j++){
+            for (int k = 0; k <= radioCubo; k++){
+                tablero->getCasillero(x + i, y + j, z + k)->desactivarCasilla(efectoAtaqueQuimico - (i*2));
+
+            }
+        }
+    }
+
+    /*
+    for(int i = 1; i <= RANGOATAQUEQUIMICO; i++){
+        for (int j = 1; j <= RANGOATAQUEQUIMICO; j++){
+            for (int k = 1; k <= RANGOATAQUEQUIMICO; k++){
+                if(i,j,k == 3){
+                    tablero->getCasillero(x + i, y + j, z + k)->desactivarCasilla(efectoAtaqueQuimico);
+                } else if(i == 2 || j == 2 || k == 2){
+
+                }
+            }
+        }
+    }
+    */
     if(tablero->validarCoordenadas(x, y, z)){
 
-    }
+    }/*
     for(int i=0; i < 2; i ++){
         if(i == 0){
             tablero->getCasillero(x, y, z)->desactivarCasilla(efectoAtaqueQuimico);
         } else {
-            tablero->getCasillero(x + i, y + i, z + i)->desactivarCasilla(efectoAtaqueQuimico);
+           tablero->getCasillero(x + i, y + i, z + i)->desactivarCasilla(efectoAtaqueQuimico);
             tablero->getCasillero(x + i, y + i, z - i)->desactivarCasilla(efectoAtaqueQuimico);
             tablero->getCasillero(x + i, y - i, z - i)->desactivarCasilla(efectoAtaqueQuimico);
             tablero->getCasillero(x + i, y - i, z + i)->desactivarCasilla(efectoAtaqueQuimico);
@@ -83,7 +107,7 @@ void Carta::cartaAtaqueQuimico(Tablero *tablero, unsigned int x, unsigned int y,
             tablero->getCasillero(x, y, z - i)->desactivarCasilla(efectoAtaqueQuimico);
         }
         efectoAtaqueQuimico = efectoAtaqueQuimico - 2;
-    }
+    }*/ 
     
 }
 
