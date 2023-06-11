@@ -52,5 +52,19 @@
     "/w14928"
   ],
   "C_Cpp_Runner.useUndefinedSanitizer": false,
-  "C_Cpp_Runner.useLeakSanitizer": false
+  "C_Cpp_Runner.useLeakSanitizer": false,
+  "files.associations": {
+    "new": "cpp",
+    "iostream": "cpp",
+    "ostream": "cpp",
+    "array": "cpp",
+    "*.tcc": "cpp",
+    "memory": "cpp",
+    "functional": "cpp",
+    "istream": "cpp",
+    "tuple": "cpp",
+    "utility": "cpp",
+    "string": "cpp",
+    "random": "cpp"
+  }
 }

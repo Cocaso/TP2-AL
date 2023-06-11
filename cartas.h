@@ -1,7 +1,9 @@
 #ifndef CARTAS
 #define CARTAS
 
-#include <random>
+#include <cstdlib>
+#include "tablero.h"
+
 
 class Carta {
 private:
@@ -16,7 +18,6 @@ private:
 
     tipos tipoDeCarta;
 public:
-
     /*Pre:
     Pos:
     */
@@ -30,22 +31,27 @@ public:
     /*Pre:
     Pos:
     */
-    void usarCarta();
+    void usarCarta(Tablero *tablero, Carta::tipos numDeCarta, unsigned int x, unsigned int y, unsigned int z);
+
+    /*Pre:
+    Pos:
+    */
+    Carta::tipos getCarta();
 
     /*Pre:
     Pos: Desactiva por 10 turnos la casilla de la posicion que se marco, por 8 turnos el siguiente radio...
     */
-    void cartaAtaqueQuimico();
+    void cartaAtaqueQuimico(Tablero *tablero, unsigned int x, unsigned int y, unsigned int z);
 
     /*Pre:
     Pos: Pone un avion que si esta en el aire detecta minas enemigas en la zona 
     */
-    void cartaAvionRadar();
+    void cartaAvionRadar(Tablero *tablero, unsigned int x, unsigned int y, unsigned int z);
 
     /*Pre:
     Pos: Pone un barco que si esta en el agua permite disparar un misil por turno
     */
-    void cartaBarco();
+    void cartaBarco(Tablero *tablero, unsigned int x, unsigned int y, unsigned int z);
 
     /*Pre:
     Pos:

@@ -2,23 +2,38 @@
 #define DIGIBATTLE_H_
 
 #include <iostream>
-#include <tablero.h>
-#include <casillero.h>
-#include <cartas.h>
+#include "tablero.h"
+#include "casillero.h"
+#include "cartas.h"
+
+struct Ubicacion{
+    int x;
+    int y;
+    int z;
+};
 
 struct Jugador{
     int vidas;
-    Lista<int>* soldados;
-    Lista<Carta>* cartas;
+    int numDeJugador;
+    Lista<Ubicacion>* soldados;
+    Lista<Carta*>* cartas;
 };
-
 
 class DigiBattle {
 private:
     FILE* tableroArchivo;                   //BMP del tablero
-    Tablero tablero;
-    Lista<Jugador>* jugadores;              //Puntero a lista con structs jugador que tienen punteros a lista de ints (son los numeros del soldado del jugador) y puntero a lista con 
+    Tablero* tablero;                       //Tablero lol
+    Lista<Jugador*>* jugadores;             //Puntero a lista con punteros a structs jugador que tienen punteros a lista de ints (son los numeros del soldado del jugador) y puntero a lista con 
     Lista<Casillero*>* casillerosInactivos; //Puntero a lista de punteros a los casilleros inactivos actuales (para bajarles el contador directamente desde digibattle)
+
+    /*Pre:Recibe coordenadas y un tipo de terreno
+    Pos: Devuelve si el casillero dado por coordenadas esta dentro del tablero y respeta el terreno querido
+    */
+    bool validarCasillero(int x, int y, int z,Terreno tipo);
+    /*Pre:Recibe que tipo de terreno no desea
+    Pos: Devuelve si un struct junto con coordenadas validas
+    */
+    Ubicacion pedirUbicacion(Terreno tipo);
 public:
 
     /*Pre:-
@@ -49,7 +64,7 @@ public:
     /*Pre:
     Pos: Pide la posicion XYZ en la que se va a poner la mina
     */
-    void ponerMina();
+    void ponerMina(int jugador);
 
     /*Pre:
     Pos: Agrega una carta a la lista de cartas del jugador
@@ -64,19 +79,28 @@ public:
     /*Pre: -
     Pos: Comprueba la colision de minas y soldados en un mismo casillero
     */
-    void comprobarColision();
+    void comprobarColision(int jugador, Casillero* casillero);
 
     /*Pre: -
     Pos: Revisa si se cumplen las condiciones de victoria
     */
-    void comprobarVictoria();
+    bool comprobarVictoria();
 
 
+    /*Pre: Recibe un numero de jugador junto con un numero de soldado
+    Pos: Le resta una vida al jugador ,ademas de sacarle el soldado
+    */
+    void bajarVidaJugador(int nroJugador,int nroSoldado);
 
+    /*Pre: Recibe cantidad de soldados por jugador y cantidad de jugadores
+    Pos: Coloca todos los soldados iniciales , por jugador
+    */
+    void colocarSoldados(int cantidadSoldados, int cantidadJugadores);
 
-
-
-
+    /*Pre: Recibe numero de jugador ,numero de soldado , y la ubicacion
+    Pos: Coloca el soldado
+    */
+    void colocarSoldado(Ubicacion ubicacionSoldado,int nroJugador,int nroSoldado);
 
 
 };
