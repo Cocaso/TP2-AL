@@ -6,11 +6,7 @@
 #include "casillero.h"
 #include "cartas.h"
 
-struct Ubicacion{
-    int x;
-    int y;
-    int z;
-};
+
 
 struct Jugador{
     int vidas;

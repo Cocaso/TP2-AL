@@ -33,11 +33,13 @@ void DigiBattle::iniciarJuego(){
     for(i = 1 ; i <= cantidadJugadores ; i++){
         this->colocarSoldados(cantidadSoldados, i);
         jugador = new(Jugador);
+
         (*jugador).vidas = cantidadSoldados;
         (*jugador).numDeJugador = i;
         (*jugador).soldados = new(Lista<Ubicacion>);
         (*jugador).cartas = new(Lista<Carta*>);
         this->jugadores->add(jugador);
+        
         delete jugador;
     }
     

@@ -5,6 +5,12 @@
 #include "casillero.h"
 #include "EasyBMP.h"
 
+struct Ubicacion{
+        unsigned int x;
+        unsigned int y;
+        unsigned int z;
+};
+
 class Tablero {
 private:
     int mapaTemplate[20][20] = {{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1},
@@ -30,7 +36,9 @@ private:
     unsigned int maxX;
     unsigned int maxY;
     unsigned int maxZ;
+    
 public:
+    
     /*Pre:
     Pos:
     */

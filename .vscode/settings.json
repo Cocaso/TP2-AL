@@ -66,5 +66,6 @@
     "utility": "cpp",
     "string": "cpp",
     "random": "cpp"
-  }
+  },
+  "C_Cpp.errorSquiggles": "disabled"
 }

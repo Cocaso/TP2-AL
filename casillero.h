@@ -6,7 +6,7 @@ enum Terreno {
     TIERRA,
     AGUA,
     AIRE
-    };
+};
 
 enum Artilleria {
     VACIO,
@@ -14,14 +14,14 @@ enum Artilleria {
     AVION,
     MINA,
     SOLDADO
-    };
+};
 
 struct Contenido {
     int jugador;
     int numSoldado;
     Artilleria artillerias;
     int turnosInactivo = 0;
-    };
+};
 
 class Casillero {
 private:
