@@ -48,33 +48,38 @@ void Carta::usarCarta(Tablero *tablero, Carta::tipos numDeCarta, unsigned int x,
 
 void Carta::cartaAtaqueQuimico(Tablero *tablero, unsigned int x, unsigned int y, unsigned int z){
     const int RANGOATAQUEQUIMICO = 5;
-    int radioCubo = RANGOATAQUEQUIMICO / 2;
     int efectoAtaqueQuimico = 10;
-    for(int i = 0; i <= radioCubo; i++){
-        for (int j = 0; j <= radioCubo; j++){
-            for (int k = 0; k <= radioCubo; k++){
+    int radioCubo = RANGOATAQUEQUIMICO / 2;
+
+ 
+    for(int i = (-radioCubo); i <= radioCubo; i++){
+        for (int j = (-radioCubo); j <= radioCubo; j++){
+            for (int k = (-radioCubo); k <= radioCubo; k++){
+                if(i,j,k == 0){
+                    tablero->getCasillero(x + i, y + j, z + k)->desactivarCasilla(efectoAtaqueQuimico);
+                } else if(abs(i) == 1 || abs(j) == 1 || abs(k) == 1){
+                    tablero->getCasillero(x + i, y + j, z + k)->desactivarCasilla(efectoAtaqueQuimico - 2);
+                } else if(abs(i) == 2 || abs(j) == 2 || abs(k) == 2){
+                    tablero->getCasillero(x + i, y + j, z + k)->desactivarCasilla(efectoAtaqueQuimico - 4);
+                }
+            }
+        }
+    }
+    if(tablero->validarCoordenadas(x, y, z)){
+
+    }/*
+    forma rara
+    int centroCubo = RANGOATAQUEQUIMICO / 2;
+    for(int i = centroCubo - 1; i <= centroCubo + 1; i++){
+        for (int j = centroCubo - 1; j <= centroCubo + 1; j++){
+            for (int k = centroCubo - 1; k <= centroCubo + 1; k++){
                 tablero->getCasillero(x + i, y + j, z + k)->desactivarCasilla(efectoAtaqueQuimico - (i*2));
 
             }
         }
     }
 
-    /*
-    for(int i = 1; i <= RANGOATAQUEQUIMICO; i++){
-        for (int j = 1; j <= RANGOATAQUEQUIMICO; j++){
-            for (int k = 1; k <= RANGOATAQUEQUIMICO; k++){
-                if(i,j,k == 3){
-                    tablero->getCasillero(x + i, y + j, z + k)->desactivarCasilla(efectoAtaqueQuimico);
-                } else if(i == 2 || j == 2 || k == 2){
-
-                }
-            }
-        }
-    }
-    */
-    if(tablero->validarCoordenadas(x, y, z)){
-
-    }/*
+    otra forma rara
     for(int i=0; i < 2; i ++){
         if(i == 0){
             tablero->getCasillero(x, y, z)->desactivarCasilla(efectoAtaqueQuimico);
