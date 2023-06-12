@@ -45,7 +45,7 @@ class BMP
  bool Read8bitRow(  ebmpBYTE* Buffer, int BufferSize, int Row );  
  bool Read4bitRow(  ebmpBYTE* Buffer, int BufferSize, int Row );  
  bool Read1bitRow(  ebmpBYTE* Buffer, int BufferSize, int Row );
-   
+
  bool Write32bitRow( ebmpBYTE* Buffer, int BufferSize, int Row );   
  bool Write24bitRow( ebmpBYTE* Buffer, int BufferSize, int Row );   
  bool Write8bitRow(  ebmpBYTE* Buffer, int BufferSize, int Row );  

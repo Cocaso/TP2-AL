@@ -22,18 +22,22 @@ private:
     Lista<Jugador*>* jugadores;             //Puntero a lista con punteros a structs jugador que tienen punteros a lista de ints (son los numeros del soldado del jugador) y puntero a lista con 
     Lista<Casillero*>* casillerosInactivos; //Puntero a lista de punteros a los casilleros inactivos actuales (para bajarles el contador directamente desde digibattle)
 
-    /*Pre: Recibe coordenadas y un tipo de terreno
-    Pos: Devuelve si el casillero dado por coordenadas esta dentro del tablero y respeta el terreno querido
-    */
-    bool validarCasillero(Ubicacion posicion, Terreno tipo);
+    //Metodos
     /*Pre: Recibe que tipo de artilleria se va a utilizar
     Pos: Devuelve un struct con coordenadas validadas segun artilleria
     */
     Ubicacion pedirUbicacion(Artilleria tipo);
+
+    /*Pre: Recibe coordenadas y un tipo de terreno
+    Pos: Devuelve true si el casillero existe y es válido para la artillería requerida
+    */ 
+    bool validarCasillero(Ubicacion posicion, Terreno tipo);
+    
     /*Pre: Recibe dos ubicacion dentro del tablero
     Pos: Devuelve si la distancia entre una ubicacion y otra hay un movimiento valido
     */
-    bool movimientoValida(Ubicacion ubiSoldado, Ubicacion ubiNueva );
+    bool validarMovimiento(Ubicacion ubiSoldado, Ubicacion ubiNueva );
+    
 public:
 
     /*Pre:-
@@ -55,6 +59,13 @@ public:
     Pos: maneja el numero de turnos, a qué jugador corresponde y la cuenta de casilleros inactivos
     */
     void turno();
+
+
+    /*Pre: Debe elegirse un jugador existente
+    Pos: Devuelve un puntero al jugador buscado o NULL si no se encontró
+    */
+    Jugador* buscarJugador(int nroJugador);
+
 
     /*Pre:
     Pos: Si se decide mover un soldado o armamento, se puede hacer en vertical, horizontal o diagonal
@@ -108,7 +119,8 @@ public:
     void colocarSoldados(int cantidadSoldados, int cantidadJugadores);
 
     /*Pre: Recibe numero de jugador ,numero de soldado , y la ubicacion
-    Pos: Coloca el soldado
+    Pos: Coloca el soldado si la artillera en la ubicacion es VACIO y si es SOLDADO se muere el soldado que estaba en la
+    ubicacion y el que se iba a colocar
     */
     void ponerSoldado(Ubicacion ubicacionSoldado,int nroJugador,int nroSoldado);
 

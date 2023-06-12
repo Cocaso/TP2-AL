@@ -66,7 +66,7 @@ public:
     Casillero* getCasillero(Ubicacion pisicion);
 
     /*Pre: Recibe 3 coordenadas
-    Pos: Devuelve si esas 3 coordenadas estan dentro del rango del tablero
+    Pos: Devuelve true si las coordenadas existen, false si no existen
     */
     bool validarCoordenadas(Ubicacion posicion);
 

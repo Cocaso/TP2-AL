@@ -82,9 +82,7 @@ Casillero* Tablero::getCasillero(Ubicacion posicion){
     listaX = listaY->get(posicion.y);
     return listaX->get(posicion.x);
 }
-
-
-    
+   
 bool Tablero::validarCoordenadas(Ubicacion posicion){
     if((this->maxX > posicion.x && 
         this->maxY > posicion.y && 

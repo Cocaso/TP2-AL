@@ -10,7 +10,7 @@ enum Terreno {
 
 enum Artilleria {
     VACIO,
-    BARCO, // tiene municion, si se le termina de inhabilita (inutil)
+    BARCO,          //tiene municion, si se le termina se inhabilita (inutil)
     AVION,
     MINA,
     SOLDADO
