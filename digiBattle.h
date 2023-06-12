@@ -5,15 +5,15 @@
 #include "tablero.h"
 #include "casillero.h"
 #include "cartas.h"
+#include "jugador.h"
 
 
-
-struct Jugador{
+/*struct Jugador{
     int vidas;
     int numDeJugador;
     Lista<Ubicacion>* soldados;
     Lista<Carta*>* cartas;
-};
+};*/
 
 class DigiBattle {
 private:
@@ -22,14 +22,18 @@ private:
     Lista<Jugador*>* jugadores;             //Puntero a lista con punteros a structs jugador que tienen punteros a lista de ints (son los numeros del soldado del jugador) y puntero a lista con 
     Lista<Casillero*>* casillerosInactivos; //Puntero a lista de punteros a los casilleros inactivos actuales (para bajarles el contador directamente desde digibattle)
 
-    /*Pre:Recibe coordenadas y un tipo de terreno
+    /*Pre: Recibe coordenadas y un tipo de terreno
     Pos: Devuelve si el casillero dado por coordenadas esta dentro del tablero y respeta el terreno querido
     */
-    bool validarCasillero(int x, int y, int z,Terreno tipo);
-    /*Pre:Recibe que tipo de terreno no desea
-    Pos: Devuelve si un struct junto con coordenadas validas
+    bool validarCasillero(Ubicacion posicion, Terreno tipo);
+    /*Pre: Recibe que tipo de artilleria se va a utilizar
+    Pos: Devuelve un struct con coordenadas validadas segun artilleria
     */
-    Ubicacion pedirUbicacion(Terreno tipo);
+    Ubicacion pedirUbicacion(Artilleria tipo);
+    /*Pre: Recibe dos ubicacion dentro del tablero
+    Pos: Devuelve si la distancia entre una ubicacion y otra hay un movimiento valido
+    */
+    bool movimientoValida(Ubicacion ubiSoldado, Ubicacion ubiNueva );
 public:
 
     /*Pre:-
@@ -55,7 +59,7 @@ public:
     /*Pre:
     Pos: Si se decide mover un soldado o armamento, se puede hacer en vertical, horizontal o diagonal
     */
-    void moverTropa();
+    void moverTropa(int NroJugador);
 
     /*Pre:
     Pos: Pide la posicion XYZ en la que se va a poner la mina
@@ -72,10 +76,20 @@ public:
     */
     void usarCarta();
 
-    /*Pre: -
-    Pos: Comprueba la colision de minas y soldados en un mismo casillero
+    /*Pre: -Recibe numero de jugador , casillero y tipo de artilleria a poner, en caso de ser soldado dejar 
+    numero de soldado , en caso contrario dejar en cero
+    Pos: Comprueba la colision de en un casillero , y en caso de colision desactiva casilla y baja vidas
     */
-    void comprobarColision(int jugador, Casillero* casillero);
+    void resolverColision(Casillero* casillero , Artilleria artilleria, int nroJugador);
+
+
+   /*Pre: 
+    Pos: 
+    */
+    void resolverColision(Casillero* casillero, Artilleria artilleria, int nroJugador, int nroSoldado)
+
+
+ 
 
     /*Pre: -
     Pos: Revisa si se cumplen las condiciones de victoria
@@ -96,7 +110,7 @@ public:
     /*Pre: Recibe numero de jugador ,numero de soldado , y la ubicacion
     Pos: Coloca el soldado
     */
-    void colocarSoldado(Ubicacion ubicacionSoldado,int nroJugador,int nroSoldado);
+    void ponerSoldado(Ubicacion ubicacionSoldado,int nroJugador,int nroSoldado);
 
 
 };

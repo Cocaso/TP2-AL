@@ -8,58 +8,63 @@ Tablero::Tablero(){
     this->maxZ = 0;    
 }
 
-Tablero::Tablero(unsigned int x, unsigned int y, unsigned int z) {
+Tablero::Tablero(Ubicacion maxSize) {
     this->tablero = new(Lista<Lista<Lista<Casillero*>*>*>);
-    this->maxX = x;
-    this->maxY = y;
-    this->maxZ = z;
+    this->maxX = maxSize.x;
+    this->maxY = maxSize.y;
+    this->maxZ = maxSize.z;
+
+}
+
+Tablero::~Tablero() {
+    delete this->tablero;
 
 }
 
 void Tablero::crearTerreno(){
     unsigned int x ,y ,z;
     unsigned int indiceUno, indiceDos;
-    Casillero* casillero ;
-    Lista<Casillero*>* listaZ ;
-    Lista<Lista<Casillero*>*>* listaY ;
+    Casillero* casillero;
+    Lista<Casillero*>* listaX ;
+    Lista<Lista<Casillero*>*>* listaY;
     
     
     //Primero se llena la capa inferior con el diseño del mapa
     listaY = new(Lista<Lista<Casillero*>*>);
 
     for (y = 0; y < this->maxY ; y++){
-        listaZ = new(Lista<Casillero*>);
+        listaX = new(Lista<Casillero*>);
 
         indiceDos = y%20;       // da el resto (0-19) uwu
-        for (z = 0; z < this->maxZ ; z++){
+        for (x = 0; x < this->maxX; x++){
             casillero = new(Casillero);
             
-            indiceUno = z%20;   // da el resto (0-19) uwu
+            indiceUno = x%20;   // da el resto (0-19) uwu
             casillero->cambiarTerreno(mapaTemplate[indiceUno][indiceDos]); 
-            listaZ->add(casillero);
+            listaX->add(casillero);
 
             delete casillero;
         }
     } 
-    listaY->add(listaZ);
+    listaY->add(listaX);
 
-    delete listaZ;
+    delete listaX;
             
     this->tablero->add(listaY);
     //---------------------------------------------------------
 
-    //Se llenauna listaZ con aire, una listaY con copias de listaZ, 
+    //Se llenauna listaX con aire, una listaY con copias de listaX, 
     //y el resto del tablero con copias de listaY
-    casillero = new(Casillero);
-    listaZ = new(Lista<Casillero*>);
-    for (z = 0; z < this->maxZ ; z++){
-        listaZ->add(casillero);
+    casillero = new(Casillero); 
+    listaX = new(Lista<Casillero*>);
+    for (x = 0; x < this->maxX ; x++){
+        listaX->add(casillero);
     }
     listaY = new(Lista<Lista<Casillero*>*>);
     for (y = 0; y < this->maxY ; y++){
-        listaY->add(listaZ);
+        listaY->add(listaX);
     }
-    for (x = 1; x < this->maxX; x++){
+    for (z = 1; z < this->maxZ; z++){
         this->tablero->add(listaY);
     }
     //---------------------------------------------------------
@@ -69,30 +74,27 @@ void Tablero::mostrarTablero(){
     //usar bmp aaaaaaaaaaaaaa
 }
 
-Casillero* Tablero::getCasillero(unsigned int x, unsigned int y, unsigned int z){
+Casillero* Tablero::getCasillero(Ubicacion posicion){
     Lista<Lista<Casillero*>*>* listaY;
-    Lista<Casillero*>* listaZ;
+    Lista<Casillero*>* listaX;
 
-    if (validarCoordenadas(x, y, z)){
-        listaY = this->tablero->get(x);
-        listaZ = listaY->get(y);
-        return listaZ->get(z);
-    } else {
-        throw "Casillero fuera de límites";
-    }
+    listaY = this->tablero->get(posicion.z);
+    listaX = listaY->get(posicion.y);
+    return listaX->get(posicion.x);
 }
 
-Tablero::~Tablero() {
+
     
-
-}
-                //revisar donde se usó esto lmao
-bool Tablero::validarCoordenadas(unsigned int x, unsigned int y, unsigned int z){
-    if((this->maxX > x && this->maxY > y && this->maxZ > z) 
-        && (0 < x && 0 < y && 0 < z )){
+bool Tablero::validarCoordenadas(Ubicacion posicion){
+    if((this->maxX > posicion.x && 
+        this->maxY > posicion.y && 
+        this->maxZ > posicion.z) 
+        && 
+        (0 < posicion.x && 
+        0 < posicion.y && 
+        0 < posicion.z )){
         return true;
     }
-    //throw("Coodenadas fuera de rango ");
     return false;
 }
 

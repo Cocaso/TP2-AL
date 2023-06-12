@@ -3,7 +3,7 @@
 
 Casillero::Casillero() {
     this->casilla = AIRE;
-    this->contenido = new Contenido;
+    this->contenido = new (Contenido);
 }
 
 
@@ -34,19 +34,42 @@ int Casillero::getTurnosInactivo(){
     return this->contenido->turnosInactivo;
 }
 
+void Casillero::ponerArtilleriaVacia(){
+    this->artilleria = VACIO;
+}
 
 void Casillero::ponerArtilleria(Artilleria artilleria, int numJugador){
     this->artilleria = artilleria;
     this->contenido->jugador = numJugador;
 }
 
-
-bool Casillero::comprobarTerreno(Terreno tipo){
-    if (casilla != tipo){
-        throw("El casillero tiene un terreno incorrecto y no se puede posicionar esta artilleria en este casillero");
-        return false;
+bool Casillero::comprobarTerreno(Artilleria unidad){
+    switch (unidad) {
+        case SOLDADO:
+            if (this->terreno == AGUA || this->terreno == TIERRA){
+                return true
+            }
+            break;
+        case MINA:
+            if (this->terreno == AGUA || this->terreno == TIERRA){
+                return true
+            }
+            break;
+        case BARCO:
+            if (this->terreno == AGUA){
+                return true
+            }
+            break;
+        case AVION:
+            if (this->terreno == AIRE){
+                return true
+            }
+            break;
+        default:
+            // :)
+            break;
     }
-    return true;
+    return false;
 }
 
 Artilleria Casillero::devolverArtilleria(){

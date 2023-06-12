@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include "tablero.h"
+#include "jugador.h"
 
 
 class Carta {
@@ -56,7 +57,7 @@ public:
     /*Pre:
     Pos:
     */
-    void tipo4();
+    void cartaPotOfGreed();
 
     /*Pre:
     Pos:

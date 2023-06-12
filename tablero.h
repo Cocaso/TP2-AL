@@ -33,21 +33,22 @@ private:
                                 {0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                                 {1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1}};
     Lista<Lista<Lista<Casillero*>*>*>* tablero;
+    //Z     Y     X
     unsigned int maxX;
     unsigned int maxY;
     unsigned int maxZ;
     
 public:
     
-    /*Pre:
-    Pos:
+    /*Pre:-
+    Pos: Crea un tablero vacío
     */
     Tablero();
 
-    /*Pre:
-    Pos:
+    /*Pre:-
+    Pos: Asigna los máximos del tablero
     */
-    Tablero(unsigned int x, unsigned int y, unsigned int z);
+    Tablero(Ubicacion maxSize);
 
     /*Pre: las medidas tienen que haber sido establecidas
     Pos:rellena el tablero con el terreno
@@ -62,12 +63,12 @@ public:
     /*Pre: recibe coordenadas
     Pos:devuelve una casilla pedida por coordenadas
     */
-    Casillero* getCasillero(unsigned int x, unsigned int y, unsigned int z);
+    Casillero* getCasillero(Ubicacion pisicion);
 
     /*Pre: Recibe 3 coordenadas
     Pos: Devuelve si esas 3 coordenadas estan dentro del rango del tablero
     */
-    bool validarCoordenadas(unsigned int x,unsigned int y ,unsigned int z);
+    bool validarCoordenadas(Ubicacion posicion);
 
     /*Pre:
     Pos:

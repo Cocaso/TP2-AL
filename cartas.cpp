@@ -35,7 +35,7 @@ void Carta::usarCarta(Tablero *tablero, Carta::tipos numDeCarta, unsigned int x,
         this->cartaBarco(tablero, x, y, z);
         break;
     case 3 : 
-        this->tipo4();
+        this->cartaPotOfGreed();
         break;
     case 4 : 
         this->tipo5();
@@ -52,16 +52,15 @@ void Carta::cartaAtaqueQuimico(Tablero *tablero, unsigned int x, unsigned int y,
     int radioCubo = RANGOATAQUEQUIMICO / 2;
     int i, k, j;
 
- 
     for(i = (-radioCubo); i <= radioCubo; i++){
         for (j = (-radioCubo); j <= radioCubo; j++){
             for (k = (-radioCubo); k <= radioCubo; k++){
                 if((i == 0) && (j == 0) && (k == 0)){
                     tablero->getCasillero(x, y, z)->desactivarCasilla(efectoAtaqueQuimico);
-                } else if(abs(i) == 1 || abs(j) == 1 || abs(k) == 1){
-                    tablero->getCasillero(x + i, y + j, z + k)->desactivarCasilla(efectoAtaqueQuimico - 2);
                 } else if(abs(i) == 2 || abs(j) == 2 || abs(k) == 2){
                     tablero->getCasillero(x + i, y + j, z + k)->desactivarCasilla(efectoAtaqueQuimico - 4);
+                } else if(abs(i) == 1 || abs(j) == 1 || abs(k) == 1){
+                    tablero->getCasillero(x + i, y + j, z + k)->desactivarCasilla(efectoAtaqueQuimico - 2);
                 }
             }
         }
@@ -78,6 +77,13 @@ void Carta::cartaBarco(Tablero *tablero, unsigned int x, unsigned int y, unsigne
     
 }
 
+void Carta::cartaPotOfGreed(Jugador * jugador){
+    
+
+    
+
+
+}
 
 
 Carta::tipos Carta::getCarta(){

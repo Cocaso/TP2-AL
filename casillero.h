@@ -10,7 +10,7 @@ enum Terreno {
 
 enum Artilleria {
     VACIO,
-    BARCO,
+    BARCO, // tiene municion, si se le termina de inhabilita (inutil)
     AVION,
     MINA,
     SOLDADO
@@ -19,6 +19,7 @@ enum Artilleria {
 struct Contenido {
     int jugador;
     int numSoldado;
+    int municionDelBarco;
     Artilleria artillerias;
     int turnosInactivo = 0;
 };
@@ -57,6 +58,7 @@ public:
     */
     int getTurnosInactivo();
 
+    void ponerArtilleria(Artilleria artilleria);
 
     /*Pre: recibe numero jugador y tipo de artilleria
     Pos: pone dicha artilleria en la casilla
@@ -64,10 +66,11 @@ public:
     void ponerArtilleria(Artilleria artilleria, int numJugador);
 
 
-    /*Pre: Recibe un tipo de casillero
-    Pos: Devuelve la cantidad de turnos inactivo del casilleros
+    /*Pre: Recibe el tipo de artilleria que se quiere colocar
+    Pos: Devuelve true si se puede colocar o false y cout si no se puede
     */
-    bool comprobarTerreno(Terreno tipo);
+    bool comprobarTerreno(Artilleria unidad);
+
 
     /*Pre: 
     Pos: Devuelve el tipo de artilleria en terreno
