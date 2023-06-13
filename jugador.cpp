@@ -59,55 +59,30 @@ int Jugador::getPosicionSoldadoEnLista(int nroSoldado){
     }
 }
 
-Ubicacion Jugador::getPosicionSoldado(int nroSoldado){
-    InfoTropa* tropa = getSoldado( nroSoldado);
+Ubicacion Jugador::getPosicionTropa(int nroTropa, Artilleria tipoArtilleria){
+    InfoTropa* tropa = getTropa(nroTropa, tipoArtilleria);
     return tropa->posicion;
 }
 
+InfoTropa* Jugador::getTropa(int nroTropaPedida, Artilleria tipoArtilleria){
+    InfoTropa* tropaBuscada = NULL;
+    this->tropas->reiniciarCursor();
+    while(this->tropas->avanzarCursor() && tropaBuscada == NULL){
+        if(this->tropas->getCursor()->nroTropa == nroTropaPedida  && this->tropas->getCursor()->tropa == tipoArtilleria){
+            tropaBuscada = this->tropas->getCursor();
+        }
+    }
+    return tropaBuscada;
+}
 
 Lista<InfoTropa*>* Jugador::getListaTropas(){
     return this->tropas;
 }
 
-InfoTropa* Jugador::getSoldado(int nroSoldadoPedido){
-    InfoTropa* soldadoBuscado = NULL;
-    this->tropas->reiniciarCursor();
-    while(this->tropas->avanzarCursor() && soldadoBuscado == NULL){
-        if(this->tropas->getCursor()->nroTropa == nroSoldadoPedido  && this->tropas->getCursor()->tropa == SOLDADO){
-            soldadoBuscado = this->tropas->getCursor();
-        }
-    }
-    return soldadoBuscado;
-}
 
-InfoTropa* Jugador::getBarco(int nroBarcoPedido){
-    InfoTropa* barcoBuscado = NULL;
-    this->tropas->reiniciarCursor();
-    while(this->tropas->avanzarCursor() && barcoBuscado == NULL){
-        if(this->tropas->getCursor()->nroTropa == nroBarcoPedido && this->tropas->getCursor()->tropa == BARCO){
-            barcoBuscado = this->tropas->getCursor();
-        }
-    }
-    
-    return barcoBuscado;
-
-}
-
-InfoTropa* Jugador::getAvion(int nroAvionPedido){
-    InfoTropa* avionBuscado = NULL;
-    this->tropas->reiniciarCursor();
-    while(this->tropas->avanzarCursor() && avionBuscado == NULL){
-        if(this->tropas->getCursor()->nroTropa == nroAvionPedido && this->tropas->getCursor()->tropa == AVION){
-            avionBuscado = this->tropas->getCursor();
-        }
-    }
-    
-    return avionBuscado;
-}
-
-bool Jugador::soldadoVivo(int nroSoldado){
-    InfoTropa* soldado = this->getSoldado( nroSoldado);
-    return (soldado == null);
+bool Jugador::tropaViva(int nroTropa, Artilleria tipoArtilleria){
+    InfoTropa* tropa = this->getTropa(nroTropa, tipoArtilleria);
+    return (tropa == null);
 }
 
 

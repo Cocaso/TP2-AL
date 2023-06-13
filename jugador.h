@@ -10,7 +10,7 @@
 struct InfoTropa {
     int nroTropa;
     Artilleria tropa;
-    Ubicacion posicion;   
+    Ubicacion posicion;
 };
 
 class Jugador {
@@ -69,7 +69,13 @@ public:
     Pre:~~
     Pos: Devuelve la posicion del soldado
     */
-    Ubicacion getPosicionSoldado(int nroSoldado);
+    Ubicacion getPosicionTropa(int nroTropa, Artilleria tipoArtilleria);
+
+    /*
+    Pre: Debe elegirse un soldado existente
+    Pos: Devuelve un puntero al soldado buscado o NULL si no se encontró
+    */
+    InfoTropa* getTropa(int nroTropaPedida, Artilleria tipoArtilleria);
 
     /*
     Pre: 
@@ -84,28 +90,12 @@ public:
     Lista<InfoTropa*>* getListaTropas();
 
     
-    /*
-    Pre: Debe elegirse un soldado existente
-    Pos: Devuelve un puntero al soldado buscado o NULL si no se encontró
-    */
-    InfoTropa* getSoldado(int nroSoldadoPedido);
+
 
     /*
-    Pre: Debe elegirse un soldado existente
-    Pos: Devuelve un puntero al soldado buscado o NULL si no se encontró
+    Pre: recive un numero de tropa y tipo de artilleria
+    Pos: Devuelve si exite dicha tropa
     */
-    InfoTropa* getBarco(int nroBarcoPedido);
-
-    /*
-    Pre: Debe elegirse un soldado existente
-    Pos: Devuelve un puntero al soldado buscado o NULL si no se encontró
-    */
-    InfoTropa* getAvion(int nroAvionPedido);
-
-    /*
-    Pre: recive numero de soldado
-    Pos: Devuelve si exite dicho soldado
-    */
-    bool soldadoVivo(int nroSoldado);
+    bool tropaViva(int nroTropaPedida, Artilleria tipoArtilleria);
 };
 #endif

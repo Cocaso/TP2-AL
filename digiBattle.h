@@ -91,9 +91,22 @@ public:
     Jugador* buscarJugador(int nroJugador);
 
     /*Pre:
-    Pos: Si se decide mover un soldado o armamento, se puede hacer en vertical, horizontal o diagonal
+    Pos: Si se decide mover una tropa, se puede hacer en vertical, horizontal o diagonal
     */
-    void moverTropa(int NroJugador);
+    void moverTropa();
+
+    /*Pre: Recibe una Artilleria, y la lista de tropas que tiene el jugador
+    Pos: Muestra en pantalla el tipo de tropa, el numero de tropa y la ubicacion de cada tropa de ese tipo
+    */
+    void mostrarTropasDisponibles(Artilleria seleccionTropa, Lista<InfoTropa*>* tropasDelJugador);
+
+
+
+    /*Pre: Recibe una Artilleria, la cantidad de aviones y la cantidad de barcos disponibles
+    Pos: Devuelve TRUE si la Artilleria recibida existe y tiene al menos 1 disponible para usar
+    */
+    bool comprobarSeleccionTropa(Artilleria seleccionTropa, int cantidadAviones, int cantidadBarcos);
+
 
     /*
     Pre:

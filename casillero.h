@@ -10,10 +10,10 @@ enum Terreno {
 
 enum Artilleria {
     VACIO,
-    BARCO,          //tiene municion, si se le termina se inhabilita (inutil)
+    SOLDADO,
     AVION,
+    BARCO,          //tiene municion, si se le termina se inhabilita (inutil)
     MINA,
-    SOLDADO
 };
 
 struct Contenido {

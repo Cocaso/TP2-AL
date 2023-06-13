@@ -145,7 +145,72 @@ void DigiBattle::ponerMina(int jugador){
 
 }
 
-void DigiBattle::moverTropa(int nroJugador, Artilleria artilleria){
+void DigiBattle::moverTropa(){
+    Ubicacion ubiTropa;
+    Ubicacion ubiNueva;
+    Casillero* casillero;
+    Artilleria sinArtilleria = VACIO;
+    Jugador* jugador = this->jugadores->getCursor();
+    Artilleria seleccionTropa = 0;
+    int nroTropaElegida;
+    Lista<InfoTropa*>* tropasDelJugador;
+    Ubicacion posicion;
+    int nroJugador = jugador->getNumeroJugador();
+    
+    //Pregunta qué tipo de tropa se quiere mover
+    cout << "Elige qué tipo de tropa mover: " << endl;
+
+    //Se fija cuales están disponibles
+    tropasDelJugador = this->jugadores->getCursor()->getListaTropas();
+    int soldados = 0;
+    int barcos = 0;
+    int aviones = 0;
+    tropasDelJugador->reiniciarCursor();
+    while(tropasDelJugador->avanzarCursor()){
+        if (tropasDelJugador->getCursor()->tropa == SOLDADO){
+            soldados++;
+        } else if (tropasDelJugador->getCursor()->tropa == BARCO){
+            barcos++;
+        } else if (tropasDelJugador->getCursor()->tropa == AVION){
+            aviones++;
+        }
+    }
+    cout << "1 - Soldados Disponibles: " << soldados << endl;
+    cout << "2 - Aviones Disponibles: "<< aviones << endl;
+    cout << "3 - Barcos Disponibles: " << barcos << endl << endl;
+    cin >> seleccionTropa;
+    do{
+        cout << "Elige con sabiduria: ";
+        cin >> seleccionTropa;
+    }while(comprobarSeleccionTropa(seleccionTropa, aviones, barcos));
+    //
+
+    //Mostrar las tropas disponibles a usar y elegir la tropa a mover
+    mostrarTropasDisponibles(seleccionTropa, tropasDelJugador);
+    do{
+    cout << "Elija el N° de tropa a mover" << endl;
+    cin >> nroTropaElegida;
+    } while(jugador->tropaViva(nroTropaElegida, seleccionTropa));
+    ubiTropa = jugador->getPosicionTropa(nroTropaElegida, seleccionTropa);
+    //
+
+    //Pedir ubicacion y validar el movimiento de la tropa
+    do {
+        ubiNueva = this->pedirUbicacion(seleccionTropa);
+        
+    } while (validarMovimiento(ubiTropa, ubiNueva));
+    //
+
+    //Falta revisar esto de aca
+    //Vacio la casilla vieja
+    casillero = this->tablero->getCasillero(ubiTropa);
+    casillero->ponerArtilleria(sinArtilleria, nroJugador);
+
+    casillero = this->tablero->getCasillero(ubiNueva);
+    this->resolverColision(casillero,  seleccionTropa,  nroJugador,  nroTropaElegida);
+    //
+
+    /*antiguo
     int nroSoldado;
     Ubicacion* ubiSoldado;
     Ubicacion ubiNueva;
@@ -154,99 +219,12 @@ void DigiBattle::moverTropa(int nroJugador, Artilleria artilleria){
     Artilleria tipoArilleria = SOLDADO;
     Jugador* jugador = this->buscarJugador(nroJugador);
 
-    int i;
-    int seleccionTropa = 0;
-    int nroTropaElegida;
-    Lista<InfoTropa*>* tropasDelJugador;
-    Ubicacion posicion;
-    
-    //Pregunta qué tipo de tropa se quiere mover
-    cout << "Elige qué tipo de tropa mover: " << endl;
-
-        //Se fija cuales están disponibles
-        tropasDelJugador = this->jugadores->getCursor()->getListaTropas();
-        tropasDelJugador->reiniciarCursor();
-        int soldados = 0;
-        int barcos = 0;
-        int aviones = 0;
-        while(tropasDelJugador->avanzarCursor()){
-            if (tropasDelJugador->getCursor()->tropa == SOLDADO){
-                soldados++;
-            } else if (tropasDelJugador->getCursor()->tropa == BARCO){
-                barcos++;
-            } else if (tropasDelJugador->getCursor()->tropa == AVION){
-                aviones++;
-            }
-        }
-    cout << "1 - Soldados Disponibles: " << soldados << endl;
-    cout << "2 - Aviones Disponibles: "<< aviones << endl;
-    cout << "3 - Barcos Disponibles: " << barcos << endl << endl;
-    cin >> seleccionTropa;
-    do{
-        cout << "Elige correctamente: ";
-        cin >> seleccionTropa;
-    }while((seleccionTropa == 2 && aviones == 0) || 
-            (seleccionTropa == 3 && barcos == 0) || 
-            (seleccionTropa < 1) || (seleccionTropa > 3));
-    //
-
-    //Mover la tropa correspondiente
-
-
-    if(seleccionTropa == 1){
-        cout << "SOLDADOS DISPONIBLES" << endl;
-
-        tropasDelJugador->reiniciarCursor();
-        for(i = 0; i > soldados; i++){
-            tropasDelJugador->avanzarCursor();
-            Ubicacion posicion = tropasDelJugador->getCursor()->posicion;
-            cout << "Soldado N° " << tropasDelJugador->getCursor()->nroTropa;
-            cout <<"// Posicion X: " << posicion.x;
-            cout <<" Y: " << posicion.y << endl;
-            //Soldado No 1 // Posicion X:7 Y:4
-        }
-    } else if (seleccionTropa == 2){
-        cout << "AVIONES DISPONIBLES" << endl;
-        tropasDelJugador->reiniciarCursor();
-        while(tropasDelJugador->avanzarCursor()){
-            if(tropasDelJugador->getCursor()->tropa == AVION){
-                Ubicacion posicion = tropasDelJugador->getCursor()->posicion;
-                cout << "Avion N° " << tropasDelJugador->getCursor()->nroTropa;
-                cout <<"// Posicion X: " << posicion.x;
-                cout <<" Y: " << posicion.y;
-            }
-        }
-    } else if (seleccionTropa == 3){
-        cout << "BARCOS DISPONIBLES" << endl;
-        tropasDelJugador->reiniciarCursor();
-        while(tropasDelJugador->avanzarCursor()){
-            if(tropasDelJugador->getCursor()->tropa == BARCO){
-                Ubicacion posicion = tropasDelJugador->getCursor()->posicion;
-                cout << "Barco N° " << tropasDelJugador->getCursor()->nroTropa;
-                cout <<"// Posicion X: " << posicion.x;
-                cout <<" Y: " << posicion.y;
-            }
-        }
-    }
-
-    do{
-    cout << "Elija el N° de tropa a mover" << endl;
-    cin >> nroTropaElegida;
-    } while(nroTropaElegida) // hacer soldadoVivo pero version tropaViva
-
-    //
-    
-    //
-
-
-    
-    //
 
     do{
         cout << "Ingrese numero de tropa a mover "<<endl;
         cin >> nroTropa;
-        ubiSoldado = jugador->getPosicionSoldado(nroTropa);
-    } while (!soldadoVivo(nroTropa)); //ver que esta vivo el soldado
+        ubiSoldado = jugador->getPosicionSoldado(nroTropa,);
+    } while (!tropaViva(nroTropa, SOLDADO)); //ver que esta vivo el soldado
     
     
     do {
@@ -260,7 +238,69 @@ void DigiBattle::moverTropa(int nroJugador, Artilleria artilleria){
     
     casillero = this->tablero->getCasillero(ubiNueva);
     this->resolverColision(casillero,  artilleria,  nroJugador,  nroTropa);
+    */
+}
+
+void DigiBattle::mostrarTropasDisponibles(Artilleria seleccionTropa, Lista<InfoTropa*>* tropasDelJugador){
+    cout << seleccionTropa << " DISPONIBLES" << endl;
+    tropasDelJugador->reiniciarCursor();
+    while(tropasDelJugador->avanzarCursor()){
+        if(tropasDelJugador->getCursor()->tropa == seleccionTropa){
+            Ubicacion posicion = tropasDelJugador->getCursor()->posicion;
+            cout << seleccionTropa << " N°: " << tropasDelJugador->getCursor()->nroTropa;
+            cout <<"// Posicion X: " << posicion.x;
+            cout <<" Y: " << posicion.y;
+        }
     }
+    /*
+    if(seleccionTropa == 1){
+        cout << "SOLDADOS DISPONIBLES" << endl;
+        tropasDelJugador->reiniciarCursor();
+        for(i = 0; i > soldados; i++){
+            tropasDelJugador->avanzarCursor();
+            Ubicacion posicion = tropasDelJugador->getCursor()->posicion;
+            cout << "Soldado N°: " << tropasDelJugador->getCursor()->nroTropa;
+            cout <<"// Posicion X: " << posicion.x;
+            cout <<" Y: " << posicion.y << endl;
+            //Soldado No 1 // Posicion X:7 Y:4
+        }
+    } else if (seleccionTropa == 2){
+        cout << "AVIONES DISPONIBLES" << endl;
+        tropasDelJugador->reiniciarCursor();
+        while(tropasDelJugador->avanzarCursor()){
+            if(tropasDelJugador->getCursor()->tropa == AVION){
+                Ubicacion posicion = tropasDelJugador->getCursor()->posicion;
+                cout << "Avion N°: " << tropasDelJugador->getCursor()->nroTropa;
+                cout <<"// Posicion X: " << posicion.x;
+                cout <<" Y: " << posicion.y;
+            }
+        }
+    } else if (seleccionTropa == 3){
+        cout << "BARCOS DISPONIBLES" << endl;
+        tropasDelJugador->reiniciarCursor();
+        while(tropasDelJugador->avanzarCursor()){
+            if(tropasDelJugador->getCursor()->tropa == BARCO){
+                Ubicacion posicion = tropasDelJugador->getCursor()->posicion;
+                cout << "Barco N°: " << tropasDelJugador->getCursor()->nroTropa;
+                cout <<"// Posicion X: " << posicion.x;
+                cout <<" Y: " << posicion.y;
+            }
+        }
+    }
+    */
+
+
+}
+
+bool DigiBattle::comprobarSeleccionTropa(Artilleria seleccionTropa, int cantidadAviones, int cantidadBarcos){
+    const int SINTROPAS = 0;
+    if ((seleccionTropa == AVION && cantidadAviones == SINTROPAS) || 
+    (seleccionTropa == BARCO && cantidadBarcos == SINTROPAS) || 
+    (seleccionTropa > 3) || (seleccionTropa < 1)){
+        return false;
+    }
+    return true;
+
 }
 
 bool DigiBattle::validarCasillero(Ubicacion posicion, Artilleria tipo){
