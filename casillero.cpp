@@ -35,12 +35,13 @@ bool Casillero::disminuirTurnosInactivo(){
 
 void Casillero::ponerArtilleria(Artilleria artilleria){
     this->contenido->artilleria = artilleria;
+    this->contenido->jugador = 0;
 }
 
 void Casillero::ponerArtilleria(Artilleria artilleria, int numJugador){
     this->contenido->artilleria = artilleria;
     this->contenido->jugador = numJugador;
-    if (artilleria == AVION){
+    if (artilleria == BARCO){
         this->contenido->municionDelBarco = 5;
     }
 }

@@ -1,9 +1,8 @@
 //clonado? asdafsaf
 #include <iostream>
 using namespace std;
-
 #include "BMP/EasyBMP.h"
-using namespace std;
+
 
 int main() {
     BMP casilla1, casilla2, casilla3;

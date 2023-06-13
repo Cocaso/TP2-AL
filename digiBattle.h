@@ -1,11 +1,12 @@
-#ifndef DIGIBATTLE_H_
-#define DIGIBATTLE_H_
+#ifndef DIGIBATTLE
+#define DIGIBATTLE
 
 #include <iostream>
 #include "tablero.h"
 #include "casillero.h"
 #include "cartas.h"
 #include "jugador.h"
+
 
 
 /*struct Jugador{
@@ -36,8 +37,8 @@ private:
     bool validarCasillero(Ubicacion posicion, Artilleria tipo);
     
     /*
-    Pre: Recibe dos ubicaciones dentro del tablero
-    Pos: Devuelve si la distancia de movimiento y la direccion es permitida
+    Pre: Recibe dos ubicaciones dentro del tablero para mover SOLDADO o BARCO
+    Pos: Devuelve TRUE si la distancia de movimiento y la direccion es permitida
     */
     bool validarMovimiento(Ubicacion ubiSoldado, Ubicacion ubiNueva );
 
@@ -121,7 +122,7 @@ public:
     void usarCarta(int nroJugador, Carta* carta);
 
     /*
-    Pre: -Recibe numero de jugador , casillero y tipo de artilleria a poner, en caso de ser soldado dejar 
+    Pre: Recibe numero de jugador , casillero y tipo de artilleria a poner, en caso de ser soldado dejar 
     numero de soldado , en caso contrario dejar en cero
     Pos: Comprueba la colision de en un casillero , y en caso de colision desactiva casilla y baja vidas
     */
