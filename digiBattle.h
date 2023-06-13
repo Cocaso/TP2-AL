@@ -23,113 +23,138 @@ private:
     Lista<Casillero*>* casillerosInactivos; //Puntero a lista de punteros a los casilleros inactivos actuales (para bajarles el contador directamente desde digibattle)
 
     //Metodos
-    /*Pre: Recibe que tipo de artilleria se va a utilizar
+    /*
+    Pre: Recibe que tipo de artilleria se va a utilizar
     Pos: Devuelve un struct con coordenadas validadas segun artilleria
     */
     Ubicacion pedirUbicacion(Artilleria tipo);
 
-    /*Pre: Recibe coordenadas y un tipo de artilleria
+    /*
+    Pre: Recibe coordenadas y un tipo de artilleria
     Pos: Devuelve true si el casillero existe y es válido para la artillería requerida
     */ 
     bool validarCasillero(Ubicacion posicion, Artilleria tipo);
     
-    /*Pre: Recibe dos ubicacion dentro del tablero
-    Pos: Devuelve si la distancia entre una ubicacion y otra hay un movimiento valido
+    /*
+    Pre: Recibe dos ubicaciones dentro del tablero
+    Pos: Devuelve si la distancia de movimiento y la direccion es permitida
     */
     bool validarMovimiento(Ubicacion ubiSoldado, Ubicacion ubiNueva );
+
+    /*
+    Pre: 
+    Pos: Reduce los turnos inactivos de las casillas inactivas
+    */
+    void reducirCasilleroInactivo();
+
+    /*
+    Pre: Debe de haber quedado solo un jugador con vida 
+    Pos: Anuncia quien fue el ganador y da por terminada la partida
+    */
+    void anunciarGanador();
     
 public:
 
-    /*Pre:-
+    /*
+    Pre:-
     Pos: Bob el constructor
     */
     DigiBattle();
 
-    /*Pre:
+    /*
+    Pre:
     Pos: Bob el destructor
     */
     ~DigiBattle();
 
-    /*Pre:
+    /*
+    Pre:
     Pos: Pide cantidad de jugadores, cantidad de tropas y tamanio de mapa en formato XYZ
     */
     void iniciarJuego();
 
-    /*Pre:
+    /*
+    Pre:
     Pos: maneja el numero de turnos, a qué jugador corresponde y la cuenta de casilleros inactivos
     */
     void turno();
 
-    /*Pre:
+    /*
+    Pre:
     Pos: Pide la posicion XYZ en la que se va a poner la mina
     */
     void ponerMina(int jugador);
-    /*Pre: Debe elegirse un jugador existente
+    /*
+    Pre: Debe elegirse un jugador existente
     Pos: Devuelve un puntero al jugador buscado o NULL si no se encontró
     */
     Jugador* buscarJugador(int nroJugador);
-
 
     /*Pre:
     Pos: Si se decide mover un soldado o armamento, se puede hacer en vertical, horizontal o diagonal
     */
     void moverTropa(int NroJugador);
 
-    
-
-    /*Pre:
+    /*
+    Pre:
     Pos: Agrega una carta a la lista de cartas del jugador
     */
     void obtenerCarta(Jugador * jugador);
 
-    /*Pre: La carta debe existir en la lista
+    /*
+    Pre: La carta debe existir en la lista
     Pos: Usa una carta de la lista de cartas del jugador
     */
     void usarCarta(int nroJugador, Carta* carta);
 
-    /*Pre: -Recibe numero de jugador , casillero y tipo de artilleria a poner, en caso de ser soldado dejar 
+    /*
+    Pre: -Recibe numero de jugador , casillero y tipo de artilleria a poner, en caso de ser soldado dejar 
     numero de soldado , en caso contrario dejar en cero
     Pos: Comprueba la colision de en un casillero , y en caso de colision desactiva casilla y baja vidas
     */
     void resolverColision(Casillero* casillero , Artilleria artilleria, int nroJugador);
 
 
-   /*Pre: 
+    /*
+    Pre: 
     Pos: 
     */
     void resolverColision(Casillero* casillero, Artilleria artilleria, int nroJugador, int nroSoldado);
 
-
- 
-
-    /*Pre: -
+    /*
+    Pre: -
     Pos: Revisa si se cumplen las condiciones de victoria
     */
     bool comprobarVictoria(int nroJugador);
 
 
-    /*Pre: Recibe un numero de jugador junto con un numero de soldado
+    /*
+    Pre: Recibe un numero de jugador junto con un numero de soldado
     Pos: Le resta una vida al jugador ,ademas de sacarle el soldado
     */
     void bajarVidaJugador(int nroJugador,int nroSoldado);
 
-    /*Pre: Recibe cantidad de tropas por jugador y cantidad de jugadores
+    /*
+    Pre: Recibe cantidad de tropas por jugador y cantidad de jugadores
     Pos: Coloca todos los tropas iniciales , por jugador
     */
     void colocarSoldados(int cantidadSoldados, int cantidadJugadores);
 
-    /*Pre: Recibe numero de jugador ,numero de soldado , y la ubicacion
+    /*
+    Pre: Recibe numero de jugador ,numero de soldado , y la ubicacion
     Pos: Coloca el soldado si la artillera en la ubicacion es VACIO y si es SOLDADO se muere el soldado que estaba en la
     ubicacion y el que se iba a colocar
     */
     void ponerSoldado(Ubicacion ubicacionSoldado,int nroJugador,int nroSoldado);
 
-    /*Pre:
+    /*
+    Pre:
     Pos:
     */
     int getPosicionJugadorEnLista(int nroJugador);
 
-    /*Pre:
+    /*
+    Pre:
     Pos: Devuelve la lista de jugadores
     */
     Lista<Jugador*>* getListaJugadores();

@@ -40,40 +40,47 @@ private:
     
 public:
     
-    /*Pre:-
+    /*
+    Pre:-
     Pos: Crea un tablero vacío
     */
     Tablero();
 
-    /*Pre:-
+    /*
+    Pre:-
     Pos: Asigna los máximos del tablero
     */
     Tablero(Ubicacion maxSize);
-
-    /*Pre: las medidas tienen que haber sido establecidas
+    /*
+    Pre:
+    Pos:
+    */
+    ~Tablero();
+    /*
+    Pre: las medidas tienen que haber sido establecidas
     Pos:rellena el tablero con el terreno
     */
     void crearTerreno();
 
-    /*Pre:
+    /*
+    Pre:
     Pos:
     */
     void mostrarTablero();
 
-    /*Pre: recibe coordenadas
+    /*
+    Pre: recibe coordenadas
     Pos:devuelve una casilla pedida por coordenadas
     */
     Casillero* getCasillero(Ubicacion pisicion);
 
-    /*Pre: Recibe 3 coordenadas
+    /*
+    Pre: Recibe 3 coordenadas
     Pos: Devuelve true si las coordenadas existen, false si no existen
     */
     bool validarCoordenadas(Ubicacion posicion);
 
-    /*Pre:
-    Pos:
-    */
-    ~Tablero();
+    
 
 };
 

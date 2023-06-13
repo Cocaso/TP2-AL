@@ -28,13 +28,9 @@ void Casillero::desactivarCasilla(int cantidadTurnosCasillaInactiva){
     this->contenido->municionDelBarco = 0;
 }
 
-void Casillero::disminuirTurnosInactivo(){
-    if (this->contenido->turnosInactivo == 0){
-        throw("ASI NO FUNCA PA");
-    } else {
-        this->contenido->turnosInactivo -= 1;
-    }
-    
+bool Casillero::disminuirTurnosInactivo(){
+    this->contenido->turnosInactivo -- ;
+    return (this->contenido->turnosInactivo == 0);
 }
 
 void Casillero::ponerArtilleria(Artilleria artilleria){
@@ -44,6 +40,15 @@ void Casillero::ponerArtilleria(Artilleria artilleria){
 void Casillero::ponerArtilleria(Artilleria artilleria, int numJugador){
     this->contenido->artilleria = artilleria;
     this->contenido->jugador = numJugador;
+    if (artilleria == AVION){
+        this->contenido->municionDelBarco = 5;
+    }
+}
+
+void Casillero::ponerArtilleria(Artilleria artilleria, int numJugador, int numSoldado){
+    this->contenido->artilleria = artilleria;
+    this->contenido->jugador = numJugador;
+    this->contenido->numSoldado = numSoldado;
 }
 
 bool Casillero::comprobarTerreno(Artilleria unidad){
@@ -73,6 +78,10 @@ bool Casillero::comprobarTerreno(Artilleria unidad){
             break;
     }
     return false;
+}
+
+bool Casillero::comprobarEstado(){
+    return (this->contenido->turnosInactivo == 0);
 }
 
 Artilleria Casillero::devolverArtilleria(){

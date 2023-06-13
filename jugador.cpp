@@ -48,8 +48,6 @@ int Jugador::getNumeroJugador(){
     return this->numDeJugador;
 }
 
-
-
 int Jugador::getPosicionSoldadoEnLista(int nroSoldado){
     int posicionSoldado = 1;
     this->tropas->reiniciarCursor();
@@ -79,7 +77,6 @@ InfoTropa* Jugador::getSoldado(int nroSoldadoPedido){
             soldadoBuscado = this->tropas->getCursor();
         }
     }
-
     return soldadoBuscado;
 }
 

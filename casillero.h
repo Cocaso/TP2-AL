@@ -56,31 +56,40 @@ public:
     void desactivarCasilla(int cantidadTurnosCasillaInactiva);
 
     /*
-    Pre: TurnosInactivo debe ser mayor a 0
-    Pos: Disminuye en 1 el turno de la casilla
+    Pre:
+    Pos: Disminuye 1 turno de inactividad , y ademas devuelve true si llego a 0 la cantidad inactiva
     */
-    void disminuirTurnosInactivo();
+    bool disminuirTurnosInactivo();
 
     /*
     Pre:~~
-    Pos: 
+    Pos: Coloca la artillería indicada (sirve para cambiar a VACIO)
     */
     void ponerArtilleria(Artilleria artilleria);
 
     /*
-    Pre: recibe numero jugador y tipo de artilleria
-    Pos: pone dicha artilleria en la casilla
+    Pre: Recibe numero jugador y tipo de artilleria
+    Pos: Coloca ambos datos en el struct
     */
     void ponerArtilleria(Artilleria artilleria, int numJugador);
 
+    /*
+    Pre: Recibe número jugador, tipo de artilleria y númeo de soldado
+    Pos: Coloca todos los datos en el struct (solo para SOLDADO)
+    */
+    void ponerArtilleria(Artilleria artilleria, int numJugador, int numSoldado);
 
     /*
     Pre: Recibe el tipo de artilleria que se quiere colocar
     Pos: Devuelve true si se puede colocar o false y cout si no se puede
     */
     bool comprobarTerreno(Artilleria unidad);
-
-
+    
+    /*
+    Pre: Recibe un casillero
+    Pos: Devuelve si la casilla esta activa o inactiva
+    */
+    bool comprobarEstado();
     /*
     Pre: ~~
     Pos: Devuelve el tipo de artilleria en terreno
@@ -99,6 +108,7 @@ public:
     */
     int devolverNroSoldado();
 
+   
 };
 
 
