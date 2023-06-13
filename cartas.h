@@ -2,8 +2,9 @@
 #define CARTAS
 
 #include <cstdlib>
-#include "tablero.h"
+#include <time.h>
 #include "jugador.h"
+
 
 
 class Carta {
@@ -19,52 +20,62 @@ private:
 
     tipos tipoDeCarta;
 public:
-    /*Pre:
-    Pos:
+    /*
+    Pre:~~
+    Pos: Constructor randomiza el tipoDeCarta
     */
     Carta();
 
-    /*Pre:
-    Pos:
+    /*
+    Pre:~~
+    Pos: Bob el destructor
     */
     ~Carta();
 
-    /*Pre:
-    Pos:
-    */
-    void usarCarta(Tablero *tablero, Carta::tipos numDeCarta, unsigned int x, unsigned int y, unsigned int z);
-
-    /*Pre:
-    Pos:
+    /*
+    Pre:~~
+    Pos: Devuelve el tipo de carta
     */
     Carta::tipos getCarta();
 
-    /*Pre:
-    Pos: Desactiva por 10 turnos la casilla de la posicion que se marco, por 8 turnos el siguiente radio...
+    /*
+    Pre:~~
+    Pos: Llama a el método correspondiente para usar la carta
     */
-    void cartaAtaqueQuimico(Tablero *tablero, unsigned int x, unsigned int y, unsigned int z);
+    void usarCarta(Tablero *tablero, Carta::tipos numDeCarta, Ubicacion posicion, Jugador * jugador);
 
-    /*Pre:
-    Pos: Pone un avion que si esta en el aire detecta minas enemigas en la zona 
+    /*
+    Pre:~~
+    Pos: Mata todo en su radio y desactiva las casillas la cantidad de turnos correspondiente
     */
-    void cartaAvionRadar(Tablero *tablero, unsigned int x, unsigned int y, unsigned int z);
+    void cartaAtaqueQuimico(Tablero * tablero, Ubicacion posicion);
 
-    /*Pre:
-    Pos: Pone un barco que si esta en el agua permite disparar un misil por turno
+    /*
+    Pre:~~
+    Pos: Coloca un avion radar que detecta minas y soldados en el rango
     */
-    void cartaBarco(Tablero *tablero, unsigned int x, unsigned int y, unsigned int z);
+    void cartaAvionRadar(Tablero * tablero, Ubicacion posicion);
 
-    /*Pre:
-    Pos:
+    /*
+    Pre:~~
+    Pos: Pone un barco que si está en el agua permite disparar un misil por turno (municion limitada)
     */
-    void cartaPotOfGreed();
+    void cartaBarco(Tablero * tablero, Ubicacion posicion);
 
-    /*Pre:
+    /*
+    Pre:~~
+    Pos: Obtiene dos cartas nuevas
+    */
+    void cartaPotOfGreed(Jugador * jugador);
+
+    /*
+    Pre:~~
     Pos:
     */
     void tipo5();
 
-    /*Pre:
+    /*
+    Pre:~~
     Pos:
     */
     void tipo6();

@@ -9,7 +9,7 @@ DigiBattle::DigiBattle(){
 }
 
 DigiBattle::~DigiBattle(){
-
+    
 }
 
 void DigiBattle::iniciarJuego(){
@@ -19,7 +19,6 @@ void DigiBattle::iniciarJuego(){
     int cantidadJugadores;
     int cantidadSoldados;
     int nroSoldado;
-    int i, j;
 
 
     cout << "Ingrese el tamaño del mapa (min 10x10x3): ";
@@ -30,28 +29,27 @@ void DigiBattle::iniciarJuego(){
     cout << "Ingrese cantidad de jugadores: " << endl;
     cin >> cantidadJugadores;
 
-    cout<<"Ingrese la cantidad de soldados por jugador: "<< endl;
+    cout<<"Ingrese la cantidad de tropas por jugador: "<< endl;
     cin>>cantidadSoldados;
 
     //crear tablero (con el constructor2)
-    this->tablero(tableroSize);
-    //
+    this->tablero->Tablero(tableroSize);
     
 
-    //crear jugadores y colocar soldados
+    //crear jugadores y colocar tropas
     int nroJugador;
-    for (j = 0 ; j < cantidadJugadores; j++){
+    for (int j = 0 ; j < cantidadJugadores; j++){
 
         //Crea el jugador
         nroJugador = j;
         Jugador* nuevoJugador = new(Jugador(nroJugador, cantidadSoldados));
         
-        //Lo deja poner sus soldados
+        //Lo deja poner sus tropas
         for (int i = 1 ; i <= cantidadSoldados; i++){
             posicionSoldado = this->pedirUbicacion(SOLDADO);
             nroSoldado = i;
-            nuevoJugador->agregarSoldado(posicionSoldado, nroSoldado); //agrego soldado
-            this->ponerSoldado(posicionSoldado,nroJugador,nroSoldado);
+            nuevoJugador->agregarSoldado(posicionSoldado, nroSoldado);  //agrego soldado
+            this->ponerSoldado(posicionSoldado,nroJugador,nroSoldado);  //pone el soldado en el tablero
         }
         
         this->jugadores->add(nuevoJugador);
@@ -77,7 +75,7 @@ void DigiBattle::turno(){
         //
         
         //Le da una carta al jugador
-        this->obtenerCarta(jugadorActual)
+        this->obtenerCarta(jugadorActual);
         //
 
         //Elige si usa una carta o no y cuál
@@ -93,6 +91,7 @@ void DigiBattle::turno(){
         //
 
         //Reducir cuenta de los casilleros inactivos
+        
         //
 
         turno++;
@@ -131,40 +130,41 @@ void DigiBattle::ponerMina(int jugador){
     
     casillero = this->tablero->getCasillero(ubicacionMina);
     
-    this->resolverColision(casillero,tipoArtilleria);
+    this->resolverColision(casillero,tipoArtilleria,jugador);
 
     // falta ver donde implementamos el poder de la mina
 
 }
 
-void DigiBattle::moverTropa(int nroJugador){
-    Terreno tipo = AIRE;
+void DigiBattle::moverTropa(int nroJugador, Artilleria artilleria){
     int nroSoldado;
-    Ubicacion ubiSoldado;
-    bicacion ubiNueva;
+    Ubicacion* ubiSoldado;
+    Ubicacion ubiNueva;
     Casillero* casillero;
     Artilleria sinArtilleria = VACIO;
     Artilleria tipoArilleria = SOLDADO;
     
-    Jugador* jugador = this->jugadores->get(nroJugador);
+    Jugador* jugador = this->buscarJugador(nroJugador);
     
     do{
         cout<<"Ingrese numero de soldado a mover "<<endl;
         cin>>nroSoldado;
-    }while ()//ver que esta vivo el soldado
-    ubiSoldado = jugador->soldados->get(nroSoldado);
+        ubiSoldado = jugador->getPosicionSoldado(nroSoldado);
+    } while (!soldadoVivo(nroSoldado));//ver que esta vivo el soldado
+    
 
-    do{
+    do {
         ubiNueva = pedirUbicacion(tipoArilleria);
         
-    }while (validarMovimiento(ubiSoldado, ubiNueva))
+    } while (validarMovimiento(ubiSoldado, ubiNueva)){
     
     //Vacio la casilla vieja
     casillero = this->tablero->getCasillero(ubiSoldado);
-    casillero->ponerArtilleria(sinArtilleria, numJugador);
+    casillero->ponerArtilleria(sinArtilleria, nroJugador);
     
     casillero = this->tablero->getCasillero(ubiNueva);
-    this->resolverColision(casillero,  artilleria,  nroJugador,  nroSoldado)
+    this->resolverColision(casillero,  artilleria,  nroJugador,  nroSoldado);
+    }
 }
 
 bool DigiBattle::validarCasillero(Ubicacion posicion, Artilleria tipo){
@@ -188,25 +188,33 @@ bool DigiBattle::validarCasillero(Ubicacion posicion, Artilleria tipo){
 }
 
 bool DigiBattle::validarMovimiento(Ubicacion ubiSoldado ,Ubicacion ubiNueva ){
+    /*
     int casillaDistancia;
+    if (getCasillero(ubiSoldado)->comprobarTerreno(AGUA) && getCasillero(ubiSoldado)->devolverArtilleria() == SOLDADO){
+        casillaDistancia = 1;
+    }else{
+        casillaDistancia = 3;
+    }
+    
     if (ubiSoldado.x == ubiNueva.x ){
-        if (ubiSoldado.y == ubiNueva.y + casillaDistancia || ubiSoldado.y == ubiNueva.y - casillaDistancia){
+        if (ubiSoldado.y <= ubiNueva.y + casillaDistancia || ubiSoldado.y <= ubiNueva.y - casillaDistancia){
             return true
         }
     }else if (ubiSoldado.y == ubiNueva.y ){
-        if (ubiSoldado.x == ubiNueva.x + casillaDistancia || ubiSoldado.x == ubiNueva.x - casillaDistancia){
+        if (ubiSoldado.x <= ubiNueva.x + casillaDistancia || ubiSoldado.x <= ubiNueva.x - casillaDistancia){
             return true
         }
     }else if(ubiSoldado.x == ubiNueva.x + casillaDistancia ){
-        if( ubiSoldado.y == ubiNueva.y + casillaDistancia || ubiSoldado.y == ubiNueva.y - casillaDistancia){
+        if( ubiSoldado.y <= ubiNueva.y + casillaDistancia || ubiSoldado.y <= ubiNueva.y - casillaDistancia){
             return true
         } 
     }else if(ubiSoldado.x == ubiNueva.x - casillaDistancia ){
-        if(ubiSoldado.y == ubiNueva.y - casillaDistancia || ubiSoldado.y == ubiNueva.y + casillaDistancia){
+        if(ubiSoldado.y <= ubiNueva.y - casillaDistancia || ubiSoldado.y <= ubiNueva.y + casillaDistancia){
             return true
         }
     }
     return false
+    */
 }
 
 Ubicacion DigiBattle::pedirUbicacion(Artilleria tipo){
@@ -241,18 +249,24 @@ void DigiBattle::obtenerCarta(Jugador * jugador){
     delete carta;
 }
 
+void DigiBattle::usarCarta(int nroJugador, Carta* carta){
+
+   // Jugador* jugador = this->jugadores->get(nroJugador);
+    //if(jugador->cartas>)
+}
+
 Jugador* DigiBattle::buscarJugador(int nroJugador){
     Jugador* jugadorBuscado = NULL;
     
     //Guardamos el numero de jugador anterior
     int jugadorAntiguo = this->jugadores->getCursor()->getNumeroJugador();
-    int posicionAntiguaEncontrada = false;
+    bool posicionAntiguaEncontrada = false;
     
     //Reiniciamos el cursor y buscamos al jugador objetivo
     this->jugadores->reiniciarCursor();
     while(this->jugadores->avanzarCursor() && jugadorBuscado == NULL){
-        if (jugadores->getCursor()->getNumeroJugador() == nroJugador){
-            jugadorBuscado = jugadores->getCursor();
+        if (this->jugadores->getCursor()->getNumeroJugador() == nroJugador){
+            jugadorBuscado = this->jugadores->getCursor();
         }
     }
     
@@ -267,13 +281,6 @@ Jugador* DigiBattle::buscarJugador(int nroJugador){
     return jugadorBuscado;
 }
 
-
-void DigiBattle::usarCarta(int nroJugador, Carta* carta){
-
-   // Jugador* jugador = this->jugadores->get(nroJugador);
-    //if(jugador->cartas>)
-}
-
 void DigiBattle::resolverColision(Casillero* casillero, Artilleria artilleria, int nroJugador, int nroSoldado){
     int turnosDesactivar = 5;
     if (casillero->devolverArtilleria() == VACIO){
@@ -285,20 +292,20 @@ void DigiBattle::resolverColision(Casillero* casillero, Artilleria artilleria, i
         int jugadorEnemigo = casillero->devolverNroJugador(); // con este numero jugador habria que sacarle soldado al jugador
         int nroSoldadoEnemigo = casillero->devolverNroSoldado();
         bajarVidaJugador(jugadorEnemigo,nroSoldadoEnemigo);
-        casillero->ponerArtilleriaVacia();
+        casillero->ponerArtilleria(VACIO);
 
     }else if (casillero->devolverArtilleria() == MINA){
         casillero->desactivarCasilla(turnosDesactivar);
         this->casillerosInactivos->add(casillero);
         bajarVidaJugador(nroJugador,nroSoldado);
-        casillero->ponerArtilleriaVacia();
+        casillero->ponerArtilleria(VACIO);
     }
 }
 
 void DigiBattle::resolverColision(Casillero* casillero, Artilleria artilleria, int nroJugador){
     int inactivo = 5;
     //casos solo para poner mina barco
-    switch (casillero->devolverArtilleria()){
+    switch(casillero->devolverArtilleria()){
     case VACIO:
         casillero->ponerArtilleria(artilleria,nroJugador);
         break;
@@ -311,7 +318,7 @@ void DigiBattle::resolverColision(Casillero* casillero, Artilleria artilleria, i
         int jugadorEnemigo = casillero->devolverNroJugador(); // con este numero jugador habria que sacarle soldado al jugador
         int nroSoldadoEnemigo = casillero->devolverNroSoldado();
         bajarVidaJugador(jugadorEnemigo,nroSoldadoEnemigo);
-        casillero->ponerArtilleriaVacia();
+        casillero->ponerArtilleria(VACIO);
         break;
 
     case MINA:
@@ -332,15 +339,27 @@ bool DigiBattle::comprobarVictoria(int nroJugador){
 
 void DigiBattle::bajarVidaJugador(int nroJugador,int nroSoldado){
     Jugador* jugador = this->buscarJugador(nroJugador);
-    jugador->soldados->remover(nroSoldado); //le saco el soldado
     
-    jugador->soldados->reiniciarCursor;
-    while(jugador->soldados->)
-    
-    //comprueba si efectivamente el jugador perdio todos sus soldados/vidas
-    if (jugador->reducirVidaJugador == 0){
-        this->jugadores->remover(nroJugador);
+    //comprueba si efectivamente el jugador perdio todos sus tropas/vidas
+    if (jugador->removerSoldado(nroSoldado) == 0){
+        this->jugadores->remover(getPosicionJugadorEnLista(nroJugador));
     }
+}
+
+int DigiBattle::getPosicionJugadorEnLista(int nroJugador){
+    int posicionJugador = 1;
+    this->jugadores->reiniciarCursor();
+    while(this->jugadores->avanzarCursor()){
+        if(this->jugadores->getCursor()->getNumeroJugador() == nroJugador){
+            return posicionJugador;
+        }
+        posicionJugador ++;
+    }
+
+}
+
+Lista<Jugador*>* DigiBattle::getListaJugadores(){
+    return this->jugadores;
 }
 
 

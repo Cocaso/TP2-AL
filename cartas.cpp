@@ -1,41 +1,49 @@
 #include "cartas.h"
 
 Carta::Carta() {
+    srand(time(NULL));
     switch (rand() % 6) {        //random mal 
-    case 0 : 
+    case 0 :
         this->tipoDeCarta = ATAQUEQUIMICO;
         break;
     case 1 :
         this->tipoDeCarta = AVIONRADAR;
         break;
-    case 2 : 
+    case 2 :
         this->tipoDeCarta = BARCO;
         break;
-    case 3 : 
+    case 3 :
         this->tipoDeCarta = FUTURO;
         break;
-    case 4 : 
+    case 4 :
         this->tipoDeCarta = FUTURO;
         break;
-    case 5 : 
+    case 5 :
         this->tipoDeCarta = FUTURO;
         break;
     }
 }
 
-void Carta::usarCarta(Tablero *tablero, Carta::tipos numDeCarta, unsigned int x, unsigned int y, unsigned int z){
+Carta::~Carta() {
+}
+
+Carta::tipos Carta::getCarta(){
+    return this->tipoDeCarta;
+}
+
+void Carta::usarCarta(Tablero *tablero, Carta::tipos numDeCarta, Ubicacion posicion, Jugador* jugador){
     switch (numDeCarta) {
     case 0 : 
-        this->cartaAtaqueQuimico(tablero, x, y, z);
+        this->cartaAtaqueQuimico(tablero, posicion);
         break;
     case 1 :
-        this->cartaAvionRadar(tablero, x, y, z);
+        this->cartaAvionRadar(tablero, posicion);
         break;
     case 2 : 
-        this->cartaBarco(tablero, x, y, z);
+        this->cartaBarco(tablero, posicion);
         break;
     case 3 : 
-        this->cartaPotOfGreed();
+        this->cartaPotOfGreed(jugador);
         break;
     case 4 : 
         this->tipo5();
@@ -46,49 +54,39 @@ void Carta::usarCarta(Tablero *tablero, Carta::tipos numDeCarta, unsigned int x,
     }
 }
 
-void Carta::cartaAtaqueQuimico(Tablero *tablero, unsigned int x, unsigned int y, unsigned int z){
-    const int RANGOATAQUEQUIMICO = 5; // RANGOATAQUEQUIMICO debe ser impar
+void Carta::cartaAtaqueQuimico(Tablero *tablero, Ubicacion posicion){
+    const int RANGOATAQUEQUIMICO = 5;       // RANGOATAQUEQUIMICO debe ser impar
     int efectoAtaqueQuimico = 10;
     int radioCubo = RANGOATAQUEQUIMICO / 2;
     int i, k, j;
+    Ubicacion nuevo;
 
     for(i = (-radioCubo); i <= radioCubo; i++){
         for (j = (-radioCubo); j <= radioCubo; j++){
             for (k = (-radioCubo); k <= radioCubo; k++){
+                nuevo.x = posicion.x + i;
+                nuevo.y = posicion.y + j;
+                nuevo.z = posicion.z + k;
                 if((i == 0) && (j == 0) && (k == 0)){
-                    tablero->getCasillero(x, y, z)->desactivarCasilla(efectoAtaqueQuimico);
+                    tablero->getCasillero(posicion)->desactivarCasilla(efectoAtaqueQuimico);
                 } else if(abs(i) == 2 || abs(j) == 2 || abs(k) == 2){
-                    tablero->getCasillero(x + i, y + j, z + k)->desactivarCasilla(efectoAtaqueQuimico - 4);
+                    tablero->getCasillero(nuevo)->desactivarCasilla(efectoAtaqueQuimico - 4);
                 } else if(abs(i) == 1 || abs(j) == 1 || abs(k) == 1){
-                    tablero->getCasillero(x + i, y + j, z + k)->desactivarCasilla(efectoAtaqueQuimico - 2);
+                    tablero->getCasillero(nuevo)->desactivarCasilla(efectoAtaqueQuimico - 2);
                 }
             }
         }
     }
-    if(tablero->validarCoordenadas(x, y, z)){
+    if(tablero->validarCoordenadas(posicion)){
 
     }
 }
 
-void Carta::cartaAvionRadar(Tablero *tablero, unsigned int x, unsigned int y, unsigned int z){
-}
+//void Carta::cartaAvionRadar(Tablero *tablero, Ubicacion posicion)
 
-void Carta::cartaBarco(Tablero *tablero, unsigned int x, unsigned int y, unsigned int z){
-    
-}
+//void Carta::cartaBarco(Tablero *tablero, Ubicacion posicion)
 
-void Carta::cartaPotOfGreed(Jugador * jugador){
-    
-
-    
+//void Carta::cartaPotOfGreed(Jugador * jugador)
 
 
-}
 
-
-Carta::tipos Carta::getCarta(){
-    return this->tipoDeCarta;
-}
-
-Carta::~Carta() {
-}

@@ -13,17 +13,17 @@ Tablero::Tablero(Ubicacion maxSize) {
     this->maxX = maxSize.x;
     this->maxY = maxSize.y;
     this->maxZ = maxSize.z;
-
 }
+
 
 Tablero::~Tablero() {
     delete this->tablero;
-
 }
 
+
 void Tablero::crearTerreno(){
-    unsigned int x ,y ,z;
-    unsigned int indiceUno, indiceDos;
+    int x ,y ,z;
+    int indiceUno, indiceDos;
     Casillero* casillero;
     Lista<Casillero*>* listaX ;
     Lista<Lista<Casillero*>*>* listaY;

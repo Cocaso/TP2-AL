@@ -3,12 +3,12 @@
 
 #include "listaBase.h"
 #include "casillero.h"
-#include "EasyBMP.h"
+#include "BMP/EasyBMP.h"
 
 struct Ubicacion{
-        unsigned int x;
-        unsigned int y;
-        unsigned int z;
+        int x;
+        int y;
+        int z;
 };
 
 class Tablero {
@@ -34,9 +34,9 @@ private:
                                 {1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1}};
     Lista<Lista<Lista<Casillero*>*>*>* tablero;
     //Z     Y     X
-    unsigned int maxX;
-    unsigned int maxY;
-    unsigned int maxZ;
+    int maxX;
+    int maxY;
+    int maxZ;
     
 public:
     

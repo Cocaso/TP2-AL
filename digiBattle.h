@@ -11,7 +11,7 @@
 /*struct Jugador{
     int vidas;
     int numDeJugador;
-    Lista<Ubicacion>* soldados;
+    Lista<Ubicacion>* tropas;
     Lista<Carta*>* cartas;
 };*/
 
@@ -28,10 +28,10 @@ private:
     */
     Ubicacion pedirUbicacion(Artilleria tipo);
 
-    /*Pre: Recibe coordenadas y un tipo de terreno
+    /*Pre: Recibe coordenadas y un tipo de artilleria
     Pos: Devuelve true si el casillero existe y es válido para la artillería requerida
     */ 
-    bool validarCasillero(Ubicacion posicion, Terreno tipo);
+    bool validarCasillero(Ubicacion posicion, Artilleria tipo);
     
     /*Pre: Recibe dos ubicacion dentro del tablero
     Pos: Devuelve si la distancia entre una ubicacion y otra hay un movimiento valido
@@ -51,7 +51,7 @@ public:
     ~DigiBattle();
 
     /*Pre:
-    Pos: Pide cantidad de jugadores, cantidad de soldados y tamanio de mapa en formato XYZ
+    Pos: Pide cantidad de jugadores, cantidad de tropas y tamanio de mapa en formato XYZ
     */
     void iniciarJuego();
 
@@ -60,7 +60,10 @@ public:
     */
     void turno();
 
-
+    /*Pre:
+    Pos: Pide la posicion XYZ en la que se va a poner la mina
+    */
+    void ponerMina(int jugador);
     /*Pre: Debe elegirse un jugador existente
     Pos: Devuelve un puntero al jugador buscado o NULL si no se encontró
     */
@@ -72,20 +75,17 @@ public:
     */
     void moverTropa(int NroJugador);
 
-    /*Pre:
-    Pos: Pide la posicion XYZ en la que se va a poner la mina
-    */
-    void ponerMina(int jugador);
+    
 
     /*Pre:
     Pos: Agrega una carta a la lista de cartas del jugador
     */
-    void obtenerCarta();
+    void obtenerCarta(Jugador * jugador);
 
     /*Pre: La carta debe existir en la lista
     Pos: Usa una carta de la lista de cartas del jugador
     */
-    void usarCarta();
+    void usarCarta(int nroJugador, Carta* carta);
 
     /*Pre: -Recibe numero de jugador , casillero y tipo de artilleria a poner, en caso de ser soldado dejar 
     numero de soldado , en caso contrario dejar en cero
@@ -97,7 +97,7 @@ public:
    /*Pre: 
     Pos: 
     */
-    void resolverColision(Casillero* casillero, Artilleria artilleria, int nroJugador, int nroSoldado)
+    void resolverColision(Casillero* casillero, Artilleria artilleria, int nroJugador, int nroSoldado);
 
 
  
@@ -105,7 +105,7 @@ public:
     /*Pre: -
     Pos: Revisa si se cumplen las condiciones de victoria
     */
-    bool comprobarVictoria();
+    bool comprobarVictoria(int nroJugador);
 
 
     /*Pre: Recibe un numero de jugador junto con un numero de soldado
@@ -113,8 +113,8 @@ public:
     */
     void bajarVidaJugador(int nroJugador,int nroSoldado);
 
-    /*Pre: Recibe cantidad de soldados por jugador y cantidad de jugadores
-    Pos: Coloca todos los soldados iniciales , por jugador
+    /*Pre: Recibe cantidad de tropas por jugador y cantidad de jugadores
+    Pos: Coloca todos los tropas iniciales , por jugador
     */
     void colocarSoldados(int cantidadSoldados, int cantidadJugadores);
 
@@ -123,6 +123,16 @@ public:
     ubicacion y el que se iba a colocar
     */
     void ponerSoldado(Ubicacion ubicacionSoldado,int nroJugador,int nroSoldado);
+
+    /*Pre:
+    Pos:
+    */
+    int getPosicionJugadorEnLista(int nroJugador);
+
+    /*Pre:
+    Pos: Devuelve la lista de jugadores
+    */
+    Lista<Jugador*>* getListaJugadores();
 
 
 };

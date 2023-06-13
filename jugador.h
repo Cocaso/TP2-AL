@@ -5,58 +5,107 @@
 #include "tablero.h"
 #include "cartas.h"
 
-struct InfoSoldado {
-    int nroSoldado;
-    Ubicacion posicion;
-}
 
+    
+struct InfoTropa {
+    int nroTropa;
+    Artilleria tropa;
+    Ubicacion posicion;   
+};
 
 class Jugador {
 private:
     int vidas;
     int numDeJugador;
-    Lista<InfoSoldado*>* soldados;
+    Lista<InfoTropa*>* tropas;
     Lista<Carta*>* cartas;
 
 public:
 
-    /*Pre:
+    /*
+    Pre:
     Pos: Crea un jugador vacío
     */
     Jugador();
 
-    /*Pre: Recibe un número de jugador
+    /*
+    Pre: Recibe un número de jugador
     Pos: Crea el jugador con ese número
     */
     Jugador(int nroJugador, int vidas);
 
-    /*Pre:
+    /*
+    Pre:
     Pos:
     */
     ~Jugador();
     
-    /*Pre:
-    Pos:
+    /*
+    Pre:Recibe un numero de soldado y su ubicacion
+    Pos:agrega soldado a la lista de tropas del jugador
+    */
+    void agregarSoldado(Ubicacion posicionSoldado, int nroSoldado);
+
+    /*
+    Pre: recibe el numero de soldado muerto
+    Pos: Le resta una vida al jugador, ademas de sacarle el soldado muerto, y devuelve la cantidad que le quedan
+    */
+    int removerSoldado(int nroSoldado );
+
+    /*
+    Pre:~~
+    Pos: Devuelve el numero del jugador
     */
     int getNumeroJugador();
 
-     /*Pre:Recibe un numero de soldado y su ubicacion
-    Pos:agrega soldado a la lista de soldados del jugador
+    /*
+    Pre:~~
+    Pos: Devuelve el numero del jugador
     */
-    void agregarSoldado(int posicionSoldado,int nroSoldado);
-    /*Pre: 
-    Pos: Resta una vida al jugador, y devuelve la cantidad que le quedan
-    */
-    int reducirVidaJugador();
+    int getPosicionSoldadoEnLista(int nroSoldado);
 
-    /*Pre: 
+
+        /*
+    Pre:~~
+    Pos: Devuelve la posicion del soldado
+    */
+    Ubicacion getPosicionSoldado(int nroSoldado);
+
+    /*
+    Pre: 
     Pos: Devuelve la lista de cartas para verlas y usarlas
     */
-    Lista<Carta*>* getCartas();
+    Lista<Carta*>* getListaCartas();
 
-    *Ubicacion getSoldado(int );
-
+    /*
+    Pre:~~
+    Pos: Devuelve la lista de tropas
+    */
+    Lista<InfoTropa*>* getListaTropas();
 
     
-}
+    /*
+    Pre: Debe elegirse un soldado existente
+    Pos: Devuelve un puntero al soldado buscado o NULL si no se encontró
+    */
+    InfoTropa* getSoldado(int nroSoldadoPedido);
+
+    /*
+    Pre: Debe elegirse un soldado existente
+    Pos: Devuelve un puntero al soldado buscado o NULL si no se encontró
+    */
+    InfoTropa* getBarco(int nroBarcoPedido);
+
+    /*
+    Pre: Debe elegirse un soldado existente
+    Pos: Devuelve un puntero al soldado buscado o NULL si no se encontró
+    */
+    InfoTropa* getAvion(int nroAvionPedido);
+
+    /*
+    Pre: recive numero de soldado
+    Pos: Devuelve si exite dicho soldado
+    */
+    bool soldadoVivo(int nroSoldado);
+};
 #endif

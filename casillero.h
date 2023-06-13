@@ -20,69 +20,81 @@ struct Contenido {
     int jugador;
     int numSoldado;
     int municionDelBarco;
-    Artilleria artillerias;
+    Artilleria artilleria;
     int turnosInactivo = 0;
 };
 
 class Casillero {
 private:
 
-
-
-    Terreno casilla;
-    Artilleria artilleria;
+    Terreno terreno;
     Contenido* contenido;
 
 public:
+    /*
+    Pre:~~
+    Pos: Construye un casillero vacío con AIRE
+    */
     Casillero();
+
+    /*
+    Pre:~~
+    Pos: Bob el destructor
+    */
     ~Casillero();
 
-    /*Pre: ~~
-    Pos: cambia el terreno de la casilla
+    /*
+    Pre:~~
+    Pos: Cambia el terreno a TIERRA o AGUA según el template del mapa
     */
     void cambiarTerreno(int terreno);
 
-    /*Pre: ~~
-    Pos: Desactiva la casilla por tantos turnos diga cantidadTurnosCasillaInactiva (sobreescribe turnosInactivo)
+    /*
+    Pre:~~
+    Pos: Desactiva la casilla por la cantidad de turnos correspondientes y vacía el casillero
     */
     void desactivarCasilla(int cantidadTurnosCasillaInactiva);
 
-
-    /*Pre: turnosInactivo debe ser mayor a 0
+    /*
+    Pre: TurnosInactivo debe ser mayor a 0
     Pos: Disminuye en 1 el turno de la casilla
     */
     void disminuirTurnosInactivo();
 
-    /*Pre: ~~
-    Pos: Devuelve la cantidad de turnos inactivo del casilleros
+    /*
+    Pre:~~
+    Pos: 
     */
-    int getTurnosInactivo();
-
     void ponerArtilleria(Artilleria artilleria);
 
-    /*Pre: recibe numero jugador y tipo de artilleria
+    /*
+    Pre: recibe numero jugador y tipo de artilleria
     Pos: pone dicha artilleria en la casilla
     */
     void ponerArtilleria(Artilleria artilleria, int numJugador);
 
 
-    /*Pre: Recibe el tipo de artilleria que se quiere colocar
+    /*
+    Pre: Recibe el tipo de artilleria que se quiere colocar
     Pos: Devuelve true si se puede colocar o false y cout si no se puede
     */
     bool comprobarTerreno(Artilleria unidad);
 
 
-    /*Pre: 
+    /*
+    Pre: ~~
     Pos: Devuelve el tipo de artilleria en terreno
     */
     Artilleria devolverArtilleria();
 
-    /*Pre: 
+    /*
+    Pre: ~~
     Pos: Devuelve , en caso de que haya una artilleria , a que jugador pertenece
     */
     int devolverNroJugador();
 
-    /*Pre: 
+    /*
+    Pre: ~~
     Pos: Devuelve , en caso de que haya un soldado , que numero de soldado es
     */
     int devolverNroSoldado();

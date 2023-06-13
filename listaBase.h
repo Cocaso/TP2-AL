@@ -10,25 +10,25 @@
 template<class T> class Lista{
 private:
 	Nodo<T>* primero;
-	unsigned int tamanio;
+	int tamanio;
 	Nodo<T>* cursor;
 public:
 	Lista();
 	Lista(Lista<T> &otraLista);
 	bool vacia()const;
-	unsigned int contarElementos()const;
+	int contarElementos()const;
 	void add(T elemento);
-	void add(T elemento, unsigned int posicion);
+	void add(T elemento, int posicion);
 	void add(Lista<T> &otraLista);
-	T get(unsigned int posicion);
-	void asignar(T elemento, unsigned int posicion);
-	void remover(unsigned int posicion);
+	T get(int posicion);
+	void asignar(T elemento, int posicion);
+	void remover(int posicion);
 	void reiniciarCursor();
 	bool avanzarCursor();
 	T getCursor()const;
 	~Lista();
 private:
-	Nodo<T>* getNodo(unsigned int posicion)const;
+	Nodo<T>* getNodo(int posicion)const;
 };
 
 
@@ -57,7 +57,7 @@ template<class T> bool Lista<T>::vacia()const{
 }
 
 /* POST: Returns the amount of elements in the list. */
-template<class T> unsigned int Lista<T>::contarElementos()const{
+template<class T> int Lista<T>::contarElementos()const{
 	return (this->tamanio);
 }
 
@@ -68,7 +68,7 @@ template<class T> void Lista<T>::add(T elemento){
 
 /* PRE: Position is between [1 , countElements() + 1].
  * POST: Adds the element in passed position. */
-template<class T> void Lista<T>::add(T elemento, unsigned int posicion){
+template<class T> void Lista<T>::add(T elemento, int posicion){
 	if((posicion > 0) && (posicion <= this->tamanio + 1)){ /* posición válida */
 		Nodo<T>* nuevoNodo = new Nodo<T>(elemento);
 		if(posicion == 1){
@@ -95,7 +95,7 @@ template<class T> void Lista<T>::add(Lista<T> &otraLista){
 
 /* PRE: Position is between [1 , countElements()].
  * POST: Returns the element in that position. */
-template<class T> T Lista<T>::get(unsigned int posicion){
+template<class T> T Lista<T>::get(int posicion){
 	if((posicion <= 0) || (posicion > this->tamanio)){
 		throw "POSICION INVALIDA";
 	}
@@ -104,7 +104,7 @@ template<class T> T Lista<T>::get(unsigned int posicion){
 
 /* PRE: Position is between [1 , countElements()].
  * POST: Changes element in that position to passed element. */
-template<class T> void Lista<T>::asignar(T elemento, unsigned int posicion){
+template<class T> void Lista<T>::asignar(T elemento, int posicion){
 	if((posicion > 0) && (posicion <= this->tamanio)){
 		this->getNodo(posicion)->setValor(elemento);
 	}
@@ -112,7 +112,7 @@ template<class T> void Lista<T>::asignar(T elemento, unsigned int posicion){
 
 /* PRE: Position is between [1 , countElements()].
  * POST: Removes element in that position from the list. */
-template<class T> void Lista<T>::remover(unsigned int posicion){
+template<class T> void Lista<T>::remover(int posicion){
 	if((posicion > 0) && (posicion <= this->tamanio)){
 		Nodo<T>* nodoRemovido;
 		if(posicion == 1){
@@ -172,9 +172,9 @@ template<class T> Lista<T>::~Lista(){
 
 /* PRE: Position is between [1 , countElements()].
  * POST: Returns the node in that position (pointer). */
-template<class T> Nodo<T>* Lista<T>::getNodo(unsigned int posicion)const{
+template<class T> Nodo<T>* Lista<T>::getNodo(int posicion)const{
 	Nodo<T>* nodoActual = this->primero;
-	for(unsigned int i = 1; i < posicion; i++){
+	for(int i = 1; i < posicion; i++){
 		nodoActual = nodoActual->getSiguiente();
 	}
 	return nodoActual;
