@@ -38,7 +38,7 @@ void Tablero::crearTerreno(){
             casillero = new(Casillero);
             
             indiceUno = x%20;   // da el resto (0-19) uwu
-            casillero->cambiarTerreno(mapaTemplate[indiceUno][indiceDos]); 
+            casillero->cambiarTerreno(mapaTemplate[indiceUno][indiceDos]);
             listaX->add(casillero);
 
             delete casillero;
@@ -53,7 +53,7 @@ void Tablero::crearTerreno(){
 
     //Se llenauna listaX con aire, una listaY con copias de listaX, 
     //y el resto del tablero con copias de listaY
-    casillero = new(Casillero); 
+    casillero = new(Casillero);
     listaX = new(Lista<Casillero*>);
     for (x = 0; x < this->maxX ; x++){
         listaX->add(casillero);
@@ -79,8 +79,6 @@ void Tablero::mostrarTablero(){
     bitmap_image avion("Casillero/avion.bmp");
     bitmap_image bmpTablero(maxY*32, maxX*32);
     bitmap_image* casilleroADibujar;
-
-
 
     this->tablero->reiniciarCursor();
     this->tablero->avanzarCursor();
@@ -166,11 +164,11 @@ bool Tablero::validarCoordenadas(Ubicacion posicion){
     return false;
 }
 
-int Tablero::getTamañoTableroX(){
+int Tablero::getTamanhoTableroX(){
     return this->maxX;
 }
 
-int Tablero::getTamañoTableroY(){
+int Tablero::getTamanhoTableroY(){
     return this->maxY;
 }
 

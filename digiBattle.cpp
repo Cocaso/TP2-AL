@@ -100,6 +100,7 @@ void DigiBattle::turno(){
     anunciarGanador(); //termino el juego
 }
 
+//revisar si se pueda hacer general en vez de soldado
 void DigiBattle::ponerSoldado(Ubicacion ubicacionSoldado, int nroJugador, int nroSoldado){
     Casillero* casillero;
     casillero = this->tablero->getCasillero(ubicacionSoldado);
@@ -111,7 +112,7 @@ void DigiBattle::ponerSoldado(Ubicacion ubicacionSoldado, int nroJugador, int nr
         break;
     case SOLDADO:
         int nroJugadorEnemigo = casillero->devolverNroJugador();
-        int nroSoldadoEnemigo = casillero->devolverNroSoldado();
+        int nroSoldadoEnemigo = casillero->devolverNroTropa();
         this->sacarTropaJugador(nroJugadorEnemigo, nroSoldadoEnemigo, SOLDADO);
         this->sacarTropaJugador(nroJugador, nroSoldado, SOLDADO);
         casillero->desactivarCasilla(inactivo);
@@ -120,16 +121,17 @@ void DigiBattle::ponerSoldado(Ubicacion ubicacionSoldado, int nroJugador, int nr
     }
 }
 
-void DigiBattle::ponerMina(int jugador){
-    Ubicacion ubicacionMina;
-    Casillero* casillero;
+void DigiBattle::ponerMina(){
+    Ubicacion ubicacionObjetivo;
+    Casillero* casilleroObjetivo;
     Artilleria tipoArtilleria = MINA;
+    Jugador duenhoDeLaMina= this->jugadores->getCursor();
 
-    ubicacionMina = pedirUbicacion(tipoArtilleria);  
-    casillero = this->tablero->getCasillero(ubicacionMina);
+    ubicacionObjetivo = pedirUbicacion(tipoArtilleria);  
+    casilleroObjetivo = this->tablero->getCasillero(ubicacionObjetivo);
     
-    this->resolverColision(casillero, tipoArtilleria, jugador);
-    // falta ver donde implementamos el poder de la mina
+    //resolver colision para minas y misiles
+    this->resolverColision(casilleroObjetivo, duenhoDeLaMina->getNroJugador()); //otro resolverColision
 
 }
 
@@ -138,7 +140,7 @@ void DigiBattle::dispararBarco(){
     Ubicacion ubicacionDisparo = pedirUbicacion();
     casilleroDisparado = this->tablero->getCasillero(ubicacionDisparo);
     
-
+    //usar resolverColision() para minas y misiles
 }
 
 void DigiBattle::moverTropa(){
@@ -478,7 +480,7 @@ void DigiBattle::usarCarta(Jugador* jugador){
         cin>>numeroCarta;
     }while(numeroCarta > jugador->cantidadCartas());
 
-    tipos tipo = jugador->getCarta(numeroCarta);
+    Tipos tipo = jugador->getCarta(numeroCarta);
    
     switch(tipo){
     case ATAQUEQUIMICO:
@@ -534,11 +536,18 @@ int DigiBattle::poderMina(){
 bool DigiBattle::resolverColision(Casillero* casilleroAnterior, Casillero* casilleroNuevo, Ubicacion posicionNueva){
     int turnosDesactivar = poderMina();
 
-    if (casillero->devolverArtilleria() == VACIO){
-        //coloca el soldado en el casillero
-        casillero->ponerArtilleria(artilleria, nroJugador);
+    Artilleria tropaEnCuestion = casilleroAnterior->devolverArtilleria();
+    int nroJugadorDuenho = casilleroAnterior->devolverNroJugador();
+    int nroTropaEnCuestion = casilleroAnterior->devolverNroTropa();
+
+    if (casilleroAnterior->devolverArtilleria() == VACIO){
+        //coloca la tropa en el casillero
+        //REVISAR
+        casilleroNuevo->ponerArtilleria(tropaEnCuestion, nroJugadorDuenho, nroTropaEnCuestion);
         //actualiza la lista del jugador
-        jugadores->getCursor()
+        this->jugadores->actualizarUbicacionTropa();
+
+        this->jugadores->getCursor()->getListaTropas();
         
     } else if(casillero->devolverArtilleria() == SOLDADO && artilleria == SOLDADO){
         sacarTropaJugador(nroJugador, nroSoldado, SOLDADO);
@@ -677,6 +686,7 @@ void DigiBattle::cartaAvionRadar(Jugador * jugador){
     Ubicacion posicion = pedirUbicacion(AVION);
     int posicionTropaAvion = jugador->getNumSiguienteAvion();
     jugador->agregarTropa(posicion , posicionTropaAvion, AVION);
+    this->tablero->getCasillero(posicion)
 }
 
 void DigiBattle::cartaBarco(Jugador * jugador){
@@ -728,7 +738,7 @@ void DigiBattle::cartaRayoLaser(Jugador * jugador){
     }
     if (direccion == 'W'){
         posicionActual.y ++;
-        while (posicionActual.y <= this->tablero->getTamañoTableroY()){
+        while (posicionActual.y <= this->tablero->getTamanhoTableroY()){
             tipoArtilleriaCasilla = this->tablero->getCasillero(posicionActual)->devolverArtilleria();
             if (tipoArtilleriaCasilla == SOLDADO || tipoArtilleriaCasilla == BARCO){
                 nroJugador = this->tablero->getCasillero(posicionActual)->devolverNroJugador();
@@ -770,7 +780,7 @@ void DigiBattle::cartaRayoLaser(Jugador * jugador){
         }
     } else if (direccion == 'D'){
         posicionActual.x ++;
-        while (posicionActual.x <= this->tablero->getTamañoTableroX()){
+        while (posicionActual.x <= this->tablero->getTamanhoTableroX()){
             tipoArtilleriaCasilla = this->tablero->getCasillero(posicionActual)->devolverArtilleria();
             if (tipoArtilleriaCasilla == SOLDADO || tipoArtilleriaCasilla == BARCO){
                 nroJugador = this->tablero->getCasillero(posicionActual)->devolverNroJugador();
@@ -799,6 +809,6 @@ void DigiBattle::anunciarGanador(){
     cout<<" FIN DEL JUEGO "<<endl;
 }
 
-void DigiBattle::archivo(){
-    this->tableroArchivo = fopen();
+void DigiBattle::actualizarUbicacionTropa(Ubicacion posicionNueva){
+    
 }

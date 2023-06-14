@@ -6,7 +6,7 @@
 #include <cstdio> // tambien pa probar
 #include "tablero.h"
 #include "casillero.h"
-#include "cartas.h"
+//#include "cartas.h"
 #include "jugador.h"
 #include <cstdlib>
 
@@ -175,13 +175,13 @@ public:
     Pre: Recibe el casillero, la artillería y el numero de jugador
     Pos: Compara la artillería con el contenido y devuelve true si la artillería se coloca o false si se destruye
     */
-    bool resolverColision(Casillero* casillero , Artilleria artilleria, int nroJugador);
+    bool resolverColision(Casillero* casilleroAnterior, Casillero* casilleroNuevo, Ubicacion posicionNueva);
 
     /*
     Pre: Recibe el casillero, la artillería y el numero de jugador y numero de soldado
     Pos: Revisa el contenido del casillero y coloca el soldado o lo elimina según corresponda
     */
-    bool resolverColision(Casillero* casillero, Artilleria artilleria, int nroJugador, int nroSoldado);
+    //bool resolverColision(Casillero* casillero, Artilleria artilleria, int nroJugador, int nroSoldado);
 
     /*
     Pre: -
@@ -233,9 +233,11 @@ public:
 
     /*
     Pre:
-    Pos: 
+    Pos: Actualiza la ubicacion de la tropa dentro de la lista de tropas
     */
-    void archivo();
+    void actualizarUbicacionTropa(Ubicacion posicionNueva);
+
+
 
 };
 #endif

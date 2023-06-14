@@ -5,7 +5,7 @@
 #include "tablero.h"
 #include "cartas.h"
 
-enum tipos {
+enum Tipos {
     ATAQUEQUIMICO,
     AVIONRADAR,
     INVOCARBARCO,
@@ -20,6 +20,11 @@ struct InfoTropa {
     Ubicacion posicion;
 };
 
+struct casilleroUbi{
+    Ubicacion ubicacion;
+    Casillero* casillero;
+}
+
 class Jugador {
 private:
     int vidas;
@@ -28,7 +33,8 @@ private:
     int numSiguienteAvion = 0;
     int numDeJugador;
     Lista<InfoTropa*>* tropas;
-    Lista<tipos*>* cartas;
+    Lista<Tipos*>* cartas;
+    Lista<casilleroUbi>* casillerosVisibles;
 
 public:
     /*
@@ -53,7 +59,7 @@ public:
     Pre: recibe un tipo de carta
     Pos: devuelve el nombre de una carta
     */
-    void nombreCarta( tipos numDeCarta);
+    void nombreCarta( Tipos numDeCarta);
 
     /*
     Pre: ~~
@@ -128,10 +134,16 @@ public:
     Lista<InfoTropa*>* getListaTropas();
 
     /*
+    Pre:~~
+    Pos: Devuelve la lista de casilleros inactivos
+    */
+    Lista<casilleroUbi>* getListaCasillerosVisibles();
+
+    /*
     Pre: 
     Pos: Devuelve la lista de cartas para verlas y usarlas
     */
-    Lista<tipos*>* getListaCartas();
+    Lista<Tipos*>* getListaCartas();
     
     /*
     Pre: ~~
@@ -143,6 +155,6 @@ public:
     Pre: recibe un numero de carta
     Pos: devuelve 
     */
-    tipos getCarta(int nroCarta);
+    Tipos getCarta(int nroCarta);
 };
 #endif

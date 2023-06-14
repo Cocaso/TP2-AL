@@ -29,6 +29,7 @@ private:
 
     Terreno terreno;
     Contenido* contenido;
+    Ubicacion ubicacion;
 
 public:
     /*

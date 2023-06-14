@@ -41,7 +41,7 @@ void Jugador::agregarTropa(Ubicacion posicionTropa, int nroTropa, Artilleria tip
     }
 }
 
-void Jugador::nombreCarta( tipos numDeCarta){
+void Jugador::nombreCarta( Tipos numDeCarta){
     switch(numDeCarta){
     case ATAQUEQUIMICO:
         cout<<"ATAQUE QUIMICO"<<endl;
@@ -65,7 +65,7 @@ void Jugador::nombreCarta( tipos numDeCarta){
 }   
 
 void Jugador::nombrarCartas(){
-    tipos* carta;
+    Tipos* carta;
     int contadorCarta = 1;
     this->cartas->reiniciarCursor();
     while(avanzarCursor()){
@@ -140,12 +140,16 @@ Lista<InfoTropa*>* Jugador::getListaTropas(){
     return this->tropas;
 }
 
+Lista<casilleroUbi>* getListaCasillerosVisibles(){
+    return this->casillerosVisibles;
+}
+
 bool Jugador::tropaViva(int nroTropa, Artilleria tipoArtilleria){
     InfoTropa* tropa = this->getTropa(nroTropa, tipoArtilleria);
     return (tropa == null);
 }
 
-Lista<tipos*>* Jugador::getListaCartas(){
+Lista<Tipos*>* Jugador::getListaCartas(){
     return this->cartas;
 }
 
@@ -154,7 +158,7 @@ void Jugador::addCarta(){
     this->cartas->add((rand() % 6));
 }
 
-tipos Jugador::getCarta(int nroCarta){
+Tipos Jugador::getCarta(int nroCarta){
     this->cartas->reiniciarCursor();
     return this->cartas->get(nroCarta);
 }

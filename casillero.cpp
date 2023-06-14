@@ -33,11 +33,15 @@ bool Casillero::disminuirTurnosInactivo(){
     return (this->contenido->turnosInactivo == 0);
 }
 
+//fijarse dónde se usó y camiarle el nombre a "vaciarCasillero"
 void Casillero::ponerArtilleria(Artilleria artilleria){
     this->contenido->artilleria = artilleria;
     this->contenido->jugador = 0;
+    this->contenido->numTropa = 0;
+    this->contenido->municionDelBarco = 0;
 }
 
+//Unir con la de abajo e implementas los numTropa de todas las tropas
 void Casillero::ponerArtilleria(Artilleria artilleria, int numJugador){
     this->contenido->artilleria = artilleria;
     this->contenido->jugador = numJugador;
