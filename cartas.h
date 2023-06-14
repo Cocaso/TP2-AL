@@ -43,11 +43,11 @@ public:
     Pre:~~
     Pos: Llama a el método correspondiente para usar la carta
     */
-    void usarCarta(Tablero *tablero, Carta::tipos numDeCarta, Ubicacion posicion, Jugador * jugador);
+    void usarCarta(Tablero *tablero, tipos numDeCarta, Ubicacion posicion, Jugador * jugador);
 
     /*
     Pre:~~
-    Pos: Mata todo en su radio y desactiva las casillas la cantidad de turnos correspondiente
+    Pos: Mata todo en su radio y desactiva las casillas la cantidad de turnos correspondientes
     */
     void cartaAtaqueQuimico(Tablero * tablero, Ubicacion posicion);
 

@@ -144,7 +144,7 @@ void Tablero::mostrarTablero(){
     }
 }
 
-Casillero* Tablero::getCasillero(Ubicacion posicion){
+Casillero * Tablero::getCasillero(Ubicacion posicion){
     Lista<Lista<Casillero*>*>* listaY;
     Lista<Casillero*>* listaX;
 
@@ -164,6 +164,14 @@ bool Tablero::validarCoordenadas(Ubicacion posicion){
         return true;
     }
     return false;
+}
+
+int Tablero::getTamañoTableroX(){
+    return this->maxX;
+}
+
+int Tablero::getTamañoTableroY(){
+    return this->maxY;
 }
 
 //ignorar jeje

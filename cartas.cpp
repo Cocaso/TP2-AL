@@ -31,7 +31,7 @@ Carta::tipos Carta::getCarta(){
     return this->tipoDeCarta;
 }
 
-void Carta::usarCarta(Tablero *tablero, Carta::tipos numDeCarta, Ubicacion posicion, Jugador* jugador){
+void Carta::usarCarta(Tablero *tablero, Carta::tipos numDeCarta, Ubicacion posicion, Jugador * jugador){
     switch (numDeCarta) {
     case 0 : 
         this->cartaAtaqueQuimico(tablero, posicion);
@@ -54,7 +54,7 @@ void Carta::usarCarta(Tablero *tablero, Carta::tipos numDeCarta, Ubicacion posic
     }
 }
 
-void Carta::cartaAtaqueQuimico(Tablero *tablero, Ubicacion posicion){
+void Carta::cartaAtaqueQuimico(Tablero * tablero, Ubicacion posicion){
     const int RANGOATAQUEQUIMICO = 5;       // RANGOATAQUEQUIMICO debe ser impar
     int efectoAtaqueQuimico = 10;
     int radioCubo = RANGOATAQUEQUIMICO / 2;
@@ -82,7 +82,7 @@ void Carta::cartaAtaqueQuimico(Tablero *tablero, Ubicacion posicion){
     }
 }
 
-//void Carta::cartaAvionRadar(Tablero *tablero, Ubicacion posicion)
+//void Carta::cartaAvionRadar(Tablero * tablero, Ubicacion posicion)
 
 //void Carta::cartaBarco(Tablero *tablero, Ubicacion posicion)
 

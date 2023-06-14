@@ -57,10 +57,22 @@ public:
     */
     ~Tablero();
     /*
-    Pre: las medidas tienen que haber sido establecidas
-    Pos:rellena el tablero con el terreno
+    Pre: Las medidas tienen que haber sido establecidas
+    Pos: Rellena el tablero con el terreno
     */
     void crearTerreno();
+
+    /*
+    Pre: ~~
+    Pos: Devuelve el tamaño en el eje X del tablero
+    */
+    int getTamanhoTableroX();
+
+    /*
+    Pre: ~~
+    Pos: Devuelve el tamaño en el eje Y del tablero
+    */
+    int getTamanhoTableroY();
 
     /*
     Pre:
@@ -69,22 +81,16 @@ public:
     void mostrarTablero();
 
     /*
-    Pre: recibe coordenadas
-    Pos:devuelve una casilla pedida por coordenadas
-    */
-    Casillero* getCasillero(Ubicacion pisicion);
-
-    /*
     Pre: Recibe 3 coordenadas
     Pos: Devuelve true si las coordenadas existen, false si no existen
     */
     bool validarCoordenadas(Ubicacion posicion);
-
     
-
+    /*
+    Pre: recibe coordenadas
+    Pos:devuelve una casilla pedida por coordenadas
+    */
+    Casillero* getCasillero(Ubicacion posicion);
 };
-
-
-
 
 #endif

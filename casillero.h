@@ -11,9 +11,9 @@ enum Terreno {
 enum Artilleria {
     VACIO,
     SOLDADO,
-    AVION,
-    BARCO,          //tiene municion, si se le termina se inhabilita (inutil)
     MINA,
+    AVION,
+    BARCO          //tiene municion, si se le termina se inhabilita (inutil)
 };
 
 struct Contenido {
