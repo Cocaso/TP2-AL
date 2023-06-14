@@ -18,7 +18,7 @@ enum Artilleria {
 
 struct Contenido {
     int jugador;
-    int numSoldado;
+    int numTropa;
     int municionDelBarco;
     Artilleria artilleria;
     int turnosInactivo = 0;
@@ -98,15 +98,15 @@ public:
 
     /*
     Pre: ~~
-    Pos: Devuelve , en caso de que haya una artilleria , a que jugador pertenece
+    Pos: Devuelve, en caso de que haya una artilleria, a que jugador pertenece
     */
     int devolverNroJugador();
 
     /*
     Pre: ~~
-    Pos: Devuelve , en caso de que haya un soldado , que numero de soldado es
+    Pos: Devuelve, en caso de que haya una tropa, que numero de tropa es
     */
-    int devolverNroSoldado();
+    int devolverNroTropa();
 
     /*
     Pre: ~~

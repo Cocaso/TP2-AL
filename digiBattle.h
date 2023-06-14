@@ -116,12 +116,12 @@ public:
     Pos: Agrega una carta a la lista de cartas del jugador
     */
     void obtenerCarta(Jugador * jugador);
-    
+
     /*
-    Pre: Recibe un numero de jugador junto con un numero de soldado
-    Pos: Le resta una vida al jugador ,ademas de sacarle el soldado
+    Pre: Recibe un numero de jugador junto con un numero de tropa y el tipo de Artilleria
+    Pos: Le quita la tropa al jugador y si es tipo SOLDADO le resta una vida y si al jugador le quedan 0 vidas lo saca de la lista jugadores
     */
-    void bajarVidaJugador(int nroJugador,int nroSoldado);
+    void sacarTropaJugador(int nroJugador,int nroTropa, Artilleria artilleria);
 
     /*
     Pre: Recibe cantidad de tropas por jugador y cantidad de jugadores
@@ -201,14 +201,14 @@ public:
     void cartaPotOfGreed(Jugador * jugador);
 
     /*
-    Pre:~~
+    Pre: ~~
     Pos: Agrega 2 Soldados al tablero y a la lista tropas del jugador 
     */
     void cartaAgregarSoldados(Jugador * jugador);
 
     /*
-    Pre:~~
-    Pos:
+    Pre: ~~
+    Pos: Lanza un rayo laser en una direccion desde la posicion de un soldado, destruye cualquier tropa que encuentre y inactiva la casilla por 5 turnos
     */
     void cartaRayoLaser(Jugador * jugador);
 

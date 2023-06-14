@@ -24,7 +24,7 @@ void Casillero::desactivarCasilla(int cantidadTurnosCasillaInactiva){
     //Modularizar todo esto lmao
     this->contenido->artilleria = VACIO;
     this->contenido->jugador = 0;
-    this->contenido->numSoldado = 0;
+    this->contenido->numTropa = 0;
     this->contenido->municionDelBarco = 0;
 }
 
@@ -46,10 +46,10 @@ void Casillero::ponerArtilleria(Artilleria artilleria, int numJugador){
     }
 }
 
-void Casillero::ponerArtilleria(Artilleria artilleria, int numJugador, int numSoldado){
+void Casillero::ponerArtilleria(Artilleria artilleria, int numJugador, int numTropa){
     this->contenido->artilleria = artilleria;
     this->contenido->jugador = numJugador;
-    this->contenido->numSoldado = numSoldado;
+    this->contenido->numTropa = numTropa;
 }
 
 bool Casillero::comprobarTerreno(Artilleria unidad){
@@ -93,8 +93,8 @@ int Casillero::devolverNroJugador(){
     return this->contenido->jugador;
 }
 
-int Casillero::devolverNroSoldado(){
-    return this->contenido->numSoldado;
+int Casillero::devolverNroTropa(){ //Falta generalizar a devolverNroTropa
+    return this->contenido->numTropa;
 }
 
 Terreno Casillero::devolverTerreno(){

@@ -36,6 +36,9 @@ void Jugador::agregarTropa(Ubicacion posicionTropa, int nroTropa, Artilleria tip
     nuevaTropa->posicion = posicionTropa;
     nuevaTropa->nroTropa = nroTropa;
     this->tropas->add(nuevaTropa);
+    if (tipoTropa == SOLDADO){
+        this->vidas++;
+    }
 }
 
 void Jugador::nombreCarta( tipos numDeCarta){
@@ -73,10 +76,13 @@ void Jugador::nombrarCartas(){
     }
 }  
 
-int Jugador::removerSoldado(int nroSoldado){
-    this->vidas --;
+int Jugador::removerTropa(int nroTropa, Artilleria tipoTropa){
+    if (tipoTropa == SOLDADO){
+        this->vidas --;
+    }
+    // Falta hacer delete de la tropa ya que al agregar usamos new sino vamos a tener memoria colgada
     //sacamos de la lista el numero de soldado
-    this->tropas->remover(getPosicionSoldadoEnLista(nroSoldado));
+    this->tropas->remover(getPosicionTropaEnLista(nroTropa, tipoTropa));
     return this->vidas;
 }
 
@@ -84,14 +90,14 @@ int Jugador::getNumeroJugador(){
     return this->numDeJugador;
 }
 
-int Jugador::getPosicionSoldadoEnLista(int nroSoldado){
-    int posicionSoldado = 1;
+int Jugador::getPosicionTropaEnLista(int nroTropaBuscada, Artilleria tipoTropa){
+    int posicionTropa = 1;
     this->tropas->reiniciarCursor();
     while(this->tropas->avanzarCursor()){
-        if(this->tropas->getCursor()->nroTropa == nroSoldado  && this->tropas->getCursor()->tropa == SOLDADO){
-            return posicionSoldado;
+        if(this->tropas->getCursor()->nroTropa == nroTropaBuscada  && this->tropas->getCursor()->tropa == tipoTropa){
+            return posicionTropa;
         }
-        posicionSoldado ++;
+        posicionTropa ++;
     }
 }
 
