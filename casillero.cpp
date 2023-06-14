@@ -97,4 +97,7 @@ int Casillero::devolverNroSoldado(){
     return this->contenido->numSoldado;
 }
 
+Terreno Casillero::devolverTerreno(){
+    return this->terreno;
+}
 

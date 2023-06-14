@@ -15,11 +15,9 @@ Tablero::Tablero(Ubicacion maxSize) {
     this->maxZ = maxSize.z;
 }
 
-
 Tablero::~Tablero() {
     delete this->tablero;
 }
-
 
 void Tablero::crearTerreno(){
     int x ,y ,z;
@@ -71,7 +69,79 @@ void Tablero::crearTerreno(){
 }
 
 void Tablero::mostrarTablero(){
-    //usar bmp aaaaaaaaaaaaaa
+    bitmap_image tierra("Casillero/tierra.bmp");
+    bitmap_image agua("Casillero/agua.bmp");
+    bitmap_image soldado("Casillero/soldado.bmp");
+    bitmap_image soldadoNadando("Casillero/nadando.bmp");
+    bitmap_image mina("Casillero/mina.bmp");
+    bitmap_image minaAgua("Casillero/mina_agua.bmp");
+    bitmap_image barco("Casillero/barco.bmp");
+    bitmap_image avion("Casillero/avion.bmp");
+    bitmap_image bmpTablero(maxY*32, maxX*32);
+    bitmap_image* casilleroADibujar;
+
+
+
+    this->tablero->reiniciarCursor();
+    this->tablero->avanzarCursor();
+
+    Lista<Lista<Casillero*>*>*listaY = this->tablero->getCursor();
+    Lista<Casillero*>* listaX;
+    Casillero* casilleroActual;
+    unsigned char r, g, b;
+    int y, x, i = 0, j = 0;
+
+    listaY->reiniciarCursor();
+    while(listaY->avanzarCursor()){
+        listaX = listaY->getCursor();
+        listaX->reiniciarCursor();
+        while (listaX->avanzarCursor()){
+            casilleroActual = listaX->getCursor();
+
+            //Elige qué casillero dibujar
+            if (casilleroActual->devolverTerreno() = TIERRA){
+                switch (casilleroActual->devolverArtilleria()) {
+                case VACIO:
+                    casilleroADibujar = &tierra;
+                    break;
+                case SOLDADO:
+                    casilleroADibujar = &soldado;
+                    break;
+                case MINA:
+                    casilleroADibujar = &mina;
+                    break;
+                default:
+                    break;
+                }
+            } else if (casilleroActual->devolverTerreno() = AGUA){
+                switch (casilleroActual->devolverArtilleria()) {
+                case VACIO:
+                    casilleroADibujar = &agua;
+                    break;
+                case SOLDADO:
+                    casilleroADibujar = &soldadoNadando;
+                    break;
+                case MINA:
+                    casilleroADibujar = &minaAgua;
+                    break;
+                case BARCO:
+                    casilleroADibujar = &barco;
+                default:
+                    break;
+                }
+            }
+
+            //Dibujar el casillero
+            for (x = 0; x < 32; x++) {
+                for (y = 0; y < 32; y++) {
+                    (*casilleroADibujar).get_pixel(x, y, r, g, b);
+                    Board.set_pixel(i*32 + x, j*32 + y, r, g, b);
+                }
+            }
+            j++;    //Variable de posicion del tablero
+        }
+        i++;        //Variable de posicion del tablero
+    }
 }
 
 Casillero* Tablero::getCasillero(Ubicacion posicion){

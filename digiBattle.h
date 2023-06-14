@@ -2,6 +2,8 @@
 #define DIGIBATTLE
 
 #include <iostream>
+#include <fstream> //probando file library
+#include <cstdio> // tambien pa probar
 #include "tablero.h"
 #include "casillero.h"
 #include "cartas.h"
@@ -22,7 +24,7 @@ private:
     Tablero* tablero;                       //Tablero lol
     Lista<Jugador*>* jugadores;             //Puntero a lista con punteros a structs jugador que tienen punteros a lista de ints (son los numeros del soldado del jugador) y puntero a lista con 
     Lista<Casillero*>* casillerosInactivos; //Puntero a lista de punteros a los casilleros inactivos actuales (para bajarles el contador directamente desde digibattle)
-
+    
     //Metodos
     /*
     Pre: Recibe que tipo de artilleria se va a utilizar
@@ -90,6 +92,13 @@ public:
     Pos: Devuelve un puntero al jugador buscado o NULL si no se encontró
     */
     Jugador* buscarJugador(int nroJugador);
+
+
+    /*
+    Pre: ~~
+    Pos: Devuelve un numero aleatorio entre 3 y 6
+    */
+    int poderMina();
 
     /*Pre:
     Pos: Si se decide mover una tropa, se puede hacer en vertical, horizontal o diagonal

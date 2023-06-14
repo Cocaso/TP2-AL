@@ -6,7 +6,7 @@
 #include "cartas.h"
 
 
-    
+
 struct InfoTropa {
     int nroTropa;
     Artilleria tropa;

@@ -79,7 +79,6 @@ Lista<InfoTropa*>* Jugador::getListaTropas(){
     return this->tropas;
 }
 
-
 bool Jugador::tropaViva(int nroTropa, Artilleria tipoArtilleria){
     InfoTropa* tropa = this->getTropa(nroTropa, tipoArtilleria);
     return (tropa == null);

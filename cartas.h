@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <time.h>
+#include "tablero.h"
 #include "jugador.h"
 
 

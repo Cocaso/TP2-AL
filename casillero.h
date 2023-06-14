@@ -108,7 +108,11 @@ public:
     */
     int devolverNroSoldado();
 
-   
+    /*
+    Pre: ~~
+    Pos: Devuelve , en caso de que haya un soldado , que numero de soldado es
+    */
+    Terreno devolverTerreno();
 };
 
 

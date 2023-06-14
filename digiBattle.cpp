@@ -78,7 +78,7 @@ void DigiBattle::turno(){
         //
 
         //Poner mina (y disparar con el barco??)
-        ponerMina(jugadorActual->numDeJugador);
+        ponerMina(jugadorActual->getNumeroJugador());
         //
 
         //Vemos si quiere mover alguna tropa
@@ -453,8 +453,13 @@ Jugador* DigiBattle::buscarJugador(int nroJugador){
     return jugadorBuscado;
 }
 
+int Digibattle::poderMina(){
+    srand(time(NULL));
+    return(3 + (rand() % 3));
+}
+
 void DigiBattle::resolverColision(Casillero* casillero, Artilleria artilleria, int nroJugador, int nroSoldado){
-    int turnosDesactivar = 5;
+    int turnosDesactivar = poderMina();
     if (casillero->devolverArtilleria() == VACIO){
         casillero->ponerArtilleria(artilleria, nroJugador);
         
@@ -474,7 +479,7 @@ void DigiBattle::resolverColision(Casillero* casillero, Artilleria artilleria, i
 }
 
 void DigiBattle::resolverColision(Casillero* casillero, Artilleria artilleria, int nroJugador){
-    int inactivo = 5;
+    int inactivo = poderMina();
     //casos solo para poner mina barco
     switch(casillero->devolverArtilleria()){
     case VACIO:
@@ -557,4 +562,8 @@ void DigiBattle::anunciarGanador(){
     cout<<"El jugador superviviente llego a la victoria,junto con sus "<<UltimoJugador->getListaTropas()->contarElementos();
     cout<<" soldados superviviente"<<endl;
     cout<<" FIN DEL JUEGO "<<endl;
+}
+
+void DigiBattle::archivo(){
+    this->tableroArchivo = fopen()
 }

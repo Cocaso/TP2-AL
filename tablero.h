@@ -3,7 +3,7 @@
 
 #include "listaBase.h"
 #include "casillero.h"
-#include "BMP/EasyBMP.h"
+#include "bitmap_image.hpp"
 
 struct Ubicacion{
         int x;

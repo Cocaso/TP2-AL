@@ -1,5 +1,7 @@
 //clonado? asdafsaf
 #include <iostream>
+#include <fstream>  //tentativo 
+#include <cstdio>
 using namespace std;
 #include "BMP/EasyBMP.h"
 
@@ -9,7 +11,7 @@ int main() {
     casilla1.ReadFromFile("Casilleros/agua.bmp");
     casilla2.ReadFromFile("Casilleros/barco.bmp");
     casilla3.ReadFromFile("Casilleros/nadando.bmp");
-
+    
     BMP Tablero;
     Tablero.SetSize(320, 320);
 
