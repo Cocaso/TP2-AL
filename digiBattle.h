@@ -28,6 +28,13 @@ private:
     Lista<Casillero*>* casillerosInactivos; //Puntero a lista de punteros a los casilleros inactivos actuales (para bajarles el contador directamente desde digibattle)
     
     //Metodos
+
+    /*
+    Pre: ~~
+    Pos: Devuelve un struct con coordenadas validadas
+    */
+    Ubicacion pedirUbicacion();
+
     /*
     Pre: Recibe que tipo de artilleria se va a utilizar
     Pos: Devuelve un struct con coordenadas validadas segun artilleria
@@ -100,6 +107,12 @@ public:
     Pos: Pide la posicion XYZ en la que se va a poner la mina
     */
     void ponerMina(int jugador);
+
+    /*
+    Pre: 
+    Pos: 
+    */
+    void dispararBarco();
 
     /*Pre:
     Pos: Si se decide mover una tropa, se puede hacer en vertical, horizontal o diagonal

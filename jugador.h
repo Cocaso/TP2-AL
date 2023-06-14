@@ -10,7 +10,7 @@ enum tipos {
     AVIONRADAR,
     INVOCARBARCO,
     POTOFGREED,
-    SOLDADOEXTRA,
+    SOLDADOSEXTRA,
     RAYOLASER,
 };
 

@@ -149,7 +149,7 @@ Lista<tipos*>* Jugador::getListaCartas(){
     return this->cartas;
 }
 
-void addCarta(){
+void Jugador::addCarta(){
     srand(time(NULL));
     this->cartas->add((rand() % 6));
 }

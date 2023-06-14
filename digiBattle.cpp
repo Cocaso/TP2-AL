@@ -74,7 +74,7 @@ void DigiBattle::turno(){
 
         //Poner mina (y disparar con el barco??)
         ponerMina(jugadorActual->getNumeroJugador());
-
+        dispararBarco();
         //Vemos si quiere mover alguna tropa
         do {
            cout<<"Quiere realizar un movimiento de alguna tropa ? S/N "<<endl;
@@ -130,6 +130,14 @@ void DigiBattle::ponerMina(int jugador){
     
     this->resolverColision(casillero, tipoArtilleria, jugador);
     // falta ver donde implementamos el poder de la mina
+
+}
+
+void DigiBattle::dispararBarco(){
+    Casillero * casilleroDisparado;
+    Ubicacion ubicacionDisparo = pedirUbicacion();
+    casilleroDisparado = this->tablero->getCasillero(ubicacionDisparo);
+    
 
 }
 
@@ -196,10 +204,10 @@ void DigiBattle::moverTropa(){
     }
 
     if (validarMovimiento(ubiTropa, ubiNueva) && seleccionTropa != AVION){
-        while (soldadoVivo && (cant > 0)) {
+        while (soldadoVivo && (cant > 0)) {   //cant == caantidad de casilleros
             Ubicacion ubiActual = ubiTropa;
             int dirX, dirY;
-            if(diferenciaX > 0){
+            if(diferenciaX > 0){ // determinar direccion
                 dirX = 1;
             } else if(diferenciaX < 0){
                 dirX = -1;
@@ -276,21 +284,23 @@ void DigiBattle::moverTropa(){
                 break;
 
             }
-
             //controla que no se mueva más de la cuenta
             cant--;
         }
+    } else if (seleccionTropa != AVION) {
+        
     }
     
     //
-
-    //Falta revisar esto de aca
+    /*
+    //Falta revisar esto de aca 
     //Vacio la casilla vieja
     casillero = this->tablero->getCasillero(ubiTropa);
-    casillero->ponerArtilleria(sinArtilleria, 0);
+    casillero->ponerArtilleria(sinArtilleria, 0);//pone artilleria en casillero
 
-    casillero = this->tablero->getCasillero(ubiNueva);
+    casillero = this->tablero->getCasillero(ubiNueva);//
     this->resolverColision(casillero,  seleccionTropa,  nroJugador,  nroTropaElegida);
+    */
 }
 
 int DigiBattle::pedirTropaAElegir(Jugador * jugador, Artilleria seleccionTropa){
@@ -347,7 +357,7 @@ bool DigiBattle::validarCasillero(Ubicacion posicion, Artilleria tipo){
         return false;  //valido que no sea casillero aire
     }   
         //vemos si el casillero no esta inactivo
-    if(casillero->comprobarEstado()){
+    if(!casillero->comprobarEstado()){
         cout<<"casillero seleccionado momentaneamente inactivo"<< endl;
         return false;  //valido que no sea casillero aire
     }
@@ -403,6 +413,30 @@ bool DigiBattle::validarMovimiento(Ubicacion ubiSoldado, Ubicacion ubiNueva){
     if (ubiSoldado.x <= ubiNueva.x +3 && ubiSoldado.y <= ubiNueva.x - 3)return true
     return false
     */
+}
+
+Ubicacion DigiBattle::pedirUbicacion(){
+    Ubicacion posicion;
+    //si las coordenadas no son válidas, vuelve a pedir
+    cout<<"Ingrese coordenada X : "<< endl;
+    cin>>posicion.x;
+    cout<<"Ingrese coordenada Y : "<< endl;
+    cin>>posicion.y;
+    cout<<"Ingrese coordenada Z : "<< endl;
+    cin>>posicion.z;
+
+    while (!this->tablero->validarCoordenadas(posicion)){
+
+        cout<<"Coodenadas ingresadas fuera rango"<< endl;
+
+        cout<<"Ingrese coordenada X : "<< endl;
+        cin>>posicion.x;
+        cout<<"Ingrese coordenada Y : "<< endl;
+        cin>>posicion.y;
+        cout<<"Ingrese coordenada Z : "<< endl;
+        cin>>posicion.z;
+    }
+    return posicion;
 }
 
 Ubicacion DigiBattle::pedirUbicacion(Artilleria tipo){
@@ -523,7 +557,7 @@ bool DigiBattle::resolverColision(Casillero* casilleroAnterior, Casillero* casil
 
 //Usar el casillero anterior de la tropa para sacar los ultimos 3 parametros
 //Esto tambien eliminaria la necesidad del overload para el soldado en especifico
-bool DigiBattle::resolverColision(Casillero* casillero, Artilleria artilleria, int nroJugador){
+/*bool DigiBattle::resolverColision(Casillero* casillero, Artilleria artilleria, int nroJugador){
    int inactivo = poderMina();
    if (casillero->devolverArtilleria() == VACIO) {
         casillero->ponerArtilleria(artilleria, nroJugador);
@@ -563,8 +597,9 @@ bool DigiBattle::resolverColision(Casillero* casillero, Artilleria artilleria, i
         break;
 
     }
-    */
+    
 }
+*/
 
 bool DigiBattle::comprobarVictoria(int nroJugador){ 
     //vemos si quedo solo un jugador
