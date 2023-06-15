@@ -10,7 +10,6 @@ Casillero::Casillero() {
     this->contenido->municionDelBarco = 0;
     this->contenido->artilleria = VACIO;
     this->contenido->turnosInactivo = 0;
-    this->contenido->turnosInactivo = 0;
 }
 
 
@@ -46,8 +45,8 @@ bool Casillero::disminuirTurnosInactivo(){
 }
 
 //fijarse dónde se usó y camiarle el nombre a "vaciarCasillero"
-void Casillero::ponerArtilleria(Artilleria artilleria){
-    this->contenido->artilleria = artilleria;
+void Casillero::vaciarCasillero(){
+    this->contenido->artilleria =  VACIO;
     this->contenido->jugador = 0;
     this->contenido->numTropa = 0;
     this->contenido->municionDelBarco = 0;

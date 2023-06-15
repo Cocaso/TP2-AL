@@ -10,11 +10,15 @@ Jugador::Jugador(){
     this->numSiguienteAvion = 0;
 }
 
-Jugador::Jugador(int nroJugador, int vidasJugador){
-    this->vidas = vidasJugador;
+Jugador::Jugador(int nroJugador){
+    this->vidas = 0;
+    this->numSiguienteSoldado = 0;
+    this->numSiguienteBarco = 0;
+    this->numSiguienteAvion = 0;
     this->numDeJugador = nroJugador;
     this->tropas = new(Lista<InfoTropa*>);
     this->cartas = new(Lista<Tipos>);
+    this->casillerosVisibles = new(Lista<casilleroUbi>);
 
     /*int i;
     InfoSoldado* soldadito = new(InfoSoldado);

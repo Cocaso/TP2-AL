@@ -66,7 +66,7 @@ public:
     Pre:~~
     Pos: Coloca la artillería indicada (sirve para cambiar a VACIO)
     */
-    void ponerArtilleria(Artilleria artilleria);
+    void vaciarCasillero();
 
     /*
     Pre: Recibe numero jugador y tipo de artilleria

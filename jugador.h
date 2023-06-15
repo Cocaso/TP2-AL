@@ -48,7 +48,7 @@ public:
     Pre: Recibe un número de jugador
     Pos: Crea el jugador con ese número
     */
-    Jugador(int nroJugador, int vidasJugador);
+    Jugador(int nroJugador);
 
     /*
     Pre: Recibe un número de jugador

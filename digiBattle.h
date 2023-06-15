@@ -65,6 +65,7 @@ private:
     Pos: Usa una carta de la lista de cartas del jugador
     */
     void usarCarta(Jugador * jugador);
+
 public:
 
     /*
@@ -225,6 +226,12 @@ public:
     Pos: Devuelve la lista de jugadores
     */
     Lista<Jugador*>* getListaJugadores();
+
+    /*
+    Pre: recibe ubicacion de soldado ,ademas de numero de jugador
+    Pos: Devuelve true si el soldado ataca a uno de su equipo
+    */
+    bool friendlyFire(Ubicacion posicionSoldado, int numJugador);
 
 };
 #endif
