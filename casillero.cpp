@@ -4,6 +4,7 @@
 Casillero::Casillero() {
     this->terreno = AIRE;
     this->contenido = new (Contenido);
+    this->contenido->turnosInactivo = 0;
 }
 
 Casillero::~Casillero() {

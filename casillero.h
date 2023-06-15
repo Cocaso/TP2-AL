@@ -22,7 +22,7 @@ struct Contenido {
     int numTropa;
     int municionDelBarco;
     Artilleria artilleria;
-    int turnosInactivo = 0;
+    int turnosInactivo;
 };
 
 class Casillero {

@@ -55,7 +55,7 @@ void DigiBattle::iniciarJuego(){
         }
         
         this->jugadores->add(nuevoJugador);
-        delete nuevoJugador;
+        
     }
 }
 
@@ -102,7 +102,6 @@ void DigiBattle::turno(){
     }
     this->anunciarGanador(); //termino el juego
 }
-
 //revisar si se pueda hacer general en vez de soldado
 void DigiBattle::ponerSoldado(Ubicacion ubicacionSoldado, int nroJugador, int nroSoldado){
     Casillero* casillero;
@@ -520,6 +519,7 @@ void DigiBattle::sacarTropaJugador(int nroJugador, int nroTropa, Artilleria arti
 
     //comprueba si efectivamente el jugador perdio todos sus tropas/vidas
     if (jugador->removerTropa(nroTropa, artilleria) == 0){
+        delete this->jugadores->
         this->jugadores->remover(getPosicionJugadorEnLista(nroJugador));
     }
 }

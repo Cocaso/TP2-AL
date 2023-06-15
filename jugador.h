@@ -30,8 +30,8 @@ class Jugador {
 private:
     int vidas;
     int numSiguienteSoldado = vidas;
-    int numSiguienteBarco = 0;
-    int numSiguienteAvion = 0;
+    int numSiguienteBarco;
+    int numSiguienteAvion;
     int numDeJugador;
     Lista<InfoTropa*>* tropas;
     Lista<Tipos>* cartas;
@@ -48,7 +48,7 @@ public:
     Pre: Recibe un número de jugador
     Pos: Crea el jugador con ese número
     */
-    Jugador(int nroJugador, int vidas);
+    Jugador(int nroJugador, int vidasJugador);
 
     /*
     Pre: Recibe un número de jugador
@@ -63,6 +63,12 @@ public:
     void agregarTropa(Ubicacion posicionSoldado, int nroSoldado, Artilleria tipoTropa);
 
     /*
+    Pre: Debe elegirse una tropa existente
+    Pos: Cambia la ubicacion de la tropa
+    */
+    void setPosicionTropa(int nroTropaPedida, Artilleria tipoArtilleria, Ubicacion ubicacion);
+
+    /*
     Pre: recibe un tipo de carta
     Pos: devuelve el nombre de una carta
     */
@@ -73,12 +79,12 @@ public:
     Pos: devuelve los nombres de las cartas
     */
     void informarCartasDisponibles();
-
+        
     /*
     Pre: ~~
-    Pos: devuelve la cantidad de cartas
+    Pos: Agrega un numero aleatorio del 0 al 5 a la lista de cartas
     */
-    int cantidadCartas();
+    void addCarta();
 
     /*
     Pre: recibe el numero de tropa y el tipo de Artilleria
@@ -87,46 +93,58 @@ public:
     int removerTropa(int nroTropa, Artilleria tipoTropa);
 
     /*
-    Pre:~~
+    Pre: ~~
     Pos: Devuelve el numero del jugador
     */
     int getNumeroJugador();
 
     /*
-    Pre:~~
+    Pre: ~~
     Pos: Devuelve la posicion de la tropa en la lista de tropas
     */
     int getPosicionTropaEnLista(int nroTropaBuscada, Artilleria tipoTropa);
-
+    
     /*
-    Pre: 
-    Pos: 
+    Pre: ~~
+    Pos: Devuelve el numero del siguiente soldado para agregar a la lista de tropas
     */
     int getNumSiguienteSoldado();
 
     /*
-    Pre: 
-    Pos: 
+    Pre: ~~
+    Pos: Devuelve el numero del siguiente barco para agregar a la lista de tropas
     */
     int getNumSiguienteBarco();
 
     /*
-    Pre: 
-    Pos: 
+    Pre: ~~
+    Pos: Devuelve el numero del siguiente avion para agregar a la lista de tropas
     */
     int getNumSiguienteAvion();
 
     /*
-    Pre: recibe un numero de tropa y tipo de artilleria
+    Pre: ~~
+    Pos: devuelve la cantidad de cartas que tiene el jugador
+    */
+    int cantidadCartas();
+
+    /*
+    Pre: Recibe un numero de tropa y tipo de artilleria
     Pos: Devuelve si exite dicha tropa
     */
     bool tropaViva(int nroTropaPedida, Artilleria tipoArtilleria);
 
     /*
-    Pre:~~
+    Pre: ~~
     Pos: Devuelve la posicion del soldado
     */
     Ubicacion getPosicionTropa(int nroTropa, Artilleria tipoArtilleria);
+
+    /*
+    Pre: Recibe un numero de carta
+    Pos: Devuelve 
+    */
+    Tipos getCarta(int nroCarta);
 
     /*
     Pre: Debe elegirse una tropa existente
@@ -134,12 +152,6 @@ public:
     */
     InfoTropa* getTropa(int nroTropaPedida, Artilleria tipoArtilleria);
 
-    /*
-    Pre: Debe elegirse una tropa existente
-    Pos: Cambia la ubicacion de la tropa
-    */
-    void setPosicionTropa(int nroTropaPedida, Artilleria tipoArtilleria, Ubicacion ubicacion);
-    
     /*
     Pre:~~
     Pos: Devuelve la lista de tropas
@@ -157,17 +169,7 @@ public:
     Pos: Devuelve la lista de cartas para verlas y usarlas
     */
     Lista<Tipos>* getListaCartas();
-    
-    /*
-    Pre: ~~
-    Pos: Agrega un numero aleatorio del 0 al 5 a la lista de cartas
-    */
-    void addCarta();
 
-    /*
-    Pre: recibe un numero de carta
-    Pos: devuelve 
-    */
-    Tipos getCarta(int nroCarta);
+
 };
 #endif
