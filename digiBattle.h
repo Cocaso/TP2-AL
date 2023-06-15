@@ -2,27 +2,16 @@
 #define DIGIBATTLE
 
 #include <iostream>
-#include <fstream> //probando file library
+#include <fstream>
 #include <cstdio> // tambien pa probar
 #include "tablero.h"
 #include "casillero.h"
-//#include "cartas.h"
 #include "jugador.h"
 #include <cstdlib>
-
-
-
-
-/*struct Jugador{
-    int vidas;
-    int numDeJugador;
-    Lista<Ubicacion>* tropas;
-    Lista<Carta*>* cartas;
-};*/
+#include <ctime>
 
 class DigiBattle {
 private:
-    FILE* tableroArchivo;                   //BMP del tablero
     Tablero* tablero;                       //Tablero lol
     Lista<Jugador*>* jugadores;             //Puntero a lista con punteros a structs jugador que tienen punteros a lista de ints (son los numeros del soldado del jugador) y puntero a lista con 
     Lista<Casillero*>* casillerosInactivos; //Puntero a lista de punteros a los casilleros inactivos actuales (para bajarles el contador directamente desde digibattle)
@@ -55,9 +44,9 @@ private:
     
     /*
     Pre: Recibe dos ubicaciones dentro del tablero para mover SOLDADO o BARCO
-    Pos: Devuelve TRUE si la distancia de movimiento y la direccion es permitida
+    Pos: Devuelve TRUE si la distancia de movimiento, la direccion es permitida y la tropa no se mueve al mismo casillero
     */
-    bool validarMovimiento(Ubicacion ubiSoldado, Ubicacion ubiNueva );
+    bool validarDestinoSoldado(Ubicacion ubiSoldado, Ubicacion ubiNueva );
 
     /*
     Pre: 
@@ -106,7 +95,7 @@ public:
     Pre:
     Pos: Pide la posicion XYZ en la que se va a poner la mina
     */
-    void ponerMina(int jugador);
+    void ponerMina();
 
     /*
     Pre: 
@@ -158,7 +147,7 @@ public:
     /*Pre: Debe recibir un puntero a jugador y el tipo de Artilleria a elegir
     Pos: Devuelve el numero de tropa a mover
     */
-    int pedirTropaAElegir(Jugador * jugador, Artilleria seleccionTropa);
+    int pedirNumeroTropa(Jugador * jugador, Artilleria seleccionTropa);
 
     /*
     Pre:
@@ -175,6 +164,12 @@ public:
     Pre: Recibe el casillero, la artillería y el numero de jugador
     Pos: Compara la artillería con el contenido y devuelve true si la artillería se coloca o false si se destruye
     */
+    bool resolverColision(Casillero* casilleroNuevo, Ubicacion posicionNueva);
+
+    /*
+    Pre: Recibe el casillero anterior, el casillero destino y la posicion destino
+    Pos: Compara la artillería con el contenido y devuelve true si la artillería se coloca o false si se destruye
+    */
     bool resolverColision(Casillero* casilleroAnterior, Casillero* casilleroNuevo, Ubicacion posicionNueva);
 
     /*
@@ -187,7 +182,7 @@ public:
     Pre: -
     Pos: Revisa si se cumplen las condiciones de victoria
     */
-    bool comprobarVictoria(int nroJugador);
+    bool comprobarVictoria();
 
     /*
     Pre: ~~
@@ -230,14 +225,6 @@ public:
     Pos: Devuelve la lista de jugadores
     */
     Lista<Jugador*>* getListaJugadores();
-
-    /*
-    Pre:
-    Pos: Actualiza la ubicacion de la tropa dentro de la lista de tropas
-    */
-    void actualizarUbicacionTropa(Ubicacion posicionNueva);
-
-
 
 };
 #endif

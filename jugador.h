@@ -3,7 +3,8 @@
 
 #include "listaBase.h"
 #include "tablero.h"
-#include "cartas.h"
+#include <ctime>
+
 
 enum Tipos {
     ATAQUEQUIMICO,
@@ -23,7 +24,7 @@ struct InfoTropa {
 struct casilleroUbi{
     Ubicacion ubicacion;
     Casillero* casillero;
-}
+};
 
 class Jugador {
 private:
@@ -33,7 +34,7 @@ private:
     int numSiguienteAvion = 0;
     int numDeJugador;
     Lista<InfoTropa*>* tropas;
-    Lista<Tipos*>* cartas;
+    Lista<Tipos>* cartas;
     Lista<casilleroUbi>* casillerosVisibles;
 
 public:
@@ -48,7 +49,13 @@ public:
     Pos: Crea el jugador con ese número
     */
     Jugador(int nroJugador, int vidas);
-    
+
+    /*
+    Pre: Recibe un número de jugador
+    Pos: Crea el jugador con ese número
+    */
+    ~Jugador();
+
     /*
     Pre:Recibe un numero de soldado y su ubicacion
     Pos:agrega soldado a la lista de tropas del jugador
@@ -65,7 +72,7 @@ public:
     Pre: ~~
     Pos: devuelve los nombres de las cartas
     */
-    void nombrarCartas();
+    void informarCartasDisponibles();
 
     /*
     Pre: ~~
@@ -89,7 +96,7 @@ public:
     Pre:~~
     Pos: Devuelve la posicion de la tropa en la lista de tropas
     */
-    int getPosicionSoldadoEnLista(int nroTropaBuscada, Artilleria tipoTropa);
+    int getPosicionTropaEnLista(int nroTropaBuscada, Artilleria tipoTropa);
 
     /*
     Pre: 
@@ -122,10 +129,16 @@ public:
     Ubicacion getPosicionTropa(int nroTropa, Artilleria tipoArtilleria);
 
     /*
-    Pre: Debe elegirse un soldado existente
-    Pos: Devuelve un puntero al soldado buscado o NULL si no se encontró
+    Pre: Debe elegirse una tropa existente
+    Pos: Devuelve un puntero a la tropa buscada o NULL si no se encontró
     */
     InfoTropa* getTropa(int nroTropaPedida, Artilleria tipoArtilleria);
+
+    /*
+    Pre: Debe elegirse una tropa existente
+    Pos: Cambia la ubicacion de la tropa
+    */
+    void setPosicionTropa(int nroTropaPedida, Artilleria tipoArtilleria, Ubicacion ubicacion);
     
     /*
     Pre:~~
@@ -143,7 +156,7 @@ public:
     Pre: 
     Pos: Devuelve la lista de cartas para verlas y usarlas
     */
-    Lista<Tipos*>* getListaCartas();
+    Lista<Tipos>* getListaCartas();
     
     /*
     Pre: ~~

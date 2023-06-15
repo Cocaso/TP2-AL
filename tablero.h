@@ -38,6 +38,7 @@ private:
     int maxY;
     int maxZ;
     
+    
 public:
     
     /*

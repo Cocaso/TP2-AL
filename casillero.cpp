@@ -10,6 +10,10 @@ Casillero::~Casillero() {
     delete this->contenido;
 }
 
+int Casillero::devolverTurnosInactivos(){
+    return this->contenido->turnosInactivo;
+}
+
 void Casillero::cambiarTerreno(int binario){
     if (binario == 0){
         this->terreno = AGUA;
@@ -91,6 +95,14 @@ bool Casillero::comprobarEstado(){
 
 Artilleria Casillero::devolverArtilleria(){
     return this->contenido->artilleria;
+}
+
+bool Casillero::esToxico(){
+    return this->contenido->toxico;
+}
+
+void Casillero::setToxico(bool toxico){
+    this->contenido->toxico = toxico;
 }
 
 int Casillero::devolverNroJugador(){

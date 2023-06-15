@@ -17,6 +17,7 @@ enum Artilleria {
 };
 
 struct Contenido {
+    bool toxico;
     int jugador;
     int numTropa;
     int municionDelBarco;
@@ -29,8 +30,7 @@ private:
 
     Terreno terreno;
     Contenido* contenido;
-    Ubicacion ubicacion;
-
+    
 public:
     /*
     Pre:~~
@@ -99,9 +99,27 @@ public:
 
     /*
     Pre: ~~
+    Pos: Devuelve el numero de turnos inactivos que le quedan al casillero
+    */
+    int devolverTurnosInactivos();
+
+    /*
+    Pre: ~~
     Pos: Devuelve, en caso de que haya una artilleria, a que jugador pertenece
     */
     int devolverNroJugador();
+
+    /*
+    Pre: ~~
+    Pos: Devuelve true si el casillero es toxico
+    */
+    bool esToxico();
+
+    /*
+    Pre: ~~
+    Pos: Establece el casillero como toxico o no toxico
+    */
+    void setToxico(bool toxico);
 
     /*
     Pre: ~~

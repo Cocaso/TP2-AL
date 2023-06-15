@@ -1,18 +1,20 @@
 #include "digiBattle.h"
 using namespace std;
 
+int obtenerSigno(int valor) {
+    return (0 < valor) - (valor < 0);
+}
 
 DigiBattle::DigiBattle(){
-    this->tableroArchivo = fopen("tablero4k.bmp", "w");
     this->tablero = new(Tablero);
     this->jugadores = new(Lista<Jugador*>) ;
     this->casillerosInactivos = new(Lista<Casillero*>);
 }
 
 DigiBattle::~DigiBattle(){
-    delete tablero;
-    delete jugadores;
-    delete casillerosInactivos;
+    delete (this->tablero);
+    delete (this->jugadores);
+    delete (this->casillerosInactivos);
 }
 
 void DigiBattle::iniciarJuego(){
@@ -61,11 +63,12 @@ void DigiBattle::turno(){
     Jugador* jugadorActual;
     string opcion;
     
-    jugadores->reiniciarCursor();
+    this->jugadores->reiniciarCursor();
     while(!comprobarVictoria()){
+        this->tablero->mostrarTablero();
         //Determina a quien le toca jugar
-        if (!jugadores->avanzarCursor()){
-            jugadores->reiniciarCursor();
+        if (!this->jugadores->avanzarCursor()){
+            this->jugadores->reiniciarCursor();
         }
         jugadorActual = this->jugadores->getCursor();
         
@@ -73,16 +76,16 @@ void DigiBattle::turno(){
         this->obtenerCarta(jugadorActual);
 
         //Poner mina (y disparar con el barco??)
-        ponerMina(jugadorActual->getNumeroJugador());
-        dispararBarco();
+        this->ponerMina();
+        this->dispararBarco();
         //Vemos si quiere mover alguna tropa
         do {
-           cout<<"Quiere realizar un movimiento de alguna tropa ? S/N "<<endl;
-           cin>>opcion;
+           cout << "Quiere realizar un movimiento de alguna tropa ? S/N "<<endl;
+           cin >> opcion;
         }while(opcion != "S" || opcion != "N");
         
         if (opcion == "S"){
-            moverTropa();
+            this->moverTropa();
         }
 
         do { //Elige si usa una carta o no y cuál
@@ -91,20 +94,19 @@ void DigiBattle::turno(){
         }while(opcion != "S" || opcion != "N");
         
         if (opcion == "S"){
-            usarCarta( jugadorActual);
+            this->usarCarta( jugadorActual);
         }
 
         //Reducir cuenta de los casilleros inactivos
-        reducirCasilleroInactivo();
+        this->reducirCasilleroInactivo();
     }
-    anunciarGanador(); //termino el juego
+    this->anunciarGanador(); //termino el juego
 }
 
 //revisar si se pueda hacer general en vez de soldado
 void DigiBattle::ponerSoldado(Ubicacion ubicacionSoldado, int nroJugador, int nroSoldado){
     Casillero* casillero;
     casillero = this->tablero->getCasillero(ubicacionSoldado);
-    int inactivo = 5;
 
     switch (casillero->devolverArtilleria()){
     case VACIO:
@@ -115,7 +117,6 @@ void DigiBattle::ponerSoldado(Ubicacion ubicacionSoldado, int nroJugador, int nr
         int nroSoldadoEnemigo = casillero->devolverNroTropa();
         this->sacarTropaJugador(nroJugadorEnemigo, nroSoldadoEnemigo, SOLDADO);
         this->sacarTropaJugador(nroJugador, nroSoldado, SOLDADO);
-        casillero->desactivarCasilla(inactivo);
         casillero->ponerArtilleria(VACIO, nroJugador);
         break;
     }
@@ -125,13 +126,19 @@ void DigiBattle::ponerMina(){
     Ubicacion ubicacionObjetivo;
     Casillero* casilleroObjetivo;
     Artilleria tipoArtilleria = MINA;
-    Jugador duenhoDeLaMina= this->jugadores->getCursor();
+    int nroJugador = this->jugadores->getCursor()->getNumeroJugador();
+    int turnosCasillaDesactivada = poderMina();
 
-    ubicacionObjetivo = pedirUbicacion(tipoArtilleria);  
+
+    ubicacionObjetivo = pedirUbicacion(tipoArtilleria);
     casilleroObjetivo = this->tablero->getCasillero(ubicacionObjetivo);
     
     //resolver colision para minas y misiles
-    this->resolverColision(casilleroObjetivo, duenhoDeLaMina->getNroJugador()); //otro resolverColision
+    if (!this->resolverColision(casilleroObjetivo, ubicacionObjetivo)){
+        casilleroObjetivo->desactivarCasilla(turnosCasillaDesactivada);
+    } else {
+        casilleroObjetivo->ponerArtilleria(MINA, nroJugador);
+    }
 
 }
 
@@ -144,20 +151,15 @@ void DigiBattle::dispararBarco(){
 }
 
 void DigiBattle::moverTropa(){
-    Ubicacion ubiTropa, ubiNueva;
-    Casillero* casillero;
-    Artilleria sinArtilleria = VACIO;
-    
+    Ubicacion ubiTropa, ubiNueva;    
     Jugador* jugador = this->jugadores->getCursor();
     int nroTropaElegida;
  
     Lista<InfoTropa*>* tropasDelJugador;
     int tipoTropa;
     Artilleria seleccionTropa = VACIO;
-    Ubicacion posicion;
 
-    int nroJugador = jugador->getNumeroJugador();
-    
+
     //Pregunta qué tipo de tropa se quiere mover
     cout << "Elige qué tipo de tropa mover: " << endl;
 
@@ -184,128 +186,37 @@ void DigiBattle::moverTropa(){
         cout << "Elige con sabiduria: ";
         cin >> tipoTropa;
         seleccionTropa = static_cast<Artilleria>(tipoTropa);
-    }while(comprobarSeleccionTropa(seleccionTropa, aviones, barcos));
+    } while(comprobarSeleccionTropa(seleccionTropa, aviones, barcos));
 
     //Mostrar las tropas disponibles a usar y elegir la tropa a mover
     mostrarTropasDisponibles(seleccionTropa, tropasDelJugador);
-    nroTropaElegida = pedirTropaAElegir(jugador, seleccionTropa);
+    nroTropaElegida = pedirNumeroTropa(jugador, seleccionTropa);
     ubiTropa = jugador->getPosicionTropa(nroTropaElegida, seleccionTropa);
 
     //Pedir ubicacion y mover a la tropa
     ubiNueva = this->pedirUbicacion(seleccionTropa);
-    
 
     bool soldadoVivo = true;
     int diferenciaX = ubiNueva.x - ubiTropa.x;
     int diferenciaY = ubiNueva.y - ubiTropa.y;
-    int cant;
-    if(diferenciaX != 0){
-        cant = abs(diferenciaX);
-    } else {
-        cant = abs(diferenciaY);
-    }
+    int cant = (diferenciaX != 0) ? abs(diferenciaX) : abs(diferenciaY);
 
-    if (validarMovimiento(ubiTropa, ubiNueva) && seleccionTropa != AVION){
+    //Si el movimiento es valido y la tropa no es avion, movemmos
+    if (validarDestinoSoldado(ubiTropa, ubiNueva) && seleccionTropa != AVION){
         while (soldadoVivo && (cant > 0)) {   //cant == caantidad de casilleros
             Ubicacion ubiActual = ubiTropa;
-            int dirX, dirY;
-            if(diferenciaX > 0){ // determinar direccion
-                dirX = 1;
-            } else if(diferenciaX < 0){
-                dirX = -1;
-            } else {
-                dirX = 0;
-            }
-
-            if(diferenciaY > 0){
-                dirY = 1;
-            } else if(diferenciaY < 0){
-                dirY = -1;
-            } else {
-                dirY = 0;
-            }
-
-            switch (dirX){
-            case 0:
-                switch (dirY){
-                case 1: 
-                    //Mover hacia arriba
-                    ubiActual.y++;
-                    soldadoVivo = resolverColision(tablero->getCasillero(ubiActual), tablero->getCasillero(ubiTropa));
-                    break;
-                case -1:
-                    //Mover hacia abajo
-                    ubiActual.y--;
-                    soldadoVivo = resolverColision(tablero->getCasillero(ubiActual), tablero->getCasillero(ubiTropa));
-                    break;
-                }
-                break;
-
-            case 1:
-                switch (dirY){
-                case 0: 
-                    //Mover hacia derecha
-                    ubiActual.x++;
-                    soldadoVivo = resolverColision(tablero->getCasillero(ubiActual), tablero->getCasillero(ubiTropa));
-                    break;
-                case 1:
-                    //Mover hacia arriba derecha
-                    ubiActual.y++;
-                    ubiActual.x++;
-                    soldadoVivo = resolverColision(tablero->getCasillero(ubiActual), tablero->getCasillero(ubiTropa));
-                    break;
-                case -1:
-                    //Mover hacia abajo derecha
-                    ubiActual.y--;
-                    ubiActual.x++;
-                    soldadoVivo = resolverColision(tablero->getCasillero(ubiActual), tablero->getCasillero(ubiTropa));
-                    break;
-                }
-                break;
-
-            case -1: 
-                switch (dirY){
-                case 0: 
-                    //Mover hacia izquierda
-                    ubiActual.x--;
-                    soldadoVivo = resolverColision(tablero->getCasillero(ubiActual), tablero->getCasillero(ubiTropa));
-                    break;
-                case 1:
-                    //Mover hacia arriba izquierda
-                    ubiActual.y++;
-                    ubiActual.x--;
-                    soldadoVivo = resolverColision(tablero->getCasillero(ubiActual), tablero->getCasillero(ubiTropa));
-                    break;
-                case -1:
-                    //Mover hacia abajo izquierda
-                    ubiActual.y--;
-                    ubiActual.x--;
-                    soldadoVivo = resolverColision(tablero->getCasillero(ubiActual), tablero->getCasillero(ubiTropa));
-                    break;
-                }
-                break;
-
-            }
+            ubiActual.x += obtenerSigno(diferenciaX);
+            ubiActual.y += obtenerSigno(diferenciaY);
+            soldadoVivo = resolverColision(tablero->getCasillero(ubiActual), tablero->getCasillero(ubiTropa), ubiNueva);
             //controla que no se mueva más de la cuenta
             cant--;
         }
-    } else if (seleccionTropa != AVION) {
+    } else if (seleccionTropa == AVION) {
         
     }
-    
-    //
-    /*
-    //Falta revisar esto de aca 
-    //Vacio la casilla vieja
-    casillero = this->tablero->getCasillero(ubiTropa);
-    casillero->ponerArtilleria(sinArtilleria, 0);//pone artilleria en casillero
-
-    casillero = this->tablero->getCasillero(ubiNueva);//
-    this->resolverColision(casillero,  seleccionTropa,  nroJugador,  nroTropaElegida);
-    */
 }
 
-int DigiBattle::pedirTropaAElegir(Jugador * jugador, Artilleria seleccionTropa){
+int DigiBattle::pedirNumeroTropa(Jugador * jugador, Artilleria seleccionTropa){
     int nroTropaElegida;
     do{
         cout << "Elija el N° de tropa a mover" << endl;
@@ -333,9 +244,8 @@ void DigiBattle::mostrarTropasDisponibles(Artilleria seleccionTropa, Lista<InfoT
 }
 
 bool DigiBattle::comprobarSeleccionTropa(Artilleria seleccionTropa, int cantidadAviones, int cantidadBarcos){
-    const int SINTROPAS = 0;
-    if ((seleccionTropa == AVION && cantidadAviones == SINTROPAS) || 
-        (seleccionTropa == BARCO && cantidadBarcos == SINTROPAS) || 
+    if ((seleccionTropa == AVION && cantidadAviones == 0) || 
+        (seleccionTropa == BARCO && cantidadBarcos == 0) || 
         (seleccionTropa > 3) || (seleccionTropa < 1)){
         return false;
     }
@@ -347,7 +257,7 @@ bool DigiBattle::validarCasillero(Ubicacion posicion, Artilleria tipo){
 
     //si las coordenadas existen sigue, sino false
     if(!this->tablero->validarCoordenadas(posicion)){
-        cout<<"Coodenadas ingresadas fuera rango"<< endl;
+        cout<<"Coordenadas ingresadas fuera rango"<< endl;
         return false;
     }
 
@@ -367,54 +277,16 @@ bool DigiBattle::validarCasillero(Ubicacion posicion, Artilleria tipo){
     return true;
 }
 
-//falta validar que no se mueva hacia el mismo casillero en el que está xd
-bool DigiBattle::validarMovimiento(Ubicacion ubiSoldado, Ubicacion ubiNueva){
+bool DigiBattle::validarDestinoSoldado(Ubicacion ubiSoldado, Ubicacion ubiNueva){
     int distanciaX = abs(ubiSoldado.x - ubiNueva.x);
     int distanciaY = abs(ubiSoldado.y - ubiNueva.y);
-    // Valida que la distancia a mover sea inferior a 3, y que solo se pueda mover en diagonal u horizontal :)
+    // Valida que la distancia a mover sea inferior a 3, que no se mueva al mismo casillero y que solo se pueda mover en diagonal u horizontal :)
     if((distanciaX > 3 || distanciaY > 3) ||
-        (distanciaX != distanciaY && distanciaX != 0 && distanciaY != 0)){
+       (distanciaX != distanciaY && distanciaX != 0 && distanciaY != 0) || 
+       ubiSoldado.x == ubiNueva.x || ubiSoldado.y == ubiNueva.y){
         return false;
     }
     return true;
-    /*
-    if(distanciaX > distanciaY){
-        distancia = distanciaX
-    } else{
-        distancia = distanciaY
-    }
-    
-    while (i < distancia){
-        if(ubiSoldado.x - ubiNueva.x > 0 && ubiSoldado.y - ubiNueva.y > 0)
-
-        i++;
-    }
-
-    if (this->tablero->getCasillero(ubiSoldado)->comprobarTerreno(SOLDADO) && this->tablero->getCasillero(ubiSoldado)->devolverArtilleria() == SOLDADO){
-        casillaDistancia = 1;
-    }else{
-        casillaDistancia = 3;
-    }
-    */
-    /*
-    horizontal
-    if (ubiSoldado.x <= ubiNueva.x + 3 || ubiSoldado.x <= ubiNueva.x - 3){
-        if (ubiSoldado.y == ubiNueva.y){
-            return true
-        }
-        vertical
-    if (ubiSoldado.y <= ubiNueva.y + 3 || ubiSoldado.y <= ubiNueva.y - 3){
-        if (ubiSoldado.x == ubiNueva.x ){
-            return true
-        }
-
-    diagonal
-    if (ubiSoldado.x <= ubiNueva.x + 3 && ubiSoldado.y <= ubiNueva.y + 3)return true
-    if (ubiSoldado.x <= ubiNueva.x -3 && ubiSoldado.y <= ubiNueva.x - 3)return true
-    if (ubiSoldado.x <= ubiNueva.x -3 && ubiSoldado.y <= ubiNueva.x + 3)return true
-    if (ubiSoldado.x <= ubiNueva.x +3 && ubiSoldado.y <= ubiNueva.x - 3)return true
-    return false
-    */
 }
 
 Ubicacion DigiBattle::pedirUbicacion(){
@@ -447,7 +319,7 @@ Ubicacion DigiBattle::pedirUbicacion(Artilleria tipo){
     //si las coordenadas no son válidas, vuelve a pedir
     do{
         //solo pide Z (altura) si la artillería es un avión
-        if (tipo != AVION) {
+        if (tipo != AVION || tipo != VACIO) {
             posicion.z = 0;
             cout<<"Ingrese coordenada X : "<< endl;
             cin>>posicion.x;
@@ -472,7 +344,7 @@ void DigiBattle::obtenerCarta(Jugador * jugador){
 }
 
 void DigiBattle::usarCarta(Jugador* jugador){
-    jugador->nombrarCartas();
+    jugador->informarCartasDisponibles();
     int numeroCarta;
 
     do{
@@ -483,24 +355,24 @@ void DigiBattle::usarCarta(Jugador* jugador){
     Tipos tipo = jugador->getCarta(numeroCarta);
    
     switch(tipo){
-    case ATAQUEQUIMICO:
-        cartaAtaqueQuimico(this->pedirUbicacion(VACIO));
-        break;
-    case AVIONRADAR:
-        cartaAvionRadar(this->pedirUbicacion(AVION), this->buscarJugador(jugador->getNumeroJugador()));
-        break;
-    case INVOCARBARCO:
-        cartaBarco(this->pedirUbicacion(BARCO), this->buscarJugador(jugador->getNumeroJugador()));
-        break;
-    case POTOFGREED:
-        cartaPotOfGreed(this->buscarJugador(jugador->getNumeroJugador()));
-        break;
-    case SOLDADOEXTRA:
-        cartaAgregarSoldado(this->buscarJugador(jugador->getNumeroJugador()));
-        break;
-    case RAYOLASER:
-        cartaRayoLaser(this->buscarJugador(jugador->getNumeroJugador()));
-        break;
+        case ATAQUEQUIMICO:
+            cartaAtaqueQuimico(this->pedirUbicacion(VACIO));
+            break;
+        case AVIONRADAR:
+            cartaAvionRadar(jugador);
+            break;
+        case INVOCARBARCO:
+            cartaBarco(jugador);
+            break;
+        case POTOFGREED:
+            cartaPotOfGreed(jugador);
+            break;
+        case SOLDADOSEXTRA:
+            cartaAgregarSoldados(jugador);
+            break;
+        case RAYOLASER:
+            cartaRayoLaser(jugador);
+            break;
     }
 }
 
@@ -533,34 +405,62 @@ int DigiBattle::poderMina(){
     return(3 + (rand() % 4));
 }
 
-bool DigiBattle::resolverColision(Casillero* casilleroAnterior, Casillero* casilleroNuevo, Ubicacion posicionNueva){
-    int turnosDesactivar = poderMina();
-
-    Artilleria tropaEnCuestion = casilleroAnterior->devolverArtilleria();
-    int nroJugadorDuenho = casilleroAnterior->devolverNroJugador();
-    int nroTropaEnCuestion = casilleroAnterior->devolverNroTropa();
-
-    if (casilleroAnterior->devolverArtilleria() == VACIO){
-        //coloca la tropa en el casillero
-        //REVISAR
-        casilleroNuevo->ponerArtilleria(tropaEnCuestion, nroJugadorDuenho, nroTropaEnCuestion);
-        //actualiza la lista del jugador
-        this->jugadores->actualizarUbicacionTropa();
-
-        this->jugadores->getCursor()->getListaTropas();
-        
-    } else if(casillero->devolverArtilleria() == SOLDADO && artilleria == SOLDADO){
-        sacarTropaJugador(nroJugador, nroSoldado, SOLDADO);
-        int jugadorEnemigo = casillero->devolverNroJugador(); // con este numero jugador habria que sacarle soldado al jugador
-        int nroSoldadoEnemigo = casillero->devolverNroSoldado();
+bool DigiBattle::resolverColision(Casillero* casilleroNuevo, Ubicacion posicionNueva){
+    Artilleria tipoTropaDestino = casilleroNuevo->devolverArtilleria();
+    int jugadorEnemigo = casilleroNuevo->devolverNroJugador();
+    int nroSoldadoEnemigo = casilleroNuevo->devolverNroTropa();
+    switch (tipoTropaDestino)
+    {
+    case SOLDADO:
         sacarTropaJugador(jugadorEnemigo, nroSoldadoEnemigo, SOLDADO);
-        casillero->ponerArtilleria(VACIO);
+        casilleroNuevo->ponerArtilleria(VACIO);
+        break;
+    
+    case BARCO:
+        sacarTropaJugador(jugadorEnemigo, nroSoldadoEnemigo, BARCO);
+        casilleroNuevo->ponerArtilleria(VACIO);
+        break;
 
-    } else if (casillero->devolverArtilleria() == MINA){
-        casillero->desactivarCasilla(turnosDesactivar);
-        this->casillerosInactivos->add(casillero);
-        sacarTropaJugador(nroJugador,nroSoldado, SOLDADO);
-        casillero->ponerArtilleria(VACIO);
+    case VACIO:
+        return true;
+        break;
+    }
+    return false;
+}
+
+bool DigiBattle::resolverColision(Casillero* casilleroAnterior, Casillero* casilleroNuevo, Ubicacion ubicacion){
+
+    Artilleria tipoTropaOrigen = casilleroAnterior->devolverArtilleria();
+    Artilleria tipoTropaDestino = casilleroNuevo->devolverArtilleria();
+    int nroJugadorDuenho = casilleroAnterior->devolverNroJugador();
+    int nroTropaOrigen = casilleroAnterior->devolverNroTropa();
+    Jugador* jugadorActual;
+
+    //si el casillero destino está vacío, se mueve la tropa
+    if (tipoTropaDestino == VACIO){
+        //coloca la tropa en el casillero nuevo
+        casilleroNuevo->ponerArtilleria(tipoTropaOrigen, nroJugadorDuenho, nroTropaOrigen);
+        //actualiza la lista del jugador
+        jugadorActual = buscarJugador(nroJugadorDuenho);
+        jugadorActual->setPosicionTropa(tipoTropaOrigen, tipoTropaOrigen, ubicacion);
+        return true;
+    
+    } else if(tipoTropaOrigen == SOLDADO && tipoTropaDestino == SOLDADO){
+        sacarTropaJugador(nroJugadorDuenho, nroTropaOrigen, SOLDADO);
+        int jugadorEnemigo = casilleroNuevo->devolverNroJugador(); // con este numero jugador habria que sacarle soldado al jugador
+        int nroSoldadoEnemigo = casilleroNuevo->devolverNroTropa();
+        sacarTropaJugador(jugadorEnemigo, nroSoldadoEnemigo, SOLDADO);
+        casilleroNuevo->ponerArtilleria(VACIO);
+        return false;
+        
+    } else if (tipoTropaDestino == MINA){
+        int turnosDesactivar = poderMina();
+        casilleroNuevo->desactivarCasilla(turnosDesactivar);
+        this->casillerosInactivos->add(casilleroNuevo);
+        sacarTropaJugador(nroJugadorDuenho,nroTropaOrigen, SOLDADO);
+        casilleroNuevo->ponerArtilleria(VACIO);
+        return false;
+
     }
 }
 
@@ -610,7 +510,7 @@ bool DigiBattle::resolverColision(Casillero* casilleroAnterior, Casillero* casil
 }
 */
 
-bool DigiBattle::comprobarVictoria(int nroJugador){ 
+bool DigiBattle::comprobarVictoria(){ 
     //vemos si quedo solo un jugador
     return (this->jugadores->contarElementos() == 1);   
 }
@@ -645,11 +545,13 @@ void DigiBattle::reducirCasilleroInactivo(){
     Casillero* casillero;
     int posicion = 1;
     casillerosInactivos->reiniciarCursor();
-
     while(casillerosInactivos->avanzarCursor()){
         casillero = casillerosInactivos->getCursor();
         if (casillero->disminuirTurnosInactivo()){
             casillerosInactivos->remover(posicion);
+            if(casillero->esToxico()){
+                casillero->setToxico(false);
+            }
         }
         posicion ++;
     }
@@ -661,6 +563,7 @@ void DigiBattle::cartaAtaqueQuimico(Ubicacion posicion){
     int radioCubo = RANGOATAQUEQUIMICO / 2;
     int i, k, j;
     Ubicacion nuevo;
+    Casillero * casilleroActual;
 
     for(i = (-radioCubo); i <= radioCubo; i++){
         for (j = (-radioCubo); j <= radioCubo; j++){
@@ -669,11 +572,18 @@ void DigiBattle::cartaAtaqueQuimico(Ubicacion posicion){
                 nuevo.y = posicion.y + j;
                 nuevo.z = posicion.z + k;
                 if((i == 0) && (j == 0) && (k == 0)){
-                    this->tablero->getCasillero(posicion)->desactivarCasilla(efectoAtaqueQuimico);
+                    casilleroActual = this->tablero->getCasillero(posicion);
+                    casilleroActual->desactivarCasilla(efectoAtaqueQuimico);
+                    this->casillerosInactivos->add(casilleroActual);
+                    
                 } else if(abs(i) == 2 || abs(j) == 2 || abs(k) == 2){
-                    this->tablero->getCasillero(nuevo)->desactivarCasilla(efectoAtaqueQuimico - 4);
+                    casilleroActual = this->tablero->getCasillero(posicion);
+                    casilleroActual->desactivarCasilla(efectoAtaqueQuimico - 4);
+                    this->casillerosInactivos->add(casilleroActual);
                 } else if(abs(i) == 1 || abs(j) == 1 || abs(k) == 1){
-                    this->tablero->getCasillero(nuevo)->desactivarCasilla(efectoAtaqueQuimico - 2);
+                    casilleroActual = this->tablero->getCasillero(posicion);
+                    casilleroActual->desactivarCasilla(efectoAtaqueQuimico - 2);
+                    this->casillerosInactivos->add(casilleroActual);
                 }
             }
         }
@@ -686,7 +596,7 @@ void DigiBattle::cartaAvionRadar(Jugador * jugador){
     Ubicacion posicion = pedirUbicacion(AVION);
     int posicionTropaAvion = jugador->getNumSiguienteAvion();
     jugador->agregarTropa(posicion , posicionTropaAvion, AVION);
-    this->tablero->getCasillero(posicion)
+    this->tablero->getCasillero(posicion);
 }
 
 void DigiBattle::cartaBarco(Jugador * jugador){
@@ -698,7 +608,7 @@ void DigiBattle::cartaBarco(Jugador * jugador){
 void DigiBattle::cartaPotOfGreed(Jugador * jugador){
     int i;
     for (i = 1; i <= 2; i++){
-        this->obtenerCarta(jugador)
+        this->obtenerCarta(jugador);
     }
 }
 
@@ -723,7 +633,7 @@ void DigiBattle::cartaRayoLaser(Jugador * jugador){
     tropasDelJugador = jugador->getListaTropas();
     cout << "Elija el soldado que tirara el rayo laser:" << endl;
     mostrarTropasDisponibles(SOLDADO, tropasDelJugador);
-    tropaElegida = pedirTropaAElegir(jugador, SOLDADO);
+    tropaElegida = pedirNumeroTropa(jugador, SOLDADO);
     posicionActual = jugador->getPosicionTropa(tropaElegida, SOLDADO);
     cout << "Elija la direccion del rayo:"<< endl;
     cout << "W - arriba" << endl;
@@ -807,8 +717,4 @@ void DigiBattle::anunciarGanador(){
     cout<<"El jugador superviviente llego a la victoria, junto con sus "<< UltimoJugador->getListaTropas()->contarElementos();
     cout<<" soldados supervivientes"<<endl;
     cout<<" FIN DEL JUEGO "<<endl;
-}
-
-void DigiBattle::actualizarUbicacionTropa(Ubicacion posicionNueva){
-    
-}
+}    
