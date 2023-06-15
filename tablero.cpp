@@ -16,6 +16,22 @@ Tablero::Tablero(Ubicacion maxSize) {
 }
 
 Tablero::~Tablero() {
+    Lista<Lista<Casillero*>*>* x; 
+    Lista<Casillero*>* y;
+    
+    this->tablero->reiniciarCursor();
+    while(this->tablero->avanzarCursor()){ //listaDeListasDelistas
+        x = this->tablero->getCursor();
+        x->reiniciarCursor(); //listaDeListas
+        while(x->avanzarCursor()){
+            y = x->getCursor();
+            y->reiniciarCursor(); //listas
+            while(y->avanzarCursor()){
+                y->getCursor()->~Casillero();
+                delete y->getCursor();
+            }
+        }
+    }
     delete(this->tablero);
 }
 
@@ -30,6 +46,25 @@ void Tablero::crearTerreno(){
     //Primero se llena la capa inferior con el diseño del mapa
     listaY = new(Lista<Lista<Casillero*>*>);
 
+/*
+for (x = 0; x < this->maxX ; x++){
+    listaDeLista = new(Lista<Lista<Casillero*>*>);
+        for (y = 0; y < this->maxY ; y++){
+            lista = new(Lista<Casillero*>);
+            indiceDos = y%20;
+                for (z = 0; z < this->maxZ ; z++){
+                    casillero = new(Casillero);
+                    indiceUno = x%20;
+                    if(x < 5){
+                        casillero->cambiarTerreno(mapaTemplate[indiceUno][indiceDos]);
+                    }
+                    lista->add(casillero);
+                } 
+                listaDeLista->add(lista);
+            }
+    this->tablero->add(listaDeLista);
+}
+*/
     for (y = 0; y < this->maxY ; y++){
         listaX = new(Lista<Casillero*>);
 
@@ -40,13 +75,9 @@ void Tablero::crearTerreno(){
             indiceUno = x%20;   // da el resto (0-19) uwu
             casillero->cambiarTerreno(mapaTemplate[indiceUno][indiceDos]);
             listaX->add(casillero);
-
-            delete casillero;
         }
     } 
     listaY->add(listaX);
-
-    delete listaX;
             
     this->tablero->add(listaY);
     //---------------------------------------------------------
@@ -213,3 +244,4 @@ for (x = 0; x < this->maxX ; x++){
         }
         this->tablero->add(listaY);
 */
+
