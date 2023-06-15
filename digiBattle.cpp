@@ -42,21 +42,19 @@ void DigiBattle::iniciarJuego(){
 
     int nroJugador;
     jugadores->reiniciarCursor();
-    for (int j = 0 ; j < cantidadJugadores; j++){ //crear jugadores y colocar tropas
+    for (int i = 1 ; i <= cantidadJugadores; i++){ //crear jugadores y colocar tropas
 
-        //Crea el jugador
-        nroJugador = j + 1;
         //importante NO TOCAR
-        Jugador* nuevoJugador = new Jugador(nroJugador);
+        Jugador* nuevoJugador = new Jugador(i);
         this->jugadores->add(nuevoJugador);
         this->jugadores->avanzarCursor();
         //Lo deja poner sus tropas
-        for (int i = 1 ; i <= cantidadSoldados; i++){
+        for (int j = 1 ; j <= cantidadSoldados; j++){
             do {
                 posicionSoldado = this->pedirUbicacion(SOLDADO);
             } while (friendlyFire(posicionSoldado, nroJugador));
             
-            nroSoldado = i;
+            nroSoldado = j;
             this->jugadores->getCursor()->agregarTropa(posicionSoldado, nroSoldado, SOLDADO);  //agrego soldado
             this->tablero->getCasillero(posicionSoldado)->ponerArtilleria(SOLDADO, nroJugador);  //pone el soldado en el tablero
         }

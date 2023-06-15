@@ -46,7 +46,7 @@ void Tablero::crearTerreno(){
     //Primero se llena la capa inferior con el diseño del mapa
     //listaY = new(Lista<Lista<Casillero*>*>);
 
-    for (x = 0; x < this->maxX ; x++){
+    /*for (x = 0; x < this->maxX ; x++){
         listaY = new(Lista<Lista<Casillero*>*>);
         for (y = 0; y < this->maxY ; y++){
             listaX = new(Lista<Casillero*>);
@@ -62,15 +62,17 @@ void Tablero::crearTerreno(){
                 listaY->add(listaX);
             }
         this->tablero->add(listaY);
-    }
-    /*for (y = 0; y < this->maxY ; y++){
+    }*/
+    listaY = new (Lista<Lista<Casillero*>*>);
+    
+    for (y = 1; y <= this->maxY ; y++){
         listaX = new(Lista<Casillero*>);
 
-        indiceDos = y%20;       // da el resto (0-19) uwu
-        for (x = 0; x < this->maxX; x++){
+        indiceDos = (y%21) - 1;       // da el resto (1-20) uwu
+        for (x = 1; x <= this->maxX; x++){
             casillero = new(Casillero);
             
-            indiceUno = x%20;   // da el resto (0-19) uwu
+            indiceUno = (x%21) - 1;   // da el resto (1-20) uwu
             casillero->cambiarTerreno(mapaTemplate[indiceUno][indiceDos]);
             listaX->add(casillero);
         }
@@ -80,22 +82,22 @@ void Tablero::crearTerreno(){
     this->tablero->add(listaY);
     //---------------------------------------------------------
 
-    //Se llenauna listaX con aire, una listaY con copias de listaX, 
+    //Se llena una listaX con aire, una listaY con copias de listaX, 
     //y el resto del tablero con copias de listaY
     casillero = new(Casillero);
     listaX = new(Lista<Casillero*>);
-    for (x = 0; x < this->maxX ; x++){
+    for (x = 1; x <= this->maxX ; x++){
         listaX->add(casillero);
     }
     listaY = new(Lista<Lista<Casillero*>*>);
-    for (y = 0; y < this->maxY ; y++){
+    for (y = 1; y <= this->maxY ; y++){
         listaY->add(listaX);
     }
-    for (z = 1; z < this->maxZ; z++){
+    for (z = 1; z <= this->maxZ; z++){
         this->tablero->add(listaY);
     }
     //---------------------------------------------------------
-    */
+    
 
 }
 
