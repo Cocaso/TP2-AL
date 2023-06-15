@@ -44,13 +44,12 @@ void Tablero::crearTerreno(){
     
     
     //Primero se llena la capa inferior con el diseño del mapa
-    listaY = new(Lista<Lista<Casillero*>*>);
+    //listaY = new(Lista<Lista<Casillero*>*>);
 
-/*
-for (x = 0; x < this->maxX ; x++){
-    listaDeLista = new(Lista<Lista<Casillero*>*>);
+    for (x = 0; x < this->maxX ; x++){
+        listaY = new(Lista<Lista<Casillero*>*>);
         for (y = 0; y < this->maxY ; y++){
-            lista = new(Lista<Casillero*>);
+            listaX = new(Lista<Casillero*>);
             indiceDos = y%20;
                 for (z = 0; z < this->maxZ ; z++){
                     casillero = new(Casillero);
@@ -58,14 +57,13 @@ for (x = 0; x < this->maxX ; x++){
                     if(x < 5){
                         casillero->cambiarTerreno(mapaTemplate[indiceUno][indiceDos]);
                     }
-                    lista->add(casillero);
+                    listaX->add(casillero);
                 } 
-                listaDeLista->add(lista);
+                listaY->add(listaX);
             }
-    this->tablero->add(listaDeLista);
-}
-*/
-    for (y = 0; y < this->maxY ; y++){
+        this->tablero->add(listaY);
+    }
+    /*for (y = 0; y < this->maxY ; y++){
         listaX = new(Lista<Casillero*>);
 
         indiceDos = y%20;       // da el resto (0-19) uwu
@@ -97,23 +95,26 @@ for (x = 0; x < this->maxX ; x++){
         this->tablero->add(listaY);
     }
     //---------------------------------------------------------
+    */
+
 }
 
 void Tablero::mostrarTablero(){
-    bitmap_image gas("Casillero/gas.bmp");
-    bitmap_image tierra("Casillero/tierra.bmp");
-    bitmap_image tierraInactiva("Casillero/tierra_inactiva.bmp");
-    bitmap_image agua("Casillero/agua.bmp");
-    bitmap_image aguaInactiva("Casillero/muC.bmp");
-    bitmap_image soldado("Casillero/soldado.bmp");
-    bitmap_image soldadoNadando("Casillero/nadando.bmp");
-    bitmap_image mina("Casillero/mina.bmp");
-    bitmap_image minaAgua("Casillero/mina_agua.bmp");
-    bitmap_image barco("Casillero/barco.bmp");
-    bitmap_image avion("Casillero/avion.bmp");
+    bitmap_image gas("Casilleros/gas.bmp");
+    bitmap_image tierra("Casilleros/tierra.bmp");
+    bitmap_image tierraInactiva("Casilleros/tierra_inactiva.bmp");
+    bitmap_image agua("Casilleros/agua.bmp");
+    bitmap_image aguaInactiva("Casilleros/muC.bmp");
+    bitmap_image soldado("Casilleros/soldado.bmp");
+    bitmap_image soldadoNadando("Casilleros/nadando.bmp");
+    bitmap_image mina("Casilleros/mina.bmp");
+    bitmap_image minaAgua("Casilleros/mina_agua.bmp");
+    bitmap_image barco("Casilleros/barco.bmp");
+    bitmap_image avion("Casilleros/avion.bmp");
     bitmap_image bmpTablero(static_cast<unsigned>(maxX*32), static_cast<unsigned>(maxY*32));
     bitmap_image* casilleroADibujar;
 
+    //te falto el do amigo
     this->tablero->reiniciarCursor();
     this->tablero->avanzarCursor();
 

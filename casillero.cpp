@@ -4,8 +4,15 @@
 Casillero::Casillero() {
     this->terreno = AIRE;
     this->contenido = new (Contenido);
+    this->contenido->toxico = 0;
+    this->contenido->jugador = 0;
+    this->contenido->numTropa = 0;
+    this->contenido->municionDelBarco = 0;
+    this->contenido->artilleria = VACIO;
+    this->contenido->turnosInactivo = 0;
     this->contenido->turnosInactivo = 0;
 }
+
 
 Casillero::~Casillero() {
     delete this->contenido;

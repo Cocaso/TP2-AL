@@ -29,8 +29,9 @@ Jugador::Jugador(int nroJugador, int vidasJugador){
 }
 
 Jugador::~Jugador(){
-    delete tropas;
-    delete cartas;
+    delete this->tropas;
+    delete this->cartas;
+    delete this->casillerosVisibles;
 }
 
 void Jugador::agregarTropa(Ubicacion posicionTropa, int nroTropa, Artilleria tipoTropa){
