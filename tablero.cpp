@@ -199,13 +199,13 @@ Casillero * Tablero::getCasillero(Ubicacion posicion){
 }
    
 bool Tablero::validarCoordenadas(Ubicacion posicion){
-    if((this->maxX > posicion.x && 
-        this->maxY > posicion.y && 
-        this->maxZ > posicion.z) 
+    if((posicion.x <= this->maxX && 
+        posicion.y <= this->maxY && 
+        posicion.z <= this->maxZ ) 
         && 
-        (0 <= posicion.x && 
-        0 <= posicion.y && 
-        0 <= posicion.z )){
+        (posicion.x > 0 && 
+        posicion.y > 0 && 
+        posicion.z > 0 )){
         return true;
     }
     return false;

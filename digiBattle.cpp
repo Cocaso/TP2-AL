@@ -337,18 +337,18 @@ Ubicacion DigiBattle::pedirUbicacion(Artilleria tipo){
         //solo pide Z (altura) si la artillería es un avión
         if (tipo != AVION || tipo != VACIO) {
             posicion.z = 1;
-            cout<<"Ingrese coordenada X : "<< endl;
-            cin>>posicion.x;
-            cout<<"Ingrese coordenada Y : "<< endl;
-            cin>>posicion.y;
+            cout << "Ingrese coordenada X : "<< endl;
+            cin >> posicion.x;
+            cout << "Ingrese coordenada Y : "<< endl;
+            cin >> posicion.y;
         
         } else {
-            cout<<"Ingrese coordenada X : "<< endl;
-            cin>>posicion.x;
-            cout<<"Ingrese coordenada Y : "<< endl;
-            cin>>posicion.y;
-            cout<<"Ingrese coordenada Z : "<< endl;
-            cin>>posicion.z;
+            cout << "Ingrese coordenada X : "<< endl;
+            cin >> posicion.x;
+            cout << "Ingrese coordenada Y : "<< endl;
+            cin >> posicion.y;
+            cout << "Ingrese coordenada Z : "<< endl;
+            cin >> posicion.z;
         } 
     } while (!validarCasillero(posicion, tipo));
 
