@@ -39,6 +39,7 @@ void DigiBattle::iniciarJuego(){
     
     this->tablero = new Tablero(tableroSize); //crear tablero
     this->tablero->crearTerreno();
+    this->tablero->mostrarTablero();
 
     jugadores->reiniciarCursor();
     for (int i = 1 ; i <= cantidadJugadores; i++){ //crear jugadores y colocar tropas
@@ -94,7 +95,7 @@ void DigiBattle::turno(){
         do {
            cout << "Quiere realizar un movimiento de alguna tropa ? S/N "<<endl;
            cin >> opcion;
-        }while(opcion != "S" || opcion != "N");
+        }while(opcion != "S" && opcion != "N");
         
         if (opcion == "S"){
             this->moverTropa();
@@ -103,10 +104,10 @@ void DigiBattle::turno(){
         do { //Elige si usa una carta o no y cuál
            cout<<"Quiere invocar alguna de sus cartas ? S/N "<<endl;
            cin>>opcion;
-        }while(opcion != "S" || opcion != "N");
+        }while(opcion != "S" && opcion != "N");
         
         if (opcion == "S"){
-            this->usarCarta( jugadorActual);
+            this->usarCarta(jugadorActual);
         }
 
         //Reducir cuenta de los casilleros inactivos

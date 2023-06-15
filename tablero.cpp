@@ -131,7 +131,9 @@ void Tablero::mostrarTablero(){
     while(listaY->avanzarCursor()){
         listaX = listaY->getCursor();
         listaX->reiniciarCursor();
+        j = 0;
         while (listaX->avanzarCursor()){
+            
             casilleroActual = listaX->getCursor();
             
             //Elige qué casillero dibujar
@@ -190,6 +192,8 @@ void Tablero::mostrarTablero(){
         }
         i++;        //Variable de posicion del tablero
     }
+
+    bmpTablero.save_image("tablero.bmp");
 }
 
 Casillero * Tablero::getCasillero(Ubicacion posicion){
