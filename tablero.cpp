@@ -76,9 +76,10 @@ void Tablero::crearTerreno(){
             casillero->cambiarTerreno(mapaTemplate[indiceUno][indiceDos]);
             listaX->add(casillero);
         }
+        listaY->add(listaX);
     } 
-    listaY->add(listaX);
-            
+    
+    
     this->tablero->add(listaY);
     //---------------------------------------------------------
 
@@ -93,7 +94,7 @@ void Tablero::crearTerreno(){
     for (y = 1; y <= this->maxY ; y++){
         listaY->add(listaX);
     }
-    for (z = 1; z <= this->maxZ; z++){
+    for (z = 2; z <= this->maxZ; z++){
         this->tablero->add(listaY);
     }
     //---------------------------------------------------------
@@ -116,7 +117,7 @@ void Tablero::mostrarTablero(){
     bitmap_image bmpTablero(static_cast<unsigned>(maxX*32), static_cast<unsigned>(maxY*32));
     bitmap_image* casilleroADibujar;
 
-    //te falto el do amigo
+
     this->tablero->reiniciarCursor();
     this->tablero->avanzarCursor();
 
