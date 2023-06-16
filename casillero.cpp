@@ -85,6 +85,8 @@ bool Casillero::comprobarTerreno(Artilleria unidad){
                 return true;
             }
             break;
+        case VACIO:
+            return true; 
         default:
             // :)
             break;
