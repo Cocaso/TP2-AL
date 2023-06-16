@@ -108,6 +108,20 @@ int Jugador::getNumeroJugador(){
     return this->numDeJugador;
 }
 
+
+int Jugador::cantidadTropas(Artilleria tipoTropa){
+    this->tropas->reiniciarCursor();
+    int cantidadTropa = 0;
+
+    while(this->tropas->avanzarCursor()){
+        if(this->tropas->getCursor()->tropa == tipoTropa){
+            cantidadTropa ++;
+        }
+
+    }
+    return cantidadTropa;
+}
+
 int Jugador::getPosicionTropaEnLista(int nroTropaBuscada, Artilleria tipoTropa){
     int posicionTropa = 1;
     this->tropas->reiniciarCursor();
@@ -143,7 +157,7 @@ bool Jugador::tropaViva(int nroTropa, Artilleria tipoArtilleria){
     return (tropa ==  NULL);
 }
 
-Ubicacion Jugador::getPosicionTropa(int nroTropa, Artilleria tipoArtilleria){
+Ubicacion Jugador::getUbicacionTropa(int nroTropa, Artilleria tipoArtilleria){
     InfoTropa* tropa = getTropa(nroTropa, tipoArtilleria);
     return tropa->posicion;
 }

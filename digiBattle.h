@@ -165,7 +165,7 @@ public:
     Pre: Recibe el casillero, la artillería y el numero de jugador
     Pos: Compara la artillería con el contenido y devuelve true si la artillería se coloca o false si se destruye
     */
-    bool resolverColision(Casillero* casilleroNuevo, Ubicacion posicionNueva);
+    bool resolverColision(Casillero* casilleroNuevo);
 
     /*
     Pre: Recibe el casillero anterior, el casillero destino y la posicion destino

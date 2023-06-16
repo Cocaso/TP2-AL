@@ -87,7 +87,7 @@ public:
     void addCarta();
 
     /*
-    Pre: recibe el numero de tropa y el tipo de Artilleria
+    Pre: Recibe el numero de tropa y el tipo de Artilleria
     Pos: Si la tropa es SOLDADO le resta una vida al jugador, ademas de sacarle la tropa, y devuelve la cantidad de vidas que le quedan al jugador
     */
     int removerTropa(int nroTropa, Artilleria tipoTropa);
@@ -97,6 +97,12 @@ public:
     Pos: Devuelve el numero del jugador
     */
     int getNumeroJugador();
+
+    /*
+    Pre: Recibe una artilleria
+    Pos: Devuelve la cantidad de tropas tipo Artilleria que le quedan al jugador
+    */
+    int cantidadTropas(Artilleria tipoTropa);
 
     /*
     Pre: ~~
@@ -138,7 +144,7 @@ public:
     Pre: ~~
     Pos: Devuelve la posicion del soldado
     */
-    Ubicacion getPosicionTropa(int nroTropa, Artilleria tipoArtilleria);
+    Ubicacion getUbicacionTropa(int nroTropa, Artilleria tipoArtilleria);
 
     /*
     Pre: Recibe un numero de carta
