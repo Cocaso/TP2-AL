@@ -100,7 +100,7 @@ int Jugador::removerTropa(int nroTropa, Artilleria tipoTropa){
     }
     InfoTropa * tropa = this->getTropa(nroTropa, tipoTropa);
     this->tropas->remover(getPosicionTropaEnLista(nroTropa, tipoTropa));
-    delete tropa();
+    delete tropa;
     return this->vidas;
 }
 
@@ -152,7 +152,7 @@ int Jugador::cantidadCartas(){
 }
 
 bool Jugador::existeCarta(int numeroCarta){
-    this->cartas->iniciarCursor();
+    this->cartas->reiniciarCursor();
     while(this->cartas->avanzarCursor()){
         if(this->cartas->getCursor() == numeroCarta){
             return true;
@@ -173,13 +173,13 @@ Ubicacion Jugador::getUbicacionTropa(int nroTropa, Artilleria tipoArtilleria){
 
 
 Tipos Jugador::getCarta(int numeroCarta){
-    this->cartas->reiniciarCursor();
-    while(this->cartas->avanzarCursor()){
-        if(this->cartas->getCursor() == numeroCarta)
-        return this->cartas->getCursor();
-    }
+    Tipos carta;
+    carta = this->cartas->get(numeroCarta);
+    this->cartas->remover(numeroCarta);
+    return carta;
     //Falta validar
 }
+
 
 InfoTropa* Jugador::getTropa(int nroTropaPedida, Artilleria tipoArtilleria){
     InfoTropa* tropaBuscada = NULL;

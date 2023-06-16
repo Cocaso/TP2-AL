@@ -87,7 +87,7 @@ void DigiBattle::turno(){
             this->jugadores->reiniciarCursor();
         }
         jugadorActual = this->jugadores->getCursor();
-
+        cout <<"Turno del jugador numero " << jugadorActual->getNumeroJugador() <<endl;
         //Le da una carta al jugador
         this->obtenerCarta(jugadorActual);
 
@@ -331,7 +331,7 @@ Ubicacion DigiBattle::pedirUbicacion(Artilleria tipo){
     //si las coordenadas no son válidas, vuelve a pedir
     do{
         //solo pide Z (altura) si la artillería es un avión
-        if (tipo != AVION || tipo != VACIO) {
+        if (tipo != AVION && tipo != VACIO) {
             posicion.z = 1;
             cout << "Ingrese coordenada X : "<< endl;
             cin >> posicion.x;
@@ -365,10 +365,10 @@ void DigiBattle::usarCarta(Jugador* jugador){
     do{
         cout<<"Ingrese el numero de carta que desea usar "<<endl;
         cin >> numeroCarta;
-    }while(!existeCarta(numeroCarta));
-
+    }while(jugador->cantidadCartas() < numeroCarta);
+    
     Tipos tipo = jugador->getCarta(numeroCarta);
-   
+    
     switch(tipo){
         case ATAQUEQUIMICO:
             cartaAtaqueQuimico(this->pedirUbicacion(VACIO));
@@ -610,8 +610,8 @@ void DigiBattle::cartaRayoLaser(Jugador * jugador){
     cout << "S - abajo" << endl;
     cout << "D - derecha" << endl;
     cin >> direccion;
-    while(direccion != 'W' || direccion != 'A' ||
-        direccion != 'S' || direccion != 'D'){
+    while(direccion != 'W' && direccion != 'A' &&
+        direccion != 'S' && direccion != 'D'){
         cout << "Elija la direccion del rayo:"<< endl;
         cin >> direccion; 
     }

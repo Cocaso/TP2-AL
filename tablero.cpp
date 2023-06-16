@@ -197,12 +197,13 @@ void Tablero::mostrarTablero(){
 }
 
 Casillero * Tablero::getCasillero(Ubicacion posicion){
+    // Revisar listaX y listaY estan inversas
     Lista<Lista<Casillero*>*>* listaY;
     Lista<Casillero*>* listaX;
 
     listaY = this->tablero->get(posicion.z);
-    listaX = listaY->get(posicion.y);
-    return listaX->get(posicion.x);
+    listaX = listaY->get(posicion.x);   // cambiado y
+    return listaX->get(posicion.y);     //cambiado x t
 }
    
 bool Tablero::validarCoordenadas(Ubicacion posicion){

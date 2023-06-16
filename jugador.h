@@ -153,8 +153,8 @@ public:
     Ubicacion getUbicacionTropa(int nroTropa, Artilleria tipoArtilleria);
 
     /*
-    Pre: Recibe un numero de carta
-    Pos: Devuelve la carta buscada
+    Pre: Recibe un numero de posicion de carta en la lista cartas
+    Pos: Devuelve la carta buscada, ademas de sacarsela del mazo
     */
     Tipos getCarta(int numeroCarta);
 
