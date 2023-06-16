@@ -33,15 +33,17 @@ void DigiBattle::iniciarJuego(){
     tableroSize.y = dimension;    //Revisar esto que esta mal
     tableroSize.z = dimension;    //Hay que aclarar la disposicion de las coordenadas al usuario
 
+    this->tablero = new Tablero(tableroSize); //crear tablero
+    this->tablero->crearTerreno();
+    this->tablero->mostrarTablero();
+    
     cout << "Ingrese cantidad de jugadores: " << endl;
     cin >> cantidadJugadores;
 
     cout <<"Ingrese la cantidad de tropas por jugador: "<< endl;
     cin >> cantidadSoldados;
     
-    this->tablero = new Tablero(tableroSize); //crear tablero
-    this->tablero->crearTerreno();
-    this->tablero->mostrarTablero();
+
 
     jugadores->reiniciarCursor();
     for (int i = 1 ; i <= cantidadJugadores; i++){ //crear jugadores y colocar tropas
@@ -60,6 +62,7 @@ void DigiBattle::iniciarJuego(){
             
             nuevoJugador->agregarTropa(posicionSoldado, j, SOLDADO);  //agrego soldado
             this->tablero->getCasillero(posicionSoldado)->ponerArtilleria(SOLDADO, i, j);  //pone el soldado en el tablero
+            this->tablero->mostrarTablero();
         }
         
         
@@ -94,7 +97,9 @@ void DigiBattle::turno(){
         //Poner mina (y disparar con el barco??)
         cout <<"Momento de colocar una mina " << endl;
         this->ponerMina();
+        this->tablero->mostrarTablero();
         this->dispararBarco();
+        this->tablero->mostrarTablero();
         
         //Vemos si quiere mover alguna tropa
         do {
@@ -105,6 +110,7 @@ void DigiBattle::turno(){
         if (opcion == 'S'){
             this->moverTropa();
         }
+        this->tablero->mostrarTablero();
         
         //Elige si usa una carta o no y cuál
         do { 
@@ -217,15 +223,19 @@ void DigiBattle::moverTropa(){
         }
         Ubicacion ubiActual = ubiTropa;
         while (tropaViva && (cant > 0)) {   //cant == movimientos restantes
+            ubiTropa = ubiActual;
             ubiActual.x += obtenerSigno(diferenciaX);
             ubiActual.y += obtenerSigno(diferenciaY);
-            tropaViva = resolverColision(tablero->getCasillero(ubiTropa), tablero->getCasillero(ubiActual), ubiNueva);
+            tropaViva = resolverColision(tablero->getCasillero(ubiTropa), tablero->getCasillero(ubiActual), ubiActual);
 
             //controla que no se mueva más de la cuenta
             cant--;
         }
     } else if (seleccionTropa == AVION) {
-        
+        while(!resolverColision(tablero->getCasillero(ubiTropa), tablero->getCasillero(ubiNueva), ubiNueva)){
+            cout << "La posicion elegida tiene un avion ya existente" << endl;
+            ubiNueva = this->pedirUbicacion(seleccionTropa);
+        }
     }
 }
 
@@ -270,7 +280,7 @@ bool DigiBattle::validarCasillero(Ubicacion posicion, Artilleria tipo){
 
     //si las coordenadas existen sigue, sino false
     if(!this->tablero->validarCoordenadas(posicion)){
-        cout<<"Coordenadas ingresadas fuera rango"<< endl;
+        cout<<"Coordenadas ingresadas fuera de rango"<< endl;
         return false;
     }
 
@@ -401,12 +411,13 @@ Jugador* DigiBattle::buscarJugador(int nroJugador){
     
     //Reiniciamos el cursor y buscamos al jugador objetivo
     this->jugadores->reiniciarCursor();
-    while(this->jugadores->avanzarCursor() && jugadorBuscado == NULL){
+    while(jugadorBuscado == NULL && this->jugadores->avanzarCursor()){
         if (this->jugadores->getCursor()->getNumeroJugador() == nroJugador){
             jugadorBuscado = this->jugadores->getCursor();
         }
     }
     
+    //Vuelve a poner el cursor en la posicion anterior
     jugadores->reiniciarCursor();
     while(posicionAntiguaEncontrada == false && this->jugadores->avanzarCursor()){
         if (jugadores->getCursor()->getNumeroJugador() == jugadorAntiguo){
@@ -476,6 +487,8 @@ bool DigiBattle::resolverColision(Casillero* casilleroAnterior, Casillero* casil
         casilleroNuevo->desactivarCasilla(turnosDesactivar);
         this->casillerosInactivos->add(casilleroNuevo);
         sacarTropaJugador(nroJugadorDuenho,nroTropaOrigen, SOLDADO);
+        return false;
+    } else if (tipoTropaOrigen == AVION && tipoTropaDestino == AVION){
         return false;
     }
 }
@@ -590,7 +603,7 @@ void DigiBattle::cartaAgregarSoldados(Jugador * jugador){
         cout<<"Soldado numero: " << jugador->getNumSiguienteSoldado() << endl;
         Ubicacion posicion = pedirUbicacion(SOLDADO);
         int posicionTropaSoldado = jugador->getNumSiguienteSoldado();
-        jugador->agregarTropa(posicion , posicionTropaSoldado, SOLDADO);
+        jugador->agregarTropa(posicion, posicionTropaSoldado, SOLDADO);
     }
 }
 

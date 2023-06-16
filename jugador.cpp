@@ -189,7 +189,7 @@ Tipos Jugador::getCarta(int numeroCarta){
 InfoTropa* Jugador::getTropa(int nroTropaPedida, Artilleria tipoArtilleria){
     InfoTropa* tropaBuscada = NULL;
     this->tropas->reiniciarCursor();
-    while(this->tropas->avanzarCursor() && tropaBuscada == NULL){
+    while(tropaBuscada == NULL && this->tropas->avanzarCursor()){
         if(this->tropas->getCursor()->nroTropa == nroTropaPedida  && this->tropas->getCursor()->tropa == tipoArtilleria){
             tropaBuscada = this->tropas->getCursor();
         }
@@ -208,4 +208,3 @@ Lista<casilleroUbi>* Jugador::getListaCasillerosVisibles(){
 Lista<Tipos>* Jugador::getListaCartas(){
     return this->cartas;
 }
-
