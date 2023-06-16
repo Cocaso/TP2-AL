@@ -78,14 +78,14 @@ void Jugador::nombreCarta(Tipos numDeCarta){
 }   
 
 void Jugador::informarCartasDisponibles(){
-    Tipos carta;
+    Tipos tipoCarta;
     int contadorCarta = 1;
     this->cartas->reiniciarCursor();
     while(this->cartas->avanzarCursor()){
-        cout<<"Carta numero "<< contadorCarta <<": ";
-        carta = cartas->getCursor();
-        this->nombreCarta(this->getCarta(contadorCarta));
-        contadorCarta++;
+        tipoCarta = cartas->getCursor();
+        cout << "Carta numero "<< contadorCarta << ": ";
+        this->nombreCarta(tipoCarta);
+        cout << endl;
     }
 }  
 
@@ -99,15 +99,14 @@ int Jugador::removerTropa(int nroTropa, Artilleria tipoTropa){
         this->vidas--;
     }
     InfoTropa * tropa = this->getTropa(nroTropa, tipoTropa);
-    delete(tropa);
     this->tropas->remover(getPosicionTropaEnLista(nroTropa, tipoTropa));
+    delete tropa();
     return this->vidas;
 }
 
 int Jugador::getNumeroJugador(){
     return this->numDeJugador;
 }
-
 
 int Jugador::cantidadTropas(Artilleria tipoTropa){
     this->tropas->reiniciarCursor();
@@ -152,6 +151,16 @@ int Jugador::cantidadCartas(){
     return this->cartas->contarElementos();
 }
 
+bool Jugador::existeCarta(int numeroCarta){
+    this->cartas->iniciarCursor();
+    while(this->cartas->avanzarCursor()){
+        if(this->cartas->getCursor() == numeroCarta){
+            return true;
+        }
+    }
+    return false;
+}
+
 bool Jugador::tropaViva(int nroTropa, Artilleria tipoArtilleria){
     InfoTropa* tropa = this->getTropa(nroTropa, tipoArtilleria);
     return (tropa ==  NULL);
@@ -162,9 +171,14 @@ Ubicacion Jugador::getUbicacionTropa(int nroTropa, Artilleria tipoArtilleria){
     return tropa->posicion;
 }
 
-Tipos Jugador::getCarta(int nroCarta){
+
+Tipos Jugador::getCarta(int numeroCarta){
     this->cartas->reiniciarCursor();
-    return this->cartas->get(nroCarta);
+    while(this->cartas->avanzarCursor()){
+        if(this->cartas->getCursor() == numeroCarta)
+        return this->cartas->getCursor();
+    }
+    //Falta validar
 }
 
 InfoTropa* Jugador::getTropa(int nroTropaPedida, Artilleria tipoArtilleria){

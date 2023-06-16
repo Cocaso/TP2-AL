@@ -67,5 +67,6 @@
     "string": "cpp",
     "random": "cpp"
   },
-  "C_Cpp.errorSquiggles": "disabled"
+  "C_Cpp.errorSquiggles": "disabled",
+  "cmake.sourceDirectory": "${workspaceFolder}/Users/coco2/.vscode/extensions/twxs.cmake-0.0.17/node_modules/peg-cmake/test"
 }

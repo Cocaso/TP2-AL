@@ -135,6 +135,12 @@ public:
     int cantidadCartas();
 
     /*
+    Pre: Recibe el numero identificador de la carta que se busca
+    Pos: Devuelve true si la carta esta en la lista cartas, en otro caso devuelve false
+    */
+    bool existeCarta(int numeroCarta);
+
+    /*
     Pre: Recibe un numero de tropa y tipo de artilleria
     Pos: Devuelve si exite dicha tropa
     */
@@ -148,9 +154,9 @@ public:
 
     /*
     Pre: Recibe un numero de carta
-    Pos: Devuelve 
+    Pos: Devuelve la carta buscada
     */
-    Tipos getCarta(int nroCarta);
+    Tipos getCarta(int numeroCarta);
 
     /*
     Pre: Debe elegirse una tropa existente

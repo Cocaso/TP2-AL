@@ -31,12 +31,8 @@ void Casillero::cambiarTerreno(int binario){
 
 void Casillero::desactivarCasilla(int cantidadTurnosCasillaInactiva){
     this->contenido->turnosInactivo = cantidadTurnosCasillaInactiva;
-
+    this->vaciarCasillero();
     //Modularizar todo esto lmao
-    this->contenido->artilleria = VACIO;
-    this->contenido->jugador = 0;
-    this->contenido->numTropa = 0;
-    this->contenido->municionDelBarco = 0;
 }
 
 bool Casillero::disminuirTurnosInactivo(){

@@ -11,9 +11,9 @@ enum Terreno {
 enum Artilleria {
     VACIO,
     SOLDADO,
-    MINA,
     AVION,
-    BARCO          //tiene municion, si se le termina se inhabilita (inutil)
+    BARCO,
+    MINA,        //tiene municion, si se le termina se inhabilita (inutil)
 };
 
 struct Contenido {
@@ -75,7 +75,7 @@ public:
     void ponerArtilleria(Artilleria artilleria, int numJugador);
 
     /*
-    Pre: Recibe número jugador, tipo de artilleria y númeo de soldado
+    Pre: Recibe numero jugador, tipo de artilleria y numero de soldado
     Pos: Coloca todos los datos en el struct (solo para SOLDADO)
     */
     void ponerArtilleria(Artilleria artilleria, int numJugador, int numSoldado);
