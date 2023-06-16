@@ -29,7 +29,7 @@ struct casilleroUbi{
 class Jugador {
 private:
     int vidas;
-    int numSiguienteSoldado = vidas;
+    int numSiguienteSoldado ;
     int numSiguienteBarco;
     int numSiguienteAvion;
     int numDeJugador;

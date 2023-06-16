@@ -46,6 +46,11 @@ void Jugador::agregarTropa(Ubicacion posicionTropa, int nroTropa, Artilleria tip
     this->tropas->add(nuevaTropa);
     if (tipoTropa == SOLDADO){
         this->vidas++;
+        this->numSiguienteSoldado++;
+    }else if(tipoTropa == AVION){
+        this->numSiguienteAvion++;
+    }else if(tipoTropa == BARCO){
+        this->numSiguienteBarco++;
     }
 }
 
