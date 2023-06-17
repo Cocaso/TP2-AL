@@ -112,9 +112,8 @@ bool Jugador::bajarVidaBarco(int nroTropa){
 }
 
 void Jugador::addCarta(){
-    //srand(time(NULL));
-    //this->cartas->add((static_cast<Tipos> (rand() % 6)));
-    this->cartas->add(ATAQUEQUIMICO);
+    srand(time(NULL));
+    this->cartas->add((static_cast<Tipos> (rand() % 6)));
 }
 
 int Jugador::removerTropa(int nroTropa, Artilleria tipoTropa){

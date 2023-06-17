@@ -77,6 +77,12 @@ public:
     int getTamanhoTableroY();
 
     /*
+    Pre: ~~
+    Pos: Devuelve el tamaño en el eje Z del tablero
+    */
+    int getTamanhoTableroZ();
+
+    /*
     Pre:
     Pos:
     */

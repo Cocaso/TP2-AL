@@ -177,10 +177,16 @@ public:
     bool comprobarVictoria();
 
     /*
-    Pre: Recibe una ubicacion donde utilizar la carta ataque quimico
+    Pre: Recibe un puntero a casillero y el tiempo que se desactiva la casilla
+    Pos: Si en el casillero hay una tropa, la mata y desactiva el casillero
+    */
+    void resolverColisionQuimico(Casillero* casilleroNuevo, int inactivo);
+
+    /*
+    Pre: ~~
     Pos: Mata todo en su radio y desactiva las casillas la cantidad de turnos correspondientes
     */
-    void cartaAtaqueQuimico(Ubicacion posicion);
+    void cartaAtaqueQuimico();
 
     /*
     Pre: Recibe un jugador
@@ -220,7 +226,7 @@ public:
     Lista<Jugador*>* getListaJugadores();
 
     /*
-    Pre: recibe ubicacion de soldado ,ademas de numero de jugador
+    Pre: recibe ubicacion de soldado, ademas de numero de jugador
     Pos: Devuelve true si el soldado colisiona con otro soldado
     */
     bool colisionSoldado(Ubicacion posicionSoldado, int numJugador);

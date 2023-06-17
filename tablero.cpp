@@ -44,25 +44,27 @@ void Tablero::crearTerreno(){
     
     
     //Primero se llena la capa inferior con el diseño del mapa
+    for (z = 0; z < 5; z++){
 
-    listaY = new(Lista<Lista<Casillero*>*>);
-    
-    for (y = 0; y < this->maxY ; y++){
-        listaX = new(Lista<Casillero*>);
+        listaY = new(Lista<Lista<Casillero*>*>);
+        
+        for (y = 0; y < this->maxY ; y++){
+            listaX = new(Lista<Casillero*>);
 
-        indiceDos = (y%20);       // da el resto (0-19) uwu 
-        for (x = 0; x < this->maxX; x++){
-            casillero = new(Casillero);
-            
-            indiceUno = (x%20);   // da el resto (0-19) uwu
-            casillero->cambiarTerreno(mapaTemplate[indiceUno][indiceDos]);
-            listaX->add(casillero);
+            indiceDos = (y%20);       // da el resto (0-19) uwu 
+            for (x = 0; x < this->maxX; x++){
+                casillero = new(Casillero);
+                
+                indiceUno = (x%20);   // da el resto (0-19) uwu
+                casillero->cambiarTerreno(mapaTemplate[indiceUno][indiceDos]);
+                listaX->add(casillero);
+            }
+            listaY->add(listaX);
         }
-        listaY->add(listaX);
-    } 
+        this->tablero->add(listaY);
+    }
     
     
-    this->tablero->add(listaY);
     //---------------------------------------------------------
 
     //Se llena una listaX con aire, una listaY con copias de listaX, 
@@ -76,7 +78,7 @@ void Tablero::crearTerreno(){
     for (y = 0; y < this->maxY ; y++){
         listaY->add(listaX);
     }
-    for (z = 1; z < this->maxZ; z++){
+    for (z = 5; z < this->maxZ; z++){
         this->tablero->add(listaY);
     }
     //---------------------------------------------------------
@@ -101,6 +103,10 @@ void Tablero::mostrarTablero(int nroJugador){
 
 
     this->tablero->reiniciarCursor();
+    this->tablero->avanzarCursor();
+    this->tablero->avanzarCursor();
+    this->tablero->avanzarCursor();
+    this->tablero->avanzarCursor();
     this->tablero->avanzarCursor();
 
     Lista<Lista<Casillero*>*>*listaY = this->tablero->getCursor();
@@ -217,4 +223,8 @@ int Tablero::getTamanhoTableroX(){
 
 int Tablero::getTamanhoTableroY(){
     return this->maxY;
+}
+
+int Tablero::getTamanhoTableroZ(){
+    return this->maxZ;
 }
