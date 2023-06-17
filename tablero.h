@@ -80,7 +80,7 @@ public:
     Pre:
     Pos:
     */
-    void mostrarTablero();
+    void mostrarTablero(int nroJugador);
 
     /*
     Pre: Recibe 3 coordenadas

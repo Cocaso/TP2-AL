@@ -7,7 +7,6 @@ Casillero::Casillero() {
     this->contenido->toxico = 0;
     this->contenido->jugador = 0;
     this->contenido->numTropa = 0;
-    this->contenido->municionDelBarco = 0;
     this->contenido->artilleria = VACIO;
     this->contenido->turnosInactivo = 0;
 }
@@ -36,7 +35,7 @@ void Casillero::desactivarCasilla(int cantidadTurnosCasillaInactiva){
 }
 
 bool Casillero::disminuirTurnosInactivo(){
-    this->contenido->turnosInactivo -- ;
+    this->contenido->turnosInactivo --;
     return (this->contenido->turnosInactivo == 0);
 }
 
@@ -45,16 +44,12 @@ void Casillero::vaciarCasillero(){
     this->contenido->artilleria =  VACIO;
     this->contenido->jugador = 0;
     this->contenido->numTropa = 0;
-    this->contenido->municionDelBarco = 0;
 }
 
 //Unir con la de abajo e implementas los numTropa de todas las tropas
 void Casillero::ponerArtilleria(Artilleria artilleria, int numJugador){
     this->contenido->artilleria = artilleria;
     this->contenido->jugador = numJugador;
-    if (artilleria == BARCO){
-        this->contenido->municionDelBarco = 5;
-    }
 }
 
 void Casillero::ponerArtilleria(Artilleria artilleria, int numJugador, int numTropa){

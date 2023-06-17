@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/coco2/Desktop/Code/Facultad/Fiuba/C++/TP2/TP2-ALGO2",
-      "program": "c:/Users/coco2/Desktop/Code/Facultad/Fiuba/C++/TP2/TP2-ALGO2/build/Debug/outDebug",
+      "cwd": "d:/Fiuba/ALGO2/TP2-algo2/TP2-ALGO2",
+      "program": "d:/Fiuba/ALGO2/TP2-algo2/TP2-ALGO2/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
@@ -19,32 +19,6 @@
           "ignoreFailures": true
         }
       ]
-    },
-    {
-      "name": "C/C++: g++.exe build and debug active file",
-      "type": "cppdbg",
-      "request": "launch",
-      "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
-      "args": [],
-      "stopAtEntry": false,
-      "cwd": "C:\\MinGW\\bin",
-      "environment": [],
-      "externalConsole": false,
-      "MIMode": "gdb",
-      "miDebuggerPath": "gdb.exe",
-      "setupCommands": [
-        {
-          "description": "Enable pretty-printing for gdb",
-          "text": "-enable-pretty-printing",
-          "ignoreFailures": true
-        },
-        {
-          "description": "Set Disassembly Flavor to Intel",
-          "text": "-gdb-set disassembly-flavor intel",
-          "ignoreFailures": true
-        }
-      ],
-      "preLaunchTask": "C/C++: g++.exe build active file"
     }
   ]
 }

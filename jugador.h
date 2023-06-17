@@ -19,6 +19,7 @@ struct InfoTropa {
     int nroTropa;
     Artilleria tropa;
     Ubicacion posicion;
+    int vidasBarco;
 };
 
 struct casilleroUbi{
@@ -46,43 +47,50 @@ public:
 
     /*
     Pre: Recibe un número de jugador
-    Pos: Crea el jugador con ese número
+    Pos: Crea el jugador y le asigna ese número
     */
     Jugador(int nroJugador);
 
     /*
-    Pre: Recibe un número de jugador
-    Pos: Crea el jugador con ese número
+    Pre: 
+    Pos: Borra al jugador
     */
     ~Jugador();
 
     /*
-    Pre:Recibe un numero de soldado y su ubicacion
+    Pre:Recibe un numero de soldado, tipo de artilleria y su ubicacion
     Pos:agrega soldado a la lista de tropas del jugador
     */
     void agregarTropa(Ubicacion posicionSoldado, int nroSoldado, Artilleria tipoTropa);
 
     /*
-    Pre: Debe elegirse una tropa existente
+    Pre: recibe un tipo de artilleria , ubicacion a colocar artilleria , y numero de tropa pedia
     Pos: Cambia la ubicacion de la tropa
     */
     void setPosicionTropa(int nroTropaPedida, Artilleria tipoArtilleria, Ubicacion ubicacion);
 
     /*
     Pre: recibe un tipo de carta
-    Pos: devuelve el nombre de una carta
+    Pos: devuelve el nombre de la carta
     */
     void nombreCarta( Tipos numDeCarta);
 
     /*
     Pre: ~~
-    Pos: devuelve los nombres de las cartas
+    Pos: devuelve los nombres de las cartas disponibles por el jugador
     */
     void informarCartasDisponibles();
+
+    /*
+    Pre: Recibe un numero de tropa
+    Pos: Baja la vida al barco si le quedan vidas
+    */
+    bool bajarVidaBarco(int nroTropa);
+
         
     /*
     Pre: ~~
-    Pos: Agrega un numero aleatorio del 0 al 5 a la lista de cartas
+    Pos: Le agrega una carta al jugador
     */
     void addCarta();
 
@@ -100,12 +108,12 @@ public:
 
     /*
     Pre: Recibe una artilleria
-    Pos: Devuelve la cantidad de tropas tipo Artilleria que le quedan al jugador
+    Pos: Devuelve la cantidad de tropas de ese tipo Artilleria que le quedan al jugador
     */
     int cantidadTropas(Artilleria tipoTropa);
 
     /*
-    Pre: ~~
+    Pre: Recibe numero de tropa buscada,ademas de su tipo de tropa
     Pos: Devuelve la posicion de la tropa en la lista de tropas
     */
     int getPosicionTropaEnLista(int nroTropaBuscada, Artilleria tipoTropa);
@@ -135,20 +143,14 @@ public:
     int cantidadCartas();
 
     /*
-    Pre: Recibe el numero identificador de la carta que se busca
-    Pos: Devuelve true si la carta esta en la lista cartas, en otro caso devuelve false
-    */
-    bool existeCarta(int numeroCarta);
-
-    /*
     Pre: Recibe un numero de tropa y tipo de artilleria
     Pos: Devuelve si exite dicha tropa
     */
     bool tropaViva(int nroTropaPedida, Artilleria tipoArtilleria);
 
     /*
-    Pre: ~~
-    Pos: Devuelve la posicion del soldado
+    Pre: Recibe numero de tropa y tipo de artilleria
+    Pos: Devuelve la posicion de la tropa
     */
     Ubicacion getUbicacionTropa(int nroTropa, Artilleria tipoArtilleria);
 
@@ -159,7 +161,7 @@ public:
     Tipos getCarta(int numeroCarta);
 
     /*
-    Pre: Debe elegirse una tropa existente
+    Pre: Recibe numero de tropa pedida
     Pos: Devuelve un puntero a la tropa buscada o NULL si no se encontró
     */
     InfoTropa* getTropa(int nroTropaPedida, Artilleria tipoArtilleria);

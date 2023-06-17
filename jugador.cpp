@@ -43,6 +43,11 @@ void Jugador::agregarTropa(Ubicacion posicionTropa, int nroTropa, Artilleria tip
     nuevaTropa->tropa = tipoTropa;
     nuevaTropa->posicion = posicionTropa;
     nuevaTropa->nroTropa = nroTropa;
+    if (tipoTropa == BARCO){
+        nuevaTropa->vidasBarco = 3;
+    } else{
+        nuevaTropa->vidasBarco = 0;
+    };
     this->tropas->add(nuevaTropa);
     if (tipoTropa == SOLDADO){
         this->vidas++;
@@ -88,15 +93,28 @@ void Jugador::informarCartasDisponibles(){
     this->cartas->reiniciarCursor();
     while(this->cartas->avanzarCursor()){
         tipoCarta = cartas->getCursor();
-        cout << "Carta numero "<< contadorCarta << ": ";
+        cout << contadorCarta << " - ";
         this->nombreCarta(tipoCarta);
-        cout << endl;
+        contadorCarta ++;
     }
+    cout << endl;
 }  
 
+bool Jugador::bajarVidaBarco(int nroTropa){
+    InfoTropa* barco = this->getTropa(nroTropa, BARCO);
+    if (barco->vidasBarco == 1){
+        barco->vidasBarco --;
+        return false;
+    } else {
+        barco->vidasBarco --;
+        return true;
+    }
+}
+
 void Jugador::addCarta(){
-    srand(time(NULL));
-    this->cartas->add((static_cast<Tipos> (rand() % 6)));
+    //srand(time(NULL));
+    //this->cartas->add((static_cast<Tipos> (rand() % 6)));
+    this->cartas->add(ATAQUEQUIMICO);
 }
 
 int Jugador::removerTropa(int nroTropa, Artilleria tipoTropa){
@@ -138,32 +156,22 @@ int Jugador::getPosicionTropaEnLista(int nroTropaBuscada, Artilleria tipoTropa){
 }
 
 int Jugador::getNumSiguienteSoldado(){
-    this->numSiguienteSoldado++;
+    this->numSiguienteSoldado = this->numSiguienteSoldado + 1;
     return this->numSiguienteSoldado;
 }
 
 int Jugador::getNumSiguienteBarco(){
-    this->numSiguienteBarco++;
+    this->numSiguienteBarco = this->numSiguienteBarco + 1;
     return this->numSiguienteBarco;
 }
 
 int Jugador::getNumSiguienteAvion(){
-    this->numSiguienteAvion++;
+    this->numSiguienteAvion = this->numSiguienteAvion + 1;
     return this->numSiguienteAvion;
 }  
 
 int Jugador::cantidadCartas(){
     return this->cartas->contarElementos();
-}
-
-bool Jugador::existeCarta(int numeroCarta){
-    this->cartas->reiniciarCursor();
-    while(this->cartas->avanzarCursor()){
-        if(this->cartas->getCursor() == numeroCarta){
-            return true;
-        }
-    }
-    return false;
 }
 
 bool Jugador::tropaViva(int nroTropa, Artilleria tipoArtilleria){
@@ -176,7 +184,6 @@ Ubicacion Jugador::getUbicacionTropa(int nroTropa, Artilleria tipoArtilleria){
     return tropa->posicion;
 }
 
-
 Tipos Jugador::getCarta(int numeroCarta){
     Tipos carta;
     carta = this->cartas->get(numeroCarta);
@@ -184,7 +191,6 @@ Tipos Jugador::getCarta(int numeroCarta){
     return carta;
     //Falta validar
 }
-
 
 InfoTropa* Jugador::getTropa(int nroTropaPedida, Artilleria tipoArtilleria){
     InfoTropa* tropaBuscada = NULL;

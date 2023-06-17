@@ -20,7 +20,6 @@ struct Contenido {
     bool toxico;
     int jugador;
     int numTropa;
-    int municionDelBarco;
     Artilleria artilleria;
     int turnosInactivo;
 };
@@ -78,7 +77,7 @@ public:
     Pre: Recibe numero jugador, tipo de artilleria y numero de soldado
     Pos: Coloca todos los datos en el struct (solo para SOLDADO)
     */
-    void ponerArtilleria(Artilleria artilleria, int numJugador, int numSoldado);
+    void ponerArtilleria(Artilleria artilleria, int numJugador, int numTropa);
 
     /*
     Pre: Recibe el tipo de artilleria que se quiere colocar
@@ -133,7 +132,4 @@ public:
     */
     Terreno devolverTerreno();
 };
-
-
-
 #endif
