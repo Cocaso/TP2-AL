@@ -1,0 +1,230 @@
+#include "tablero.h"
+
+
+Tablero::Tablero(){
+    this->tablero = NULL;
+    this->maxX = 0;
+    this->maxY = 0;
+    this->maxZ = 0;    
+}
+
+Tablero::Tablero(Ubicacion maxSize) {
+    this->tablero = new(Lista<Lista<Lista<Casillero*>*>*>);
+    this->maxX = maxSize.x;
+    this->maxY = maxSize.y;
+    this->maxZ = maxSize.z;
+}
+
+Tablero::~Tablero() {
+    Lista<Lista<Casillero*>*>* x; 
+    Lista<Casillero*>* y;
+    
+    this->tablero->reiniciarCursor();
+    while(this->tablero->avanzarCursor()){ //listaDeListasDelistas
+        x = this->tablero->getCursor();
+        x->reiniciarCursor(); //listaDeListas
+        while(x->avanzarCursor()){
+            y = x->getCursor();
+            y->reiniciarCursor(); //listas
+            while(y->avanzarCursor()){
+                y->getCursor()->~Casillero();
+                delete y->getCursor();
+            }
+        }
+    }
+    delete(this->tablero);
+}
+
+void Tablero::crearTerreno(){
+    int x ,y ,z;
+    int indiceUno, indiceDos;
+    Casillero* casillero;
+    Lista<Casillero*>* listaX ;
+    Lista<Lista<Casillero*>*>* listaY;
+    
+    
+    //Primero se llena la capa inferior con el diseño del mapa
+    for (z = 0; z < 5; z++){
+
+        listaY = new(Lista<Lista<Casillero*>*>);
+        
+        for (y = 0; y < this->maxY ; y++){
+            listaX = new(Lista<Casillero*>);
+
+            indiceDos = (y%20);       // da el resto (0-19) uwu 
+            for (x = 0; x < this->maxX; x++){
+                casillero = new(Casillero);
+                
+                indiceUno = (x%20);   // da el resto (0-19) uwu
+                casillero->cambiarTerreno(mapaTemplate[indiceUno][indiceDos]);
+                listaX->add(casillero);
+            }
+            listaY->add(listaX);
+        }
+        this->tablero->add(listaY);
+    }
+    
+    
+    //---------------------------------------------------------
+
+    //Se llena una listaX con aire, una listaY con copias de listaX, 
+    //y el resto del tablero con copias de listaY
+    casillero = new(Casillero);
+    listaX = new(Lista<Casillero*>);
+    for (x = 0; x < this->maxX ; x++){
+        listaX->add(casillero);
+    }
+    listaY = new(Lista<Lista<Casillero*>*>);
+    for (y = 0; y < this->maxY ; y++){
+        listaY->add(listaX);
+    }
+    for (z = 5; z < this->maxZ; z++){
+        this->tablero->add(listaY);
+    }
+    //---------------------------------------------------------
+    
+
+}
+
+void Tablero::mostrarTablero(int nroJugador){
+    bitmap_image gas("Casilleros/gas.bmp");
+    bitmap_image tierra("Casilleros/tierra.bmp");
+    bitmap_image tierraInactiva("Casilleros/tierra_inactiva.bmp");
+    bitmap_image agua("Casilleros/agua.bmp");
+    bitmap_image aguaInactiva("Casilleros/muC.bmp");
+    bitmap_image soldado("Casilleros/soldado.bmp");
+    bitmap_image soldadoNadando("Casilleros/nadando.bmp");
+    bitmap_image mina("Casilleros/mina.bmp");
+    bitmap_image minaAgua("Casilleros/mina_agua.bmp");
+    bitmap_image barco("Casilleros/barco.bmp");
+    bitmap_image avion("Casilleros/avion.bmp");
+    bitmap_image bmpTablero(static_cast<unsigned>(maxX*32), static_cast<unsigned>(maxY*32));
+    bitmap_image* casilleroADibujar;
+
+
+    this->tablero->reiniciarCursor();
+    this->tablero->avanzarCursor();
+    this->tablero->avanzarCursor();
+    this->tablero->avanzarCursor();
+    this->tablero->avanzarCursor();
+    this->tablero->avanzarCursor();
+
+    Lista<Lista<Casillero*>*>*listaY = this->tablero->getCursor();
+    Lista<Casillero*>* listaX;
+    Casillero* casilleroActual;
+    unsigned char r, g, b;
+    int y, x, i = 0, j = 0;
+
+    listaY->reiniciarCursor();
+    while(listaY->avanzarCursor()){
+        listaX = listaY->getCursor();
+        listaX->reiniciarCursor();
+        j = 0;
+        while (listaX->avanzarCursor()){
+            
+            casilleroActual = listaX->getCursor();
+            bool esDelJugador = casilleroActual->devolverNroJugador() == nroJugador;
+            //Elige qué casillero dibujar
+            if(!casilleroActual->esToxico()){
+                if (casilleroActual->devolverTerreno() == TIERRA){
+                    switch (casilleroActual->devolverArtilleria()) {
+                    case VACIO:
+                        if(casilleroActual->devolverTurnosInactivos() > 0){
+                            casilleroADibujar = &tierraInactiva;
+                            break;
+                        }
+                    case SOLDADO:
+                        if(esDelJugador){
+                            casilleroADibujar = &soldado;
+                            break;
+                        }
+                    case MINA:
+                        if(esDelJugador){
+                            casilleroADibujar = &mina;
+                            break;
+                        }
+                    default:
+                        casilleroADibujar = &tierra;
+                        break;
+                    }
+
+                } else if (casilleroActual->devolverTerreno() == AGUA){
+                    switch (casilleroActual->devolverArtilleria()) {
+                    case VACIO:
+                        if(casilleroActual->devolverTurnosInactivos() > 0){
+                            casilleroADibujar = &aguaInactiva;
+                            break;
+                        }
+                    case SOLDADO:
+                        if(esDelJugador){
+                            casilleroADibujar = &soldadoNadando;
+                            break;
+                        }
+                    case MINA:
+                        if(esDelJugador){
+                            casilleroADibujar = &minaAgua;
+                            break;
+                        }
+                    case BARCO:
+                        if(esDelJugador){
+                            casilleroADibujar = &barco;
+                            break;
+                        }
+                    default:
+                        casilleroADibujar = &agua;
+                        break;
+                    }
+                }
+            } else {
+                casilleroADibujar = &gas;
+            }
+
+            //Dibujar el casillero
+            for (x = 0; x < 32; x++) {
+                for (y = 0; y < 32; y++) {
+                    (*casilleroADibujar).get_pixel(x, y, r, g, b);
+                    bmpTablero.set_pixel(i*32 + x, j*32 + y, r, g, b);
+                }
+            }
+            j++;    //Variable de posicion del tablero
+        }
+        i++;        //Variable de posicion del tablero
+    }
+
+    bmpTablero.save_image("tablero.bmp");
+}
+
+Casillero * Tablero::getCasillero(Ubicacion posicion){
+    // Revisar listaX y listaY estan inversas
+    Lista<Lista<Casillero*>*>* listaY;
+    Lista<Casillero*>* listaX;
+
+    listaY = this->tablero->get(posicion.z);
+    listaX = listaY->get(posicion.x);   // cambiado y
+    return listaX->get(posicion.y);     //cambiado x t
+}
+   
+bool Tablero::validarCoordenadas(Ubicacion posicion){
+    if((posicion.x <= this->maxX && 
+        posicion.y <= this->maxY && 
+        posicion.z <= this->maxZ ) 
+        && 
+        (posicion.x > 0 && 
+        posicion.y > 0 && 
+        posicion.z > 0 )){
+        return true;
+    }
+    return false;
+}
+
+int Tablero::getTamanhoTableroX(){
+    return this->maxX;
+}
+
+int Tablero::getTamanhoTableroY(){
+    return this->maxY;
+}
+
+int Tablero::getTamanhoTableroZ(){
+    return this->maxZ;
+}

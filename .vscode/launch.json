@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/coco2/OneDrive/Documentos/GitHub/TP2-ALGO2",
-      "program": "c:/Users/coco2/OneDrive/Documentos/GitHub/TP2-ALGO2/build/Debug/outDebug",
+      "cwd": "d:/Fiuba/ALGO2/TP2-algo2/TP2-ALGO2",
+      "program": "d:/Fiuba/ALGO2/TP2-algo2/TP2-ALGO2/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
