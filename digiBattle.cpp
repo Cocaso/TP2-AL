@@ -663,7 +663,7 @@ void DigiBattle::cartaRayoLaser(Jugador * jugador){
         cin >> direccion; 
         cout << endl;
     }
-    if (direccion == 'W'){
+    if (direccion == 'S'){
         posicionActual.y --;
         while (posicionActual.y <= this->tablero->getTamanhoTableroY()){
             tipoArtilleriaCasilla = this->tablero->getCasillero(posicionActual)->devolverArtilleria();
@@ -674,7 +674,7 @@ void DigiBattle::cartaRayoLaser(Jugador * jugador){
             }
             this->tablero->getCasillero(posicionActual)->desactivarCasilla(5);
             this->casillerosInactivos->add(casilleroActual);
-            posicionActual.y ++;
+            posicionActual.y --;
         }
     } else if (direccion == 'A'){
         posicionActual.x --;
@@ -690,7 +690,7 @@ void DigiBattle::cartaRayoLaser(Jugador * jugador){
             posicionActual.x --;
 
         }
-    } else if (direccion == 'S'){
+    } else if (direccion == 'W'){
         posicionActual.y ++;
         while (posicionActual.y > 0){
             tipoArtilleriaCasilla = this->tablero->getCasillero(posicionActual)->devolverArtilleria();
@@ -701,7 +701,7 @@ void DigiBattle::cartaRayoLaser(Jugador * jugador){
             }
             this->tablero->getCasillero(posicionActual)->desactivarCasilla(5);
             this->casillerosInactivos->add(casilleroActual);
-            posicionActual.y --;
+            posicionActual.y ++;
 
         }
     } else if (direccion == 'D'){
