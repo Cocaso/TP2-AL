@@ -226,10 +226,10 @@ public:
     Lista<Jugador*>* getListaJugadores();
 
     /*
-    Pre: recibe ubicacion de soldado, ademas de numero de jugador
-    Pos: Devuelve true si el soldado colisiona con otro soldado
+    Pre: Recibe ubicacion de soldado
+    Pos: Devuelve true si el soldado colisiona con otro soldado al ser colocado
     */
-    bool colisionSoldado(Ubicacion posicionSoldado, int numJugador);
+    bool colisionSoldado(Ubicacion posicionSoldado);
 
 };
 #endif
