@@ -13,7 +13,7 @@ enum Artilleria {
     SOLDADO,
     AVION,
     BARCO,
-    MINA,        //tiene municion, si se le termina se inhabilita (inutil)
+    MINA        //tiene municion, si se le termina se inhabilita (inutil)
 };
 
 struct Contenido {

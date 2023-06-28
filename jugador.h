@@ -12,7 +12,7 @@ enum Tipos {
     INVOCARBARCO,
     POTOFGREED,
     SOLDADOSEXTRA,
-    RAYOLASER,
+    RAYOLASER
 };
 
 struct InfoTropa {

@@ -90,6 +90,7 @@ void DigiBattle::turno(){
         if (!this->jugadores->avanzarCursor()){
             this->jugadores->reiniciarCursor();
             this->jugadores->avanzarCursor();
+            this->reducirCasilleroInactivo();
         }
         jugadorActual = this->jugadores->getCursor();
         cout << endl << "TURNO DEL JUGADOR " << jugadorActual->getNumeroJugador() << endl << endl;
@@ -132,7 +133,7 @@ void DigiBattle::turno(){
         }
 
         //Reducir cuenta de los casilleros inactivos
-        this->reducirCasilleroInactivo();
+        //this->reducirCasilleroInactivo();
     }
     //termina el juego
     this->anunciarGanador(); 
@@ -540,12 +541,15 @@ void DigiBattle::reducirCasilleroInactivo(){
     while(casillerosInactivos->avanzarCursor()){
         casillero = casillerosInactivos->getCursor();
         if (casillero->disminuirTurnosInactivo()){
-            casillerosInactivos->remover(posicion);
             if(casillero->esToxico()){
                 casillero->setToxico(false);
             }
+            casillero->vaciarCasillero();
+            casillerosInactivos->remover(posicion);
+            casillerosInactivos->avanzarCursor(posicion - 1);
+        } else {
+            posicion ++;
         }
-        posicion ++;
     }
 }
 
@@ -565,9 +569,9 @@ void DigiBattle::resolverColisionQuimico(Casillero* casilleroNuevo, int inactivo
 
 void DigiBattle::cartaAtaqueQuimico(){
     const int RANGOATAQUEQUIMICO = 5;       // RANGOATAQUEQUIMICO debe ser impar
-    int efectoAtaqueQuimico = 10;
+    int efectoAtaqueQuimico = 5;
     int radioCubo = RANGOATAQUEQUIMICO / 2;
-    int i, k, j;
+    int i, j, k;
     Ubicacion nuevaUbicacion;
     Casillero * casilleroActual;
     Ubicacion ubicacion = this->pedirUbicacion(VACIO);
@@ -660,11 +664,11 @@ void DigiBattle::cartaRayoLaser(Jugador * jugador){
     while(direccion != 'W' && direccion != 'A' &&
         direccion != 'S' && direccion != 'D'){
         cout << "Seleccion invalida: ";
-        cin >> direccion; 
+        cin >> direccion;
         cout << endl;
     }
     if (direccion == 'S'){
-        posicionActual.y --;
+        posicionActual.y ++;
         while (posicionActual.y <= this->tablero->getTamanhoTableroY()){
             tipoArtilleriaCasilla = this->tablero->getCasillero(posicionActual)->devolverArtilleria();
             if (tipoArtilleriaCasilla == SOLDADO || tipoArtilleriaCasilla == BARCO){
@@ -674,7 +678,7 @@ void DigiBattle::cartaRayoLaser(Jugador * jugador){
             }
             this->tablero->getCasillero(posicionActual)->desactivarCasilla(5);
             this->casillerosInactivos->add(casilleroActual);
-            posicionActual.y --;
+            posicionActual.y ++;
         }
     } else if (direccion == 'A'){
         posicionActual.x --;
@@ -691,7 +695,7 @@ void DigiBattle::cartaRayoLaser(Jugador * jugador){
 
         }
     } else if (direccion == 'W'){
-        posicionActual.y ++;
+        posicionActual.y --;
         while (posicionActual.y > 0){
             tipoArtilleriaCasilla = this->tablero->getCasillero(posicionActual)->devolverArtilleria();
             if (tipoArtilleriaCasilla == SOLDADO || tipoArtilleriaCasilla == BARCO){
@@ -701,7 +705,7 @@ void DigiBattle::cartaRayoLaser(Jugador * jugador){
             }
             this->tablero->getCasillero(posicionActual)->desactivarCasilla(5);
             this->casillerosInactivos->add(casilleroActual);
-            posicionActual.y ++;
+            posicionActual.y --;
 
         }
     } else if (direccion == 'D'){

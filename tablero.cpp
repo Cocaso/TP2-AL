@@ -16,7 +16,7 @@ Tablero::Tablero(Ubicacion maxSize) {
 }
 
 Tablero::~Tablero() {
-    Lista<Lista<Casillero*>*>* x; 
+    Lista<Lista<Casillero*>*>* x;
     Lista<Casillero*>* y;
     
     this->tablero->reiniciarCursor();

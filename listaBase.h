@@ -25,6 +25,7 @@ public:
 	void remover(int posicion);
 	void reiniciarCursor();
 	bool avanzarCursor();
+	bool avanzarCursor(int posicion);
 	T getCursor()const;
 	~Lista();
 private:
@@ -148,6 +149,21 @@ template<class T> bool Lista<T>::avanzarCursor(){
 	}
 	return (this->cursor != NULL);
 }
+
+/* PRE: Position is between [0 , countElements()].
+ * POST:  Moves cursor to the position in the list*/
+template<class T> bool Lista<T>::avanzarCursor(int posicion){
+	this->reiniciarCursor();
+	if (posicion != 0){
+		int i = 1;
+		while(this->avanzarCursor() && i < posicion){
+			i++;
+		}
+	}
+	return (this->cursor != NULL);
+}
+
+
 
 /* PRE: Cursor is standing on an element of the list,
  *  (method advanceCursor() was called and returned "true").
