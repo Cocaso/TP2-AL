@@ -569,7 +569,7 @@ void DigiBattle::resolverColisionQuimico(Casillero* casilleroNuevo, int inactivo
 
 void DigiBattle::cartaAtaqueQuimico(){
     const int RANGOATAQUEQUIMICO = 5;       // RANGOATAQUEQUIMICO debe ser impar
-    int efectoAtaqueQuimico = 5;
+    int efectoAtaqueQuimico = 10;
     int radioCubo = RANGOATAQUEQUIMICO / 2;
     int i, j, k;
     Ubicacion nuevaUbicacion;
