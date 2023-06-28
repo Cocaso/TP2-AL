@@ -482,7 +482,6 @@ bool DigiBattle::resolverColision(Casillero* casilleroAnterior, Casillero* casil
         casilleroAnterior->vaciarCasillero();
         casilleroNuevo->vaciarCasillero();
         return false;
-    
     } else if (tipoTropaDestino == MINA){
         int turnosDesactivar = poderMina();
         casilleroAnterior->vaciarCasillero();
@@ -493,12 +492,15 @@ bool DigiBattle::resolverColision(Casillero* casilleroAnterior, Casillero* casil
     } else if (tipoTropaOrigen == AVION && tipoTropaDestino == AVION){
         return false;
     } else if (tipoTropaOrigen == SOLDADO && tipoTropaDestino == BARCO){
+        sacarTropaJugador(nroJugadorDuenho, nroTropaOrigen, SOLDADO);
+        casilleroAnterior->vaciarCasillero();
         int jugadorEnemigo = casilleroNuevo->devolverNroJugador();
         int nroTropaEnemiga = casilleroNuevo->devolverNroTropa();
         if (!this->buscarJugador(jugadorEnemigo)->bajarVidaBarco(nroTropaEnemiga)){
             sacarTropaJugador(jugadorEnemigo, nroTropaEnemiga, BARCO);
             casilleroNuevo->vaciarCasillero();
         }
+        return false;
     }
 }
 

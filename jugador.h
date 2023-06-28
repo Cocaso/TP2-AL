@@ -3,6 +3,7 @@
 
 #include "listaBase.h"
 #include "tablero.h"
+//#include "tropa.h"
 #include <ctime>
 
 
@@ -28,9 +29,9 @@ struct casilleroUbi{
 };
 
 class Jugador {
-private:
+    private:
     int vidas;
-    int numSiguienteSoldado ;
+    int numSiguienteSoldado;
     int numSiguienteBarco;
     int numSiguienteAvion;
     int numDeJugador;
@@ -38,7 +39,8 @@ private:
     Lista<Tipos>* cartas;
     Lista<casilleroUbi>* casillerosVisibles;
 
-public:
+    public:
+
     /*
     Pre:
     Pos: Crea un jugador vacío

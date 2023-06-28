@@ -6,9 +6,9 @@
 #include "bitmap_image.hpp"
 
 struct Ubicacion{
-        int x;
-        int y;
-        int z;
+    int x;
+    int y;
+    int z;
 };
 
 class Tablero {

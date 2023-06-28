@@ -6,30 +6,19 @@ Jugador::Jugador(){
     this->numDeJugador = 0;
     this->tropas = NULL;
     this->cartas = NULL;
-    this->numSiguienteBarco = 0;
-    this->numSiguienteAvion = 0;
+    this->numSiguienteBarco = 1;
+    this->numSiguienteAvion = 1;
 }
 
 Jugador::Jugador(int nroJugador){
     this->vidas = 0;
-    this->numSiguienteSoldado = 0;
-    this->numSiguienteBarco = 0;
-    this->numSiguienteAvion = 0;
+    this->numSiguienteSoldado = 1;
+    this->numSiguienteBarco = 1;
+    this->numSiguienteAvion = 1;
     this->numDeJugador = nroJugador;
     this->tropas = new(Lista<InfoTropa*>);
     this->cartas = new(Lista<Tipos>);
     this->casillerosVisibles = new(Lista<casilleroUbi>);
-
-    /*int i;
-    InfoSoldado* soldadito = new(InfoSoldado);
-    soldadito->posicion.x = 0;
-    soldadito->posicion.y = 0;
-    soldadito->posicion.z = 0;
-    for (i = 1; i <= vidas; i++){
-        soldadito->nroSoldado = i;
-        tropas->add(soldadito);
-    }
-    delete soldadito;*/
 }
 
 Jugador::~Jugador(){
@@ -113,6 +102,7 @@ bool Jugador::bajarVidaBarco(int nroTropa){
 
 void Jugador::addCarta(){
     srand(time(NULL));
+    //this->cartas->add(ATAQUEQUIMICO);
     this->cartas->add((static_cast<Tipos> (rand() % 6)));
 }
 
@@ -155,17 +145,14 @@ int Jugador::getPosicionTropaEnLista(int nroTropaBuscada, Artilleria tipoTropa){
 }
 
 int Jugador::getNumSiguienteSoldado(){
-    this->numSiguienteSoldado = this->numSiguienteSoldado + 1;
     return this->numSiguienteSoldado;
 }
 
 int Jugador::getNumSiguienteBarco(){
-    this->numSiguienteBarco = this->numSiguienteBarco + 1;
     return this->numSiguienteBarco;
 }
 
 int Jugador::getNumSiguienteAvion(){
-    this->numSiguienteAvion = this->numSiguienteAvion + 1;
     return this->numSiguienteAvion;
 }  
 
