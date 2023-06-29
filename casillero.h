@@ -18,7 +18,6 @@ enum Artilleria {
 
 class Casillero {
 private:
-
     Terreno terreno;
     bool toxico;
     int jugador;

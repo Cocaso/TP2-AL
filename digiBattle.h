@@ -107,6 +107,11 @@ public:
     */
     void moverTropa();
 
+    /*Pre: Recibe un entero
+    Pos: Devuelve 1 si el valor es positivo, -1 si es negativo o 0
+    */
+    int obtenerSigno(int valor);
+
     /*Pre: Recibe una Artilleria, y la lista de tropas que tiene el jugador
     Pos: Muestra en pantalla el tipo de tropa, el numero de tropa y la ubicacion de cada tropa de ese tipo
     */
@@ -222,6 +227,7 @@ public:
     y inactiva la casilla por 5 turnos
     */
     void cartaRayoLaser(Jugador * jugador);
+
 
     /*
     Pre: Recibe ubicacion de soldado

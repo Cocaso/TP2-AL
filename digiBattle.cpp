@@ -1,10 +1,6 @@
 #include "digiBattle.h"
 using namespace std;
 
-int obtenerSigno(int valor) {
-    return (0 < valor) - (valor < 0);
-}
-
 DigiBattle::DigiBattle(){
     this->tablero = new(Tablero);
     this->jugadores = new(Lista<Jugador*>) ;
@@ -66,8 +62,6 @@ void DigiBattle::iniciarJuego(){
             this->tablero->getCasillero(posicionSoldado)->ponerArtilleria(SOLDADO, i, j);  //pone el soldado en el tablero
             this->tablero->mostrarTablero(i);
         }
-        
-        
     }
 }
 
@@ -271,6 +265,10 @@ void DigiBattle::moverTropa(){
             ubiNueva = this->pedirUbicacion(seleccionTropa);
         }
     }
+}
+
+int DigiBattle::obtenerSigno(int valor){
+    return (0 < valor) - (valor < 0);
 }
 
 int DigiBattle::pedirNumeroTropa(Jugador * jugador, Artilleria seleccionTropa){
