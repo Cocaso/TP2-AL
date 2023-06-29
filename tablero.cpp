@@ -10,9 +10,9 @@ Tablero::Tablero(){
 
 Tablero::Tablero(Ubicacion maxSize) {
     this->tablero = new(Lista<Lista<Lista<Casillero*>*>*>);
-    this->maxX = maxSize.x;
-    this->maxY = maxSize.y;
-    this->maxZ = maxSize.z;
+    this->maxX = maxSize.getX();
+    this->maxY = maxSize.getY();
+    this->maxZ = maxSize.getZ();
 }
 
 Tablero::~Tablero() {
@@ -105,28 +105,28 @@ void Tablero::mostrarTablero(int nroJugador){
     Lista<Ubicacion>* ubicacionAviones;
     ubicacionAviones = new Lista<Ubicacion>;
     Ubicacion ubicacionActual;
-    ubicacionActual.z = 5;
-    ubicacionActual.y = 0;
-    ubicacionActual.x = 0;
+    ubicacionActual.setZ(5);
+    ubicacionActual.setY(0);
+    ubicacionActual.setX(0);
 
     //Guardamos las ubicaciones de todos los aviones
     listaZ->reiniciarCursor();
     listaZ->avanzarCursor(5);
     while(listaZ->avanzarCursor()){
-        ubicacionActual.z++;
+        ubicacionActual.setZ(ubicacionActual.getZ() + 1);
         listaY = listaZ->getCursor();
         listaY->reiniciarCursor();
         while(listaY->avanzarCursor()){
-            ubicacionActual.y++;
+            ubicacionActual.setY(ubicacionActual.getY() + 1);
             listaX = listaY->getCursor();
             listaX->reiniciarCursor();
             while(listaX->avanzarCursor()){
-                ubicacionActual.x++;
+                ubicacionActual.setX(ubicacionActual.getX() + 1);
                 if(listaX->getCursor()->devolverArtilleria() == AVION){
                     ubicacionAviones->add(ubicacionActual);
                 }
-            } ubicacionActual.x = 0;
-        } ubicacionActual.y = 0;
+            } ubicacionActual.setX(0);
+        } ubicacionActual.setY(0);
     }
 
     this->tablero->reiniciarCursor();
@@ -149,7 +149,7 @@ void Tablero::mostrarTablero(int nroJugador){
             if(!ubicacionAviones->vacia()){
                 ubicacionAviones->reiniciarCursor();
                 while(ubicacionAviones->avanzarCursor()){
-                    double distancia = distanciaEuclidea(j + 1, i + 1, ubicacionAviones->getCursor().x, ubicacionAviones->getCursor().y);
+                    double distancia = distanciaEuclidea(j + 1, i + 1, ubicacionAviones->getCursor().getX(), ubicacionAviones->getCursor().getY());
                     if(distancia == 0){
                         tieneAvion = true;
                     } else if (distancia < 3 && this->getCasillero(ubicacionAviones->getCursor())->devolverNroJugador() == nroJugador){
@@ -257,19 +257,19 @@ Casillero * Tablero::getCasillero(Ubicacion posicion){
     Lista<Lista<Casillero*>*>* listaY;
     Lista<Casillero*>* listaX;
 
-    listaY = this->tablero->get(posicion.z);
-    listaX = listaY->get(posicion.x);   // cambiado y
-    return listaX->get(posicion.y);     //cambiado x t
+    listaY = this->tablero->get(posicion.getZ());
+    listaX = listaY->get(posicion.getX());   // cambiado y
+    return listaX->get(posicion.getY());     //cambiado x t
 }
    
 bool Tablero::validarCoordenadas(Ubicacion posicion){
-    if((posicion.x <= this->maxX && 
-        posicion.y <= this->maxY && 
-        posicion.z <= this->maxZ ) 
+    if((posicion.getX() <= this->maxX && 
+        posicion.getY() <= this->maxY && 
+        posicion.getZ() <= this->maxZ ) 
         && 
-        (posicion.x > 0 && 
-        posicion.y > 0 && 
-        posicion.z > 0 )){
+        (posicion.getX() > 0 && 
+        posicion.getY() > 0 && 
+        posicion.getZ() > 0 )){
         return true;
     }
     return false;

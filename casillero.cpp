@@ -4,7 +4,7 @@ Casillero::Casillero() {
     this->terreno = AIRE;
     this->toxico = false;
     this->jugador = 0;
-    this->numTropa = 0;
+    this->numDeTropa = 0;
     this->artilleria = VACIO;
     this->turnosInactivo = 0;
 }
@@ -39,19 +39,19 @@ bool Casillero::disminuirTurnosInactivo(){
 void Casillero::vaciarCasillero(){
     this->artilleria =  VACIO;
     this->jugador = 0;
-    this->numTropa = 0;
+    this->numDeTropa = 0;
 }
 
 //Unir con la de abajo e implementas los numTropa de todas las tropas
-void Casillero::ponerArtilleria(Artilleria artilleria, int numJugador){
-    this->artilleria = artilleria;
+void Casillero::ponerArtilleria(Artilleria artilleriaAPoner, int numJugador){
+    this->artilleria = artilleriaAPoner;
     this->jugador = numJugador;
 }
 
-void Casillero::ponerArtilleria(Artilleria artilleria, int numJugador, int numTropa){
-    this->artilleria = artilleria;
+void Casillero::ponerArtilleria(Artilleria artilleriaAPoner, int numJugador, int numTropa){
+    this->artilleria = artilleriaAPoner;
     this->jugador = numJugador;
-    this->numTropa = numTropa;
+    this->numDeTropa = numTropa;
 }
 
 bool Casillero::comprobarTerreno(Artilleria unidad){
@@ -97,8 +97,8 @@ bool Casillero::esToxico(){
     return this->toxico;
 }
 
-void Casillero::setToxico(bool toxico){
-    this->toxico = toxico;
+void Casillero::setToxico(bool esToxico){
+    this->toxico = esToxico;
 }
 
 int Casillero::devolverNroJugador(){
@@ -106,7 +106,7 @@ int Casillero::devolverNroJugador(){
 }
 
 int Casillero::devolverNroTropa(){
-    return this->numTropa;
+    return this->numDeTropa;
 }
 
 Terreno Casillero::devolverTerreno(){

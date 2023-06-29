@@ -126,14 +126,16 @@ int Jugador::cantidadTropas(Artilleria tipoTropa){
 }
 
 int Jugador::getPosicionTropaEnLista(int nroTropaBuscada, Artilleria tipoTropa){
-    int posicionTropa = 1;
+    int posicionTropa = 0;
+    bool tropaEncontrada = false;
     this->tropas->reiniciarCursor();
-    while(this->tropas->avanzarCursor()){
-        if(this->tropas->getCursor()->getNroTropa() == nroTropaBuscada  && this->tropas->getCursor()->getTipoTropa() == tipoTropa){
-            return posicionTropa;
-        }
+    while(this->tropas->avanzarCursor() && !tropaEncontrada){
         posicionTropa ++;
+        if(this->tropas->getCursor()->getNroTropa() == nroTropaBuscada  && this->tropas->getCursor()->getTipoTropa() == tipoTropa){
+            tropaEncontrada = true;
+        }
     }
+    return posicionTropa;
 }
 
 int Jugador::getNumSiguienteSoldado(){

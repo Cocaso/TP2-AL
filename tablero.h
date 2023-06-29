@@ -3,14 +3,10 @@
 
 #include "listaBase.h"
 #include "casillero.h"
+#include "ubicacion.h"
 #include "bitmap_image.hpp"
 #include <cmath>
 
-struct Ubicacion{
-    int x;
-    int y;
-    int z;
-};
 
 class Tablero {
 private:

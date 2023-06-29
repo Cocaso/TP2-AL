@@ -22,7 +22,7 @@ private:
     Terreno terreno;
     bool toxico;
     int jugador;
-    int numTropa;
+    int numDeTropa;
     Artilleria artilleria;
     int turnosInactivo;
     

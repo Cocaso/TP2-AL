@@ -1,7 +1,8 @@
 #ifndef TROPA
 #define TROPA
 
-#include "tablero.h"
+#include "casillero.h"
+#include "ubicacion.h"
 
 /*
 struct Ubicacion{
@@ -21,8 +22,8 @@ class Tropa {
         MINA
     };
     */
-    int nroTropa;
-    Artilleria tipoTropa;
+    int nroDeTropa;
+    Artilleria tipoDeTropa;
     Ubicacion ubicacion;
     int vidasBarco;
 

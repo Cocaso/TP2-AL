@@ -31,9 +31,9 @@ void DigiBattle::iniciarJuego(){
     } while (dimension < 10);
     
     //cin >> dimensionZ
-    tableroSize.x = dimension;
-    tableroSize.y = dimension;    //Revisar esto que esta mal
-    tableroSize.z = dimension;    //Hay que aclarar la disposicion de las coordenadas al usuario
+    tableroSize.setX(dimension);
+    tableroSize.setY(dimension);    //Revisar esto que esta mal
+    tableroSize.setZ(dimension);    //Hay que aclarar la disposicion de las coordenadas al usuario
 
     this->tablero = new Tablero(tableroSize); //crear tablero
     this->tablero->crearTerreno();
@@ -166,12 +166,9 @@ void DigiBattle::ponerMina(){
     Casillero* casilleroObjetivo;
     Artilleria tipoArtilleria = MINA;
     int nroJugador = this->jugadores->getCursor()->getNumeroJugador();
-    int turnosCasillaDesactivada = poderMina();
-
-
     ubicacionObjetivo = pedirUbicacion(tipoArtilleria);
     casilleroObjetivo = this->tablero->getCasillero(ubicacionObjetivo);
-    
+
     //resolver colision para minas y misiles
     if (this->resolverColision(casilleroObjetivo)){
         casilleroObjetivo->ponerArtilleria(MINA, nroJugador);
@@ -193,8 +190,6 @@ void DigiBattle::dispararBarco(){
         this->resolverColision(casilleroDisparado);
         tirosRestantes--;
     }
-
-    //usar resolverColision() para minas y misiles
 }
 
 void DigiBattle::moverTropa(){
@@ -247,8 +242,8 @@ void DigiBattle::moverTropa(){
     ubiNueva = this->pedirUbicacion(seleccionTropa);
 
     bool tropaViva = true;
-    int diferenciaX = ubiNueva.x - ubiTropa.x;
-    int diferenciaY = ubiNueva.y - ubiTropa.y;
+    int diferenciaX = ubiNueva.getX() - ubiTropa.getX();
+    int diferenciaY = ubiNueva.getY() - ubiTropa.getY();
     int cant = (diferenciaX != 0) ? abs(diferenciaX) : abs(diferenciaY);
 
     //Si el movimiento es valido y la tropa no es avion, movemos
@@ -256,15 +251,15 @@ void DigiBattle::moverTropa(){
         while(!validarDestinoSoldado(ubiTropa, ubiNueva)){
             cout<<"Coordenadas fuera del alcance del soldado"<<endl;
             ubiNueva = this->pedirUbicacion(seleccionTropa);
-            diferenciaX = ubiNueva.x - ubiTropa.x;
-            diferenciaY = ubiNueva.y - ubiTropa.y;
+            diferenciaX = ubiNueva.getX() - ubiTropa.getX();
+            diferenciaY = ubiNueva.getY() - ubiTropa.getY();
             cant = (diferenciaX != 0) ? abs(diferenciaX) : abs(diferenciaY);
         }
         Ubicacion ubiActual = ubiTropa;
         while (tropaViva && (cant > 0)) {   //cant == movimientos restantes
             ubiTropa = ubiActual;
-            ubiActual.x += obtenerSigno(diferenciaX);
-            ubiActual.y += obtenerSigno(diferenciaY);
+            ubiActual.setX(ubiActual.getX() + obtenerSigno(diferenciaX));
+            ubiActual.setY(ubiActual.getY() + obtenerSigno(diferenciaY));
             tropaViva = resolverColision(tablero->getCasillero(ubiTropa), tablero->getCasillero(ubiActual), ubiActual);
 
             //controla que no se mueva más de la cuenta
@@ -299,8 +294,8 @@ void DigiBattle::mostrarTropasDisponibles(Artilleria seleccionTropa, Lista<Tropa
             posicion = tropasDelJugador->getCursor()->getUbicacion();
 
             cout << "Tropa Numero: " << tropasDelJugador->getCursor()->getNroTropa();
-            cout << " // Posicion X: " << posicion.x;
-            cout << " Y: " << posicion.y << endl;
+            cout << " // Posicion X: " << posicion.getX();
+            cout << " Y: " << posicion.getY() << endl;
             //Soldado No 1 // Posicion X:7 Y:4
         }
     }
@@ -341,12 +336,12 @@ bool DigiBattle::validarCasillero(Ubicacion posicion, Artilleria tipo){
 }
 
 bool DigiBattle::validarDestinoSoldado(Ubicacion ubiAnterior, Ubicacion ubiNueva){
-    int distanciaX = abs(ubiAnterior.x - ubiNueva.x);
-    int distanciaY = abs(ubiAnterior.y - ubiNueva.y);
+    int distanciaX = abs(ubiAnterior.getX() - ubiNueva.getX());
+    int distanciaY = abs(ubiAnterior.getY() - ubiNueva.getY());
     // Valida que la distancia a mover sea inferior a 3, que no se mueva al mismo casillero y que solo se pueda mover en diagonal u horizontal :)
     if((distanciaX > 3 || distanciaY > 3) ||
        (distanciaX != distanciaY && distanciaX != 0 && distanciaY != 0) || 
-       (ubiAnterior.x == ubiNueva.x && ubiAnterior.y == ubiNueva.y)){
+       (ubiAnterior.getX() == ubiNueva.getX() && ubiAnterior.getY() == ubiNueva.getY())){
         return false;
     }
     return true;
@@ -354,25 +349,27 @@ bool DigiBattle::validarDestinoSoldado(Ubicacion ubiAnterior, Ubicacion ubiNueva
 
 Ubicacion DigiBattle::pedirUbicacion(Artilleria tipo){
     Ubicacion posicion;
+    int x, y, z;
 
     //si las coordenadas no son válidas, vuelve a pedir
     do{
         //solo pide Z (altura) si la artillería es un avión
         if (tipo != AVION && tipo != VACIO) {
-            posicion.z = 5;
             cout << "Coordenada X: ";
-            cin >> posicion.x;
+            cin >> x;
             cout << "Coordenada Y: ";
-            cin >> posicion.y;
+            cin >> y;
             cout << endl;
+            posicion.setUbicacion(x, y, 5);
         } else {
             cout << "Coordenada X: "<< endl;
-            cin >> posicion.x;
+            cin >> x;
             cout << "Coordenada Y: "<< endl;
-            cin >> posicion.y;
+            cin >> y;
             cout << "Coordenada Z: "<< endl;
-            cin >> posicion.z;
+            cin >> z;
             cout << endl;
+            posicion.setUbicacion(x, y, z);
         } 
     } while (!validarCasillero(posicion, tipo));
 
@@ -590,19 +587,19 @@ void DigiBattle::cartaAtaqueQuimico(){
     Ubicacion nuevaUbicacion;
     Casillero * casilleroActual;
     Ubicacion ubicacion = this->pedirUbicacion(VACIO);
-    while(ubicacion.x < 3 || ubicacion.y < 3 || ubicacion.z < 3 ||
-        ubicacion.x > (this->tablero->getTamanhoTableroX() - 2) ||
-        ubicacion.y > (this->tablero->getTamanhoTableroY() - 2) || 
-        ubicacion.z > (this->tablero->getTamanhoTableroZ() - 2)){
+    while(ubicacion.getX() < 3 || ubicacion.getY() < 3 || ubicacion.getZ() < 3 ||
+        ubicacion.getX() > (this->tablero->getTamanhoTableroX() - 2) ||
+        ubicacion.getY() > (this->tablero->getTamanhoTableroY() - 2) || 
+        ubicacion.getZ() > (this->tablero->getTamanhoTableroZ() - 2)){
             cout << "Coordenadas ingresadas no validas" << endl;
             ubicacion = this->pedirUbicacion(VACIO);
         }
     for(i = (-radioCubo); i <= radioCubo; i++){
         for (j = (-radioCubo); j <= radioCubo; j++){
             for (k = (-radioCubo); k <= radioCubo; k++){
-                nuevaUbicacion.x = ubicacion.x + i;
-                nuevaUbicacion.y = ubicacion.y + j;
-                nuevaUbicacion.z = ubicacion.z + k;
+                nuevaUbicacion.setX(ubicacion.getX() + i);
+                nuevaUbicacion.setY(ubicacion.getY() + j);
+                nuevaUbicacion.setZ(ubicacion.getZ() + k);
                 if((i == 0) && (j == 0) && (k == 0)){        
                     casilleroActual = this->tablero->getCasillero(nuevaUbicacion);
                     resolverColisionQuimico(casilleroActual, efectoAtaqueQuimico);
@@ -685,8 +682,8 @@ void DigiBattle::cartaRayoLaser(Jugador * jugador){
         cout << endl;
     }
     if (direccion == 'S'){
-        posicionActual.y ++;
-        while (posicionActual.y <= this->tablero->getTamanhoTableroY()){
+        posicionActual.setY(posicionActual.getY() + 1);
+        while (posicionActual.getY() <= this->tablero->getTamanhoTableroY()){
             tipoArtilleriaCasilla = this->tablero->getCasillero(posicionActual)->devolverArtilleria();
             if (tipoArtilleriaCasilla == SOLDADO || tipoArtilleriaCasilla == BARCO){
                 nroJugador = this->tablero->getCasillero(posicionActual)->devolverNroJugador();
@@ -695,11 +692,11 @@ void DigiBattle::cartaRayoLaser(Jugador * jugador){
             }
             this->tablero->getCasillero(posicionActual)->desactivarCasilla(5);
             this->casillerosInactivos->add(casilleroActual);
-            posicionActual.y ++;
+            posicionActual.setY(posicionActual.getY() + 1);
         }
     } else if (direccion == 'A'){
-        posicionActual.x --;
-        while (posicionActual.x > 0){
+        posicionActual.setX(posicionActual.getX() - 1);
+        while (posicionActual.getX() > 0){
             tipoArtilleriaCasilla = this->tablero->getCasillero(posicionActual)->devolverArtilleria();
             if (tipoArtilleriaCasilla == SOLDADO || tipoArtilleriaCasilla == BARCO){
                 nroJugador = this->tablero->getCasillero(posicionActual)->devolverNroJugador();
@@ -708,12 +705,12 @@ void DigiBattle::cartaRayoLaser(Jugador * jugador){
             }
             this->tablero->getCasillero(posicionActual)->desactivarCasilla(5);
             this->casillerosInactivos->add(casilleroActual);
-            posicionActual.x --;
+            posicionActual.setX(posicionActual.getX() - 1);
 
         }
     } else if (direccion == 'W'){
-        posicionActual.y --;
-        while (posicionActual.y > 0){
+        posicionActual.setY(posicionActual.getY() - 1);
+        while (posicionActual.getY() > 0){
             tipoArtilleriaCasilla = this->tablero->getCasillero(posicionActual)->devolverArtilleria();
             if (tipoArtilleriaCasilla == SOLDADO || tipoArtilleriaCasilla == BARCO){
                 nroJugador = this->tablero->getCasillero(posicionActual)->devolverNroJugador();
@@ -722,12 +719,12 @@ void DigiBattle::cartaRayoLaser(Jugador * jugador){
             }
             this->tablero->getCasillero(posicionActual)->desactivarCasilla(5);
             this->casillerosInactivos->add(casilleroActual);
-            posicionActual.y --;
+            posicionActual.setY(posicionActual.getY() - 1);
 
         }
     } else if (direccion == 'D'){
-        posicionActual.x ++;
-        while (posicionActual.x <= this->tablero->getTamanhoTableroX()){
+        posicionActual.setX(posicionActual.getX() + 1);
+        while (posicionActual.getX() <= this->tablero->getTamanhoTableroX()){
             tipoArtilleriaCasilla = this->tablero->getCasillero(posicionActual)->devolverArtilleria();
             if (tipoArtilleriaCasilla == SOLDADO || tipoArtilleriaCasilla == BARCO){
                 nroJugador = this->tablero->getCasillero(posicionActual)->devolverNroJugador();
@@ -736,8 +733,7 @@ void DigiBattle::cartaRayoLaser(Jugador * jugador){
             }
             this->tablero->getCasillero(posicionActual)->desactivarCasilla(5);
             this->casillerosInactivos->add(casilleroActual);
-            posicionActual.x ++;
-
+            posicionActual.setX(posicionActual.getX() + 1);
         }
     }
     
