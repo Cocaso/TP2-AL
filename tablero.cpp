@@ -63,30 +63,27 @@ void Tablero::crearTerreno(){
         }
         this->tablero->add(listaY);
     }
-    
-    
-    //---------------------------------------------------------
-
-    //Se llena una listaX con aire, una listaY con copias de listaX, 
-    //y el resto del tablero con copias de listaY
-    casillero = new(Casillero);
-    listaX = new(Lista<Casillero*>);
-    for (x = 0; x < this->maxX ; x++){
-        listaX->add(casillero);
-    }
-    listaY = new(Lista<Lista<Casillero*>*>);
-    for (y = 0; y < this->maxY ; y++){
-        listaY->add(listaX);
-    }
-    for (z = 5; z < this->maxZ; z++){
+    for(z = 5; z < this->maxZ; z++){
+        listaY = new(Lista<Lista<Casillero*>*>);
+        for (y = 0; y < this->maxY ; y++){
+            listaX = new(Lista<Casillero*>);
+            for (x = 0; x < this->maxX; x++){
+                casillero = new(Casillero);
+                listaX->add(casillero);
+            }
+            listaY->add(listaX);
+        }
         this->tablero->add(listaY);
     }
-    //---------------------------------------------------------
-    
+}
 
+int distanciaEuclidea(int x1, int y1, int x2, int y2) {
+    return round(sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2)));
 }
 
 void Tablero::mostrarTablero(int nroJugador){
+
+    // Tomamos los bitmaps creados
     bitmap_image gas("Casilleros/gas.bmp");
     bitmap_image tierra("Casilleros/tierra.bmp");
     bitmap_image tierraInactiva("Casilleros/tierra_inactiva.bmp");
@@ -97,20 +94,45 @@ void Tablero::mostrarTablero(int nroJugador){
     bitmap_image mina("Casilleros/mina.bmp");
     bitmap_image minaAgua("Casilleros/mina_agua.bmp");
     bitmap_image barco("Casilleros/barco.bmp");
-    bitmap_image avion("Casilleros/avion.bmp");
+    bitmap_image avionTierra("Casilleros/avion_tierra.bmp");
+    bitmap_image avionAgua("Casilleros/avion_agua.bmp");
     bitmap_image bmpTablero(static_cast<unsigned>(maxX*32), static_cast<unsigned>(maxY*32));
     bitmap_image* casilleroADibujar;
 
+    Lista<Lista<Lista<Casillero*>*>*>* listaZ = this->tablero;
+    Lista<Lista<Casillero*>*>*listaY;
+    Lista<Casillero*>* listaX;
+    Lista<Ubicacion>* ubicacionAviones;
+    ubicacionAviones = new Lista<Ubicacion>;
+    Ubicacion ubicacionActual;
+    ubicacionActual.z = 5;
+    ubicacionActual.y = 0;
+    ubicacionActual.x = 0;
+
+    //Guardamos las ubicaciones de todos los aviones
+    listaZ->reiniciarCursor();
+    listaZ->avanzarCursor(5);
+    while(listaZ->avanzarCursor()){
+        ubicacionActual.z++;
+        listaY = listaZ->getCursor();
+        listaY->reiniciarCursor();
+        while(listaY->avanzarCursor()){
+            ubicacionActual.y++;
+            listaX = listaY->getCursor();
+            listaX->reiniciarCursor();
+            while(listaX->avanzarCursor()){
+                ubicacionActual.x++;
+                if(listaX->getCursor()->devolverArtilleria() == AVION){
+                    ubicacionAviones->add(ubicacionActual);
+                }
+            } ubicacionActual.x = 0;
+        } ubicacionActual.y = 0;
+    }
 
     this->tablero->reiniciarCursor();
-    this->tablero->avanzarCursor();
-    this->tablero->avanzarCursor();
-    this->tablero->avanzarCursor();
-    this->tablero->avanzarCursor();
-    this->tablero->avanzarCursor();
+    this->tablero->avanzarCursor(5);
 
-    Lista<Lista<Casillero*>*>*listaY = this->tablero->getCursor();
-    Lista<Casillero*>* listaX;
+    listaY = this->tablero->getCursor();
     Casillero* casilleroActual;
     unsigned char r, g, b;
     int y, x, i = 0, j = 0;
@@ -121,26 +143,47 @@ void Tablero::mostrarTablero(int nroJugador){
         listaX->reiniciarCursor();
         j = 0;
         while (listaX->avanzarCursor()){
-            
             casilleroActual = listaX->getCursor();
             bool esDelJugador = casilleroActual->devolverNroJugador() == nroJugador;
+            bool tieneAvion = false;
+            if(!ubicacionAviones->vacia()){
+                ubicacionAviones->reiniciarCursor();
+                while(ubicacionAviones->avanzarCursor()){
+                    double distancia = distanciaEuclidea(j + 1, i + 1, ubicacionAviones->getCursor().x, ubicacionAviones->getCursor().y);
+                    if(distancia == 0){
+                        tieneAvion = true;
+                    } else if (distancia < 3 && this->getCasillero(ubicacionAviones->getCursor())->devolverNroJugador() == nroJugador){
+                        esDelJugador = true;
+                    }
+                }
+            }
+            
             //Elige qué casillero dibujar
-            if(!casilleroActual->esToxico()){
+            if(!casilleroActual->esToxico() && !tieneAvion){
                 if (casilleroActual->devolverTerreno() == TIERRA){
                     switch (casilleroActual->devolverArtilleria()) {
                     case VACIO:
                         if(casilleroActual->devolverTurnosInactivos() > 0){
                             casilleroADibujar = &tierraInactiva;
                             break;
+                        } else {
+                            casilleroADibujar = &tierra;
+                            break;
                         }
                     case SOLDADO:
                         if(esDelJugador){
                             casilleroADibujar = &soldado;
                             break;
+                        } else {
+                            casilleroADibujar = &tierra;
+                            break;
                         }
                     case MINA:
                         if(esDelJugador){
                             casilleroADibujar = &mina;
+                            break;
+                        } else {
+                            casilleroADibujar = &tierra;
                             break;
                         }
                     default:
@@ -154,29 +197,42 @@ void Tablero::mostrarTablero(int nroJugador){
                         if(casilleroActual->devolverTurnosInactivos() > 0){
                             casilleroADibujar = &aguaInactiva;
                             break;
+                        } else {
+                            casilleroADibujar = &agua;
+                            break;
                         }
                     case SOLDADO:
                         if(esDelJugador){
                             casilleroADibujar = &soldadoNadando;
+                            break;
+                        } else {
+                            casilleroADibujar = &agua;
                             break;
                         }
                     case MINA:
                         if(esDelJugador){
                             casilleroADibujar = &minaAgua;
                             break;
-                        }
-                    case BARCO:
-                        if(esDelJugador){
-                            casilleroADibujar = &barco;
+                        } else {
+                            casilleroADibujar = &agua;
                             break;
                         }
+                    case BARCO:
+                        casilleroADibujar = &barco;
+                        break;
                     default:
                         casilleroADibujar = &agua;
                         break;
                     }
                 }
-            } else {
+            } else if(!tieneAvion) {
                 casilleroADibujar = &gas;
+            } else {
+                if (casilleroActual->devolverTerreno() == AGUA){
+                    casilleroADibujar = &avionAgua;
+                } else {
+                    casilleroADibujar = &avionTierra;
+                }
             }
 
             //Dibujar el casillero
@@ -192,6 +248,8 @@ void Tablero::mostrarTablero(int nroJugador){
     }
 
     bmpTablero.save_image("tablero.bmp");
+    delete ubicacionAviones;
+
 }
 
 Casillero * Tablero::getCasillero(Ubicacion posicion){

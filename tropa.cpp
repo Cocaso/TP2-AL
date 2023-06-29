@@ -1,38 +1,41 @@
 #include "tropa.h"
-
-
 /*
-
-Tropa::Tropa(Ubicacion posicionTropa, int nroTropa, Artilleria tipoTropa){
-
+Tropa::Tropa(Ubicacion ubicacionTropa, int nroTropa, Artilleria tipoTropa){
+    this->ubicacion = ubicacionTropa;
+    this->nroTropa = nroTropa;
+    this->tipoTropa = tipoTropa;
+    if (tipoTropa == BARCO){
+        this->vidasBarco = 3;
+    } else{
+        this->vidasBarco = 0;
+    };
 }
 
 Tropa::~Tropa(){
-
 }
 
-int Tropa::getTipoTropa(){
-
+Artilleria Tropa::getTipoTropa(){
+    return this->tipoTropa;
 }
 
 int Tropa::getNroTropa(){
-
+    return this->nroTropa;
 }
 
-Ubicacion Tropa::getPosicion(){
-
+Ubicacion Tropa::getUbicacion(){
+    return this->ubicacion;
 }
 
-void Tropa::setTipoTropa(){
-
+void Tropa::setTipoTropa(Artilleria tipoTropa){
+    this->tipoTropa = tipoTropa;
 }
 
-void Tropa::setNroTropa(){
-
+void Tropa::setNroTropa(int nroTropa){
+    this->nroTropa = nroTropa;
 }
 
-void Tropa::setPosicion(){
-
+void Tropa::setUbicacion(Ubicacion ubicacionNueva){
+    this->ubicacion = ubicacionNueva;
 }
 
 */

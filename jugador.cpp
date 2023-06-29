@@ -18,13 +18,11 @@ Jugador::Jugador(int nroJugador){
     this->numDeJugador = nroJugador;
     this->tropas = new(Lista<InfoTropa*>);
     this->cartas = new(Lista<Tipos>);
-    this->casillerosVisibles = new(Lista<casilleroUbi>);
 }
 
 Jugador::~Jugador(){
     delete this->tropas;
     delete this->cartas;
-    delete this->casillerosVisibles;
 }
 
 void Jugador::agregarTropa(Ubicacion posicionTropa, int nroTropa, Artilleria tipoTropa){
@@ -102,7 +100,6 @@ bool Jugador::bajarVidaBarco(int nroTropa){
 
 void Jugador::addCarta(){
     srand(time(NULL));
-    //this->cartas->add(ATAQUEQUIMICO);
     this->cartas->add((static_cast<Tipos> (rand() % 6)));
 }
 
@@ -118,6 +115,10 @@ int Jugador::removerTropa(int nroTropa, Artilleria tipoTropa){
 
 int Jugador::getNumeroJugador(){
     return this->numDeJugador;
+}
+
+int Jugador::getVidas(){
+    return this->vidas;
 }
 
 int Jugador::cantidadTropas(Artilleria tipoTropa){
@@ -191,10 +192,6 @@ InfoTropa* Jugador::getTropa(int nroTropaPedida, Artilleria tipoArtilleria){
 
 Lista<InfoTropa*>* Jugador::getListaTropas(){
     return this->tropas;
-}
-
-Lista<casilleroUbi>* Jugador::getListaCasillerosVisibles(){
-    return this->casillerosVisibles;
 }
 
 Lista<Tipos>* Jugador::getListaCartas(){

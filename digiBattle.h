@@ -15,7 +15,6 @@ private:
     Tablero* tablero;                       //Tablero lol
     Lista<Jugador*>* jugadores;             //Puntero a lista con punteros a structs jugador que tienen punteros a lista de ints (son los numeros del soldado del jugador) y puntero a lista con 
     Lista<Casillero*>* casillerosInactivos; //Puntero a lista de punteros a los casilleros inactivos actuales (para bajarles el contador directamente desde digibattle)
-    
     //Metodos
 
     /*
@@ -85,6 +84,11 @@ public:
     Pos: maneja los turnos de cada jugador
     */
     void turno();
+
+    void comprobarVidasDeJugadores(Jugador* jugadorActual);
+
+
+    void removerJugador(Jugador* jugadorActual);
 
     /*
     Pre:

@@ -1,8 +1,7 @@
 #ifndef TROPA
 #define TROPA
 
-#include "tropa.cpp"
-
+/*
 
 struct Ubicacion{
     int x;
@@ -20,32 +19,32 @@ class Tropa {
         MINA
     };
     int nroTropa;
-    Artilleria tropa;
-    Ubicacion posicion;
+    Artilleria tipoTropa;
+    Ubicacion ubicacion;
     int vidasBarco;
 
     public:
 
 
-    Tropa(Ubicacion posicionTropa, int nroTropa, Artilleria tipoTropa);
+    Tropa(Ubicacion ubicacionTropa, int nroTropa, Artilleria tipoTropa);
 
     ~Tropa();
 
-    int getTipoTropa();
+    Artilleria getTipoTropa();
 
     int getNroTropa();
 
-    Ubicacion getPosicion();
+    Ubicacion getUbicacion();
 
     void setTipoTropa();
 
     void setNroTropa();
 
-    void setPosicion();
+    void setUbicacion();
 
 
 
 };
-
+*/
 
 #endif

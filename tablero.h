@@ -4,6 +4,7 @@
 #include "listaBase.h"
 #include "casillero.h"
 #include "bitmap_image.hpp"
+#include <cmath>
 
 struct Ubicacion{
     int x;

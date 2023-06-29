@@ -83,11 +83,11 @@ bool DigiBattle::colisionSoldado(Ubicacion posicionSoldado){
 void DigiBattle::turno(){
     Jugador* jugadorActual;
     char opcion;
-    
     this->jugadores->reiniciarCursor();
     while(!comprobarVictoria()){
         //Determina a quien le toca jugar
         if (!this->jugadores->avanzarCursor()){
+
             this->jugadores->reiniciarCursor();
             this->jugadores->avanzarCursor();
             this->reducirCasilleroInactivo();
@@ -129,14 +129,36 @@ void DigiBattle::turno(){
         
         if (opcion == 'S' || opcion == 's'){
             this->usarCarta(jugadorActual);
-            this->tablero->mostrarTablero(jugadorActual->getNumeroJugador());
         }
+        comprobarVidasDeJugadores(jugadorActual);
 
-        //Reducir cuenta de los casilleros inactivos
-        //this->reducirCasilleroInactivo();
     }
     //termina el juego
     this->anunciarGanador(); 
+}
+
+void DigiBattle::comprobarVidasDeJugadores(Jugador* jugadorActual){
+    bool jugadorActualMuerto = false;
+    int nroPosicionJugador = this->getPosicionJugadorEnLista(jugadorActual->getNumeroJugador());
+    this->jugadores->reiniciarCursor();
+    while(this->jugadores->avanzarCursor()){
+        if(this->jugadores->getCursor()->getVidas() == 0){
+            if(jugadorActual == this->jugadores->getCursor()){
+                jugadorActualMuerto = true;
+            }
+            removerJugador(this->jugadores->getCursor());
+        }
+    }
+    if (jugadorActualMuerto){
+        this->jugadores->avanzarCursor(nroPosicionJugador - 1);
+    } else {
+        this->jugadores->avanzarCursor(nroPosicionJugador);
+    }
+}
+
+void DigiBattle::removerJugador(Jugador* jugadorActual){
+    delete jugadorActual;
+    this->jugadores->remover(this->getPosicionJugadorEnLista(jugadorActual->getNumeroJugador()));
 }
 
 void DigiBattle::ponerMina(){
@@ -511,12 +533,7 @@ bool DigiBattle::comprobarVictoria(){
 
 void DigiBattle::sacarTropaJugador(int nroJugador, int nroTropa, Artilleria artilleria){
     Jugador* jugador = this->buscarJugador(nroJugador);
-
-    //comprueba si efectivamente el jugador perdio todos sus tropas/vidas
-    if (jugador->removerTropa(nroTropa, artilleria) == 0){
-        this->jugadores->remover(getPosicionJugadorEnLista(nroJugador));
-        delete jugador;
-    }
+    jugador->removerTropa(nroTropa, artilleria);
 }
 
 int DigiBattle::getPosicionJugadorEnLista(int nroJugador){
@@ -607,9 +624,10 @@ void DigiBattle::cartaAtaqueQuimico(){
 
 void DigiBattle::cartaAvionRadar(Jugador * jugador){
     Ubicacion posicion = pedirUbicacion(AVION);
+    Casillero* casilleroActual = this->tablero->getCasillero(posicion);
     int posicionTropaAvion = jugador->getNumSiguienteAvion();
+    casilleroActual->ponerArtilleria(AVION, jugador->getNumeroJugador(), jugador->getNumSiguienteAvion());
     jugador->agregarTropa(posicion , posicionTropaAvion, AVION);
-    this->tablero->getCasillero(posicion);
 }
 
 void DigiBattle::cartaBarco(Jugador * jugador){
@@ -731,13 +749,14 @@ void DigiBattle::cartaRayoLaser(Jugador * jugador){
 }
 
 void DigiBattle::anunciarGanador(){
-    Jugador* UltimoJugador;
-    int posicionUltimoJugador = 1;
-    UltimoJugador = this->jugadores->get(posicionUltimoJugador);
-
+    this->jugadores->reiniciarCursor();
+    this->jugadores->avanzarCursor();
+    Jugador* ganador = this->jugadores->getCursor();
     cout << endl;
-    cout<<"La sangrienta guerra llego a su fin , dejandonos como ganador al jugador "<< UltimoJugador->getNumeroJugador() << endl;
-    cout<<"El jugador superviviente llego a la victoria, junto con sus "<< UltimoJugador->getListaTropas()->contarElementos();
-    cout<<" soldados supervivientes"<<endl;
-    cout<<" FIN DEL JUEGO ";
+    cout << "-----------------------------------------------------------------------------------"<<endl;
+    cout << "La sangrienta guerra llego a su fin , dejandonos como ganador al jugador "<< ganador->getNumeroJugador() << endl;
+    cout << "El jugador superviviente llego a la victoria, junto con sus "<< ganador->getListaTropas()->contarElementos();
+    cout <<" soldados supervivientes"<<endl;
+    cout <<" FIN DEL JUEGO "<<endl;
+    cout <<"-----------------------------------------------------------------------------------"<<endl;
 }    

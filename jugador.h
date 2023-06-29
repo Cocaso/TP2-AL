@@ -23,11 +23,6 @@ struct InfoTropa {
     int vidasBarco;
 };
 
-struct casilleroUbi{
-    Ubicacion ubicacion;
-    Casillero* casillero;
-};
-
 class Jugador {
     private:
     int vidas;
@@ -37,7 +32,6 @@ class Jugador {
     int numDeJugador;
     Lista<InfoTropa*>* tropas;
     Lista<Tipos>* cartas;
-    Lista<casilleroUbi>* casillerosVisibles;
 
     public:
 
@@ -108,6 +102,14 @@ class Jugador {
     */
     int getNumeroJugador();
 
+
+    /*
+    Pre: ~~
+    Pos: Devuelve el numero de vidas del jugador
+    */
+    int getVidas();
+
+
     /*
     Pre: Recibe una artilleria
     Pos: Devuelve la cantidad de tropas de ese tipo Artilleria que le quedan al jugador
@@ -173,12 +175,6 @@ class Jugador {
     Pos: Devuelve la lista de tropas
     */
     Lista<InfoTropa*>* getListaTropas();
-
-    /*
-    Pre:~~
-    Pos: Devuelve la lista de casilleros inactivos
-    */
-    Lista<casilleroUbi>* getListaCasillerosVisibles();
 
     /*
     Pre: 

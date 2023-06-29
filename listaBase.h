@@ -159,6 +159,8 @@ template<class T> bool Lista<T>::avanzarCursor(int posicion){
 		while(this->avanzarCursor() && i < posicion){
 			i++;
 		}
+	} else {
+		this->reiniciarCursor();
 	}
 	return (this->cursor != NULL);
 }

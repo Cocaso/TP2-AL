@@ -4,7 +4,7 @@
 Casillero::Casillero() {
     this->terreno = AIRE;
     this->contenido = new (Contenido);
-    this->contenido->toxico = 0;
+    this->contenido->toxico = false;
     this->contenido->jugador = 0;
     this->contenido->numTropa = 0;
     this->contenido->artilleria = VACIO;
