@@ -202,7 +202,7 @@ void DigiBattle::moverTropa(){
     Jugador* jugador = this->jugadores->getCursor();
     int nroTropaElegida;
  
-    Lista<InfoTropa*>* tropasDelJugador;
+    Lista<Tropa*>* tropasDelJugador;
     int tipoTropa;
     Artilleria seleccionTropa = VACIO;
 
@@ -217,11 +217,11 @@ void DigiBattle::moverTropa(){
         int aviones = 0;
         tropasDelJugador->reiniciarCursor();
         while(tropasDelJugador->avanzarCursor()){
-            if (tropasDelJugador->getCursor()->tropa == SOLDADO){
+            if (tropasDelJugador->getCursor()->getTipoTropa() == SOLDADO){
                 soldados++;
-            } else if (tropasDelJugador->getCursor()->tropa == BARCO){
+            } else if (tropasDelJugador->getCursor()->getTipoTropa() == BARCO){
                 barcos++;
-            } else if (tropasDelJugador->getCursor()->tropa == AVION){
+            } else if (tropasDelJugador->getCursor()->getTipoTropa() == AVION){
                 aviones++;
             }
         }
@@ -288,17 +288,17 @@ int DigiBattle::pedirNumeroTropa(Jugador * jugador, Artilleria seleccionTropa){
     return nroTropaElegida;
 }
 
-void DigiBattle::mostrarTropasDisponibles(Artilleria seleccionTropa, Lista<InfoTropa*>* tropasDelJugador){
+void DigiBattle::mostrarTropasDisponibles(Artilleria seleccionTropa, Lista<Tropa*>* tropasDelJugador){
     Ubicacion posicion;
     
     cout << "TROPAS DISPONIBLES" << endl;
     
     tropasDelJugador->reiniciarCursor();
     while(tropasDelJugador->avanzarCursor()){
-        if(tropasDelJugador->getCursor()->tropa == seleccionTropa){
-            posicion = tropasDelJugador->getCursor()->posicion;
+        if(tropasDelJugador->getCursor()->getTipoTropa() == seleccionTropa){
+            posicion = tropasDelJugador->getCursor()->getUbicacion();
 
-            cout << "Tropa Numero: " << tropasDelJugador->getCursor()->nroTropa;
+            cout << "Tropa Numero: " << tropasDelJugador->getCursor()->getNroTropa();
             cout << " // Posicion X: " << posicion.x;
             cout << " Y: " << posicion.y << endl;
             //Soldado No 1 // Posicion X:7 Y:4
@@ -548,10 +548,6 @@ int DigiBattle::getPosicionJugadorEnLista(int nroJugador){
 
 }
 
-Lista<Jugador*>* DigiBattle::getListaJugadores(){
-    return this->jugadores;
-}
-
 void DigiBattle::reducirCasilleroInactivo(){
     Lista<Casillero*>* casillerosInactivos = this->casillerosInactivos;
     Casillero* casillero;
@@ -655,6 +651,7 @@ void DigiBattle::cartaAgregarSoldados(Jugador * jugador){
             jugador->agregarTropa(ubicacion, nroSiguienteSoldado, SOLDADO);
             this->tablero->getCasillero(ubicacion)->ponerArtilleria(SOLDADO, jugador->getNumeroJugador(), nroSiguienteSoldado);
         }
+    this->tablero->mostrarTablero(jugador->getNumeroJugador());
     }
 }
 
@@ -665,7 +662,7 @@ void DigiBattle::cartaRayoLaser(Jugador * jugador){
     int nroTropa;
     Artilleria tipoArtilleriaCasilla;
     Ubicacion posicionActual;
-    Lista<InfoTropa*>* tropasDelJugador;
+    Lista<Tropa*>* tropasDelJugador;
     Casillero * casilleroActual;
     tropasDelJugador = jugador->getListaTropas();
     cout << "Elija el soldado que tirara el rayo laser" << endl;

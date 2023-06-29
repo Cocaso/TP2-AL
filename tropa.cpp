@@ -1,5 +1,5 @@
 #include "tropa.h"
-/*
+
 Tropa::Tropa(Ubicacion ubicacionTropa, int nroTropa, Artilleria tipoTropa){
     this->ubicacion = ubicacionTropa;
     this->nroTropa = nroTropa;
@@ -26,6 +26,10 @@ Ubicacion Tropa::getUbicacion(){
     return this->ubicacion;
 }
 
+int Tropa::getVidasBarco(){
+    return this->vidasBarco;
+}
+
 void Tropa::setTipoTropa(Artilleria tipoTropa){
     this->tipoTropa = tipoTropa;
 }
@@ -38,4 +42,7 @@ void Tropa::setUbicacion(Ubicacion ubicacionNueva){
     this->ubicacion = ubicacionNueva;
 }
 
-*/
+void Tropa::bajarVidasBarco(){
+    this->vidasBarco --;
+}
+

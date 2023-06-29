@@ -110,7 +110,7 @@ public:
     /*Pre: Recibe una Artilleria, y la lista de tropas que tiene el jugador
     Pos: Muestra en pantalla el tipo de tropa, el numero de tropa y la ubicacion de cada tropa de ese tipo
     */
-    void mostrarTropasDisponibles(Artilleria seleccionTropa, Lista<InfoTropa*>* tropasDelJugador);
+    void mostrarTropasDisponibles(Artilleria seleccionTropa, Lista<Tropa*>* tropasDelJugador);
 
     /*
     Pre: Recibe un jugador
@@ -222,12 +222,6 @@ public:
     y inactiva la casilla por 5 turnos
     */
     void cartaRayoLaser(Jugador * jugador);
-
-    /*
-    Pre:
-    Pos: Devuelve la lista de jugadores
-    */
-    Lista<Jugador*>* getListaJugadores();
 
     /*
     Pre: Recibe ubicacion de soldado

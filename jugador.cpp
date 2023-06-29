@@ -6,8 +6,8 @@ Jugador::Jugador(){
     this->numDeJugador = 0;
     this->tropas = NULL;
     this->cartas = NULL;
-    this->numSiguienteBarco = 1;
-    this->numSiguienteAvion = 1;
+    this->numSiguienteBarco = 0;
+    this->numSiguienteAvion = 0;
 }
 
 Jugador::Jugador(int nroJugador){
@@ -16,7 +16,7 @@ Jugador::Jugador(int nroJugador){
     this->numSiguienteBarco = 1;
     this->numSiguienteAvion = 1;
     this->numDeJugador = nroJugador;
-    this->tropas = new(Lista<InfoTropa*>);
+    this->tropas = new(Lista<Tropa*>);
     this->cartas = new(Lista<Tipos>);
 }
 
@@ -26,15 +26,7 @@ Jugador::~Jugador(){
 }
 
 void Jugador::agregarTropa(Ubicacion posicionTropa, int nroTropa, Artilleria tipoTropa){
-    InfoTropa* nuevaTropa = new(InfoTropa);
-    nuevaTropa->tropa = tipoTropa;
-    nuevaTropa->posicion = posicionTropa;
-    nuevaTropa->nroTropa = nroTropa;
-    if (tipoTropa == BARCO){
-        nuevaTropa->vidasBarco = 3;
-    } else{
-        nuevaTropa->vidasBarco = 0;
-    };
+    Tropa* nuevaTropa = new Tropa(posicionTropa, nroTropa, tipoTropa);
     this->tropas->add(nuevaTropa);
     if (tipoTropa == SOLDADO){
         this->vidas++;
@@ -47,8 +39,8 @@ void Jugador::agregarTropa(Ubicacion posicionTropa, int nroTropa, Artilleria tip
 }
 
 void Jugador::setPosicionTropa(int nroTropaPedida, Artilleria tipoArtilleria, Ubicacion ubicacion){
-    InfoTropa* tropaActual = this->getTropa(nroTropaPedida, tipoArtilleria);
-    tropaActual->posicion = ubicacion;
+    Tropa* tropaActual = this->getTropa(nroTropaPedida, tipoArtilleria);
+    tropaActual->setUbicacion(ubicacion);
 }
 
 void Jugador::nombreCarta(Tipos numDeCarta){
@@ -88,12 +80,12 @@ void Jugador::informarCartasDisponibles(){
 }  
 
 bool Jugador::bajarVidaBarco(int nroTropa){
-    InfoTropa* barco = this->getTropa(nroTropa, BARCO);
-    if (barco->vidasBarco == 1){
-        barco->vidasBarco --;
+    Tropa* tropa = this->getTropa(nroTropa, BARCO);
+    if (tropa->getVidasBarco() == 1){
+        tropa->bajarVidasBarco();
         return false;
     } else {
-        barco->vidasBarco --;
+        tropa->bajarVidasBarco();
         return true;
     }
 }
@@ -107,7 +99,7 @@ int Jugador::removerTropa(int nroTropa, Artilleria tipoTropa){
     if (tipoTropa == SOLDADO){
         this->vidas--;
     }
-    InfoTropa * tropa = this->getTropa(nroTropa, tipoTropa);
+    Tropa* tropa = this->getTropa(nroTropa, tipoTropa);
     this->tropas->remover(getPosicionTropaEnLista(nroTropa, tipoTropa));
     delete tropa;
     return this->vidas;
@@ -126,10 +118,9 @@ int Jugador::cantidadTropas(Artilleria tipoTropa){
     int cantidadTropa = 0;
 
     while(this->tropas->avanzarCursor()){
-        if(this->tropas->getCursor()->tropa == tipoTropa){
+        if(this->tropas->getCursor()->getTipoTropa() == tipoTropa){
             cantidadTropa ++;
         }
-
     }
     return cantidadTropa;
 }
@@ -138,7 +129,7 @@ int Jugador::getPosicionTropaEnLista(int nroTropaBuscada, Artilleria tipoTropa){
     int posicionTropa = 1;
     this->tropas->reiniciarCursor();
     while(this->tropas->avanzarCursor()){
-        if(this->tropas->getCursor()->nroTropa == nroTropaBuscada  && this->tropas->getCursor()->tropa == tipoTropa){
+        if(this->tropas->getCursor()->getNroTropa() == nroTropaBuscada  && this->tropas->getCursor()->getTipoTropa() == tipoTropa){
             return posicionTropa;
         }
         posicionTropa ++;
@@ -162,13 +153,13 @@ int Jugador::cantidadCartas(){
 }
 
 bool Jugador::tropaViva(int nroTropa, Artilleria tipoArtilleria){
-    InfoTropa* tropa = this->getTropa(nroTropa, tipoArtilleria);
+    Tropa* tropa = this->getTropa(nroTropa, tipoArtilleria);
     return (tropa ==  NULL);
 }
 
 Ubicacion Jugador::getUbicacionTropa(int nroTropa, Artilleria tipoArtilleria){
-    InfoTropa* tropa = getTropa(nroTropa, tipoArtilleria);
-    return tropa->posicion;
+    Tropa* tropa = getTropa(nroTropa, tipoArtilleria);
+    return tropa->getUbicacion();
 }
 
 Tipos Jugador::getCarta(int numeroCarta){
@@ -179,18 +170,18 @@ Tipos Jugador::getCarta(int numeroCarta){
     //Falta validar
 }
 
-InfoTropa* Jugador::getTropa(int nroTropaPedida, Artilleria tipoArtilleria){
-    InfoTropa* tropaBuscada = NULL;
+Tropa* Jugador::getTropa(int nroTropaPedida, Artilleria tipoArtilleria){
+    Tropa* tropaBuscada = NULL;
     this->tropas->reiniciarCursor();
     while(tropaBuscada == NULL && this->tropas->avanzarCursor()){
-        if(this->tropas->getCursor()->nroTropa == nroTropaPedida  && this->tropas->getCursor()->tropa == tipoArtilleria){
+        if(this->tropas->getCursor()->getNroTropa() == nroTropaPedida  && this->tropas->getCursor()->getTipoTropa() == tipoArtilleria){
             tropaBuscada = this->tropas->getCursor();
         }
     }
     return tropaBuscada;
 }
 
-Lista<InfoTropa*>* Jugador::getListaTropas(){
+Lista<Tropa*>* Jugador::getListaTropas(){
     return this->tropas;
 }
 

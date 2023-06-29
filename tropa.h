@@ -1,16 +1,18 @@
 #ifndef TROPA
 #define TROPA
 
-/*
+#include "tablero.h"
 
+/*
 struct Ubicacion{
     int x;
     int y;
     int z;
 };
-
+*/
 class Tropa {
     private:
+    /*
     enum Artilleria {
         VACIO,
         SOLDADO,
@@ -18,6 +20,7 @@ class Tropa {
         BARCO,
         MINA
     };
+    */
     int nroTropa;
     Artilleria tipoTropa;
     Ubicacion ubicacion;
@@ -36,15 +39,19 @@ class Tropa {
 
     Ubicacion getUbicacion();
 
-    void setTipoTropa();
+    int getVidasBarco();
 
-    void setNroTropa();
 
-    void setUbicacion();
+    void setTipoTropa(Artilleria tipoTropa);
 
+    void setNroTropa(int nroTropa);
+
+    void setUbicacion(Ubicacion ubicacionNueva);
+
+    void bajarVidasBarco();
 
 
 };
-*/
+
 
 #endif

@@ -135,7 +135,7 @@ void Tablero::mostrarTablero(int nroJugador){
     listaY = this->tablero->getCursor();
     Casillero* casilleroActual;
     unsigned char r, g, b;
-    int y, x, i = 0, j = 0;
+    int x, y, i = 0, j = 0;
 
     listaY->reiniciarCursor();
     while(listaY->avanzarCursor()){

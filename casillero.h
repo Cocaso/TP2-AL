@@ -16,19 +16,15 @@ enum Artilleria {
     MINA
 };
 
-struct Contenido {
+class Casillero {
+private:
+
+    Terreno terreno;
     bool toxico;
     int jugador;
     int numTropa;
     Artilleria artilleria;
     int turnosInactivo;
-};
-
-class Casillero {
-private:
-
-    Terreno terreno;
-    Contenido* contenido;
     
 public:
     /*

@@ -3,7 +3,7 @@
 
 #include "listaBase.h"
 #include "tablero.h"
-//#include "tropa.h"
+#include "tropa.h"
 #include <ctime>
 
 
@@ -16,12 +16,6 @@ enum Tipos {
     RAYOLASER
 };
 
-struct InfoTropa {
-    int nroTropa;
-    Artilleria tropa;
-    Ubicacion posicion;
-    int vidasBarco;
-};
 
 class Jugador {
     private:
@@ -30,7 +24,7 @@ class Jugador {
     int numSiguienteBarco;
     int numSiguienteAvion;
     int numDeJugador;
-    Lista<InfoTropa*>* tropas;
+    Lista<Tropa*>* tropas;
     Lista<Tipos>* cartas;
 
     public:
@@ -168,13 +162,13 @@ class Jugador {
     Pre: Recibe numero de tropa pedida
     Pos: Devuelve un puntero a la tropa buscada o NULL si no se encontró
     */
-    InfoTropa* getTropa(int nroTropaPedida, Artilleria tipoArtilleria);
+    Tropa* getTropa(int nroTropaPedida, Artilleria tipoArtilleria);
 
     /*
     Pre:~~
     Pos: Devuelve la lista de tropas
     */
-    Lista<InfoTropa*>* getListaTropas();
+    Lista<Tropa*>* getListaTropas();
 
     /*
     Pre: 
